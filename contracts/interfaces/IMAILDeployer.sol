@@ -13,6 +13,8 @@ interface IMAILDeployer {
 
     function riskyAssetInterestRateModel() external view returns (address);
 
+    function fees(uint256 index) external view returns (uint24);
+
     event MarketCreated(address indexed market);
 
     event SetReserveFactor(uint256 amount);
@@ -23,4 +25,6 @@ interface IMAILDeployer {
         address indexed token,
         address indexed interestRateModel
     );
+
+    event NewUniSwapFee(uint256 indexed fee);
 }

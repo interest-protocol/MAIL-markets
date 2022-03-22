@@ -7,26 +7,26 @@ import "./interfaces/IMAILDeployer.sol";
 
 contract MAIL {
     //solhint-disable-next-line var-name-mixedcase
-    IERC20 private immutable BTC;
+    address private immutable BTC;
 
     //solhint-disable-next-line var-name-mixedcase
-    IERC20 private immutable BRIDGE_TOKEN;
+    address private immutable BRIDGE_TOKEN;
 
     //solhint-disable-next-line var-name-mixedcase
-    IERC20 private immutable USDC;
+    address private immutable USDC;
 
     //solhint-disable-next-line var-name-mixedcase
-    IERC20 private immutable USDT;
+    address private immutable USDT;
 
     //solhint-disable-next-line var-name-mixedcase
-    IERC20 private immutable RISKY_ASSET;
+    address private immutable RISKY_ASSET;
 
     constructor(
-        IERC20 btc,
-        IERC20 bridgeToken,
-        IERC20 usdc,
-        IERC20 usdt,
-        IERC20 riskyAsset
+        address btc,
+        address bridgeToken,
+        address usdc,
+        address usdt,
+        address riskyAsset
     ) {
         BTC = btc;
         BRIDGE_TOKEN = bridgeToken;
