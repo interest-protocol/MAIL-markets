@@ -28,6 +28,9 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     //solhint-disable-next-line var-name-mixedcase
     address private immutable USDT;
 
+    //solhint-disable-next-line var-name-mixedcase
+    address private immutable ORACLE;
+
     // Address to collect the reserve funds
     address public treasury;
 
@@ -69,7 +72,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
      *
      * Requirements:
      *
-     * - None of the tokens and interest rate models can be the zero address
+     * - None of the tokens, interest rate models and oracle can be the zero address
      */
     constructor(
         address uniswapV3Factory,
@@ -77,6 +80,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         address bridgeToken,
         address usdc,
         address usdt,
+        address oracle,
         address btcModel,
         address usdcModel,
         address bridgeTokenModel,
@@ -92,6 +96,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         require(bridgeTokenModel != address(0), "bt: no zero address");
         require(riskyAssetModel != address(0), "ra: no zero address");
         require(uniswapV3Factory != address(0), "uni: no zero address");
+        require(oracle != address(0), "oracle: no zero address");
 
         // Add current supported UniswapV3 fees
         fees.push(500);
@@ -109,6 +114,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         BRIDGE_TOKEN = bridgeToken;
         USDC = usdc;
         USDT = usdt;
+        ORACLE = oracle;
         treasury = _treasury;
         reserveFactor = _reserveFactor;
 
@@ -197,7 +203,8 @@ contract MAILDeployer is Ownable, IMAILDeployer {
                 BRIDGE_TOKEN,
                 USDC,
                 USDT,
-                riskyAsset
+                riskyAsset,
+                ORACLE
             )
         );
 

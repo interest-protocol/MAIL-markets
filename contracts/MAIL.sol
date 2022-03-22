@@ -21,17 +21,22 @@ contract MAIL {
     //solhint-disable-next-line var-name-mixedcase
     address private immutable RISKY_ASSET;
 
+    //solhint-disable-next-line var-name-mixedcase
+    address private immutable ORACLE;
+
     constructor(
         address btc,
         address bridgeToken,
         address usdc,
         address usdt,
-        address riskyAsset
+        address riskyAsset,
+        address oracle
     ) {
         BTC = btc;
         BRIDGE_TOKEN = bridgeToken;
         USDC = usdc;
         USDT = usdt;
         RISKY_ASSET = riskyAsset;
+        ORACLE = oracle;
     }
 }
