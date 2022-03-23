@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: MIT
-pragma solidity 0.8.12;
+pragma solidity 0.8.13;
 
 interface IMAILDeployer {
     //solhint-disable-next-line func-name-mixedcase
@@ -20,7 +20,7 @@ interface IMAILDeployer {
     //solhint-disable-next-line func-name-mixedcase
     function UNISWAP_V3_FACTORY() external view returns (address);
 
-    function riskyAsset() external view returns (address);
+    function riskyToken() external view returns (address);
 
     function getInterestRateModel(address token)
         external
@@ -31,9 +31,17 @@ interface IMAILDeployer {
 
     function reserveFactor() external view returns (uint256);
 
-    function riskyAssetInterestRateModel() external view returns (address);
+    function riskyTokenInterestRateModel() external view returns (address);
 
     function fees(uint256 index) external view returns (uint24);
+
+    function getFeesLength() external view returns (uint256);
+
+    function riskyTokenLTV() external view returns (uint256);
+
+    function maxLTVOf(address token) external view returns (uint256);
+
+    function owner() external view returns (address);
 
     event MarketCreated(address indexed market);
 
@@ -47,4 +55,6 @@ interface IMAILDeployer {
     );
 
     event NewUniSwapFee(uint256 indexed fee);
+
+    event SetNewTokenLTV(address indexed token, uint256 amount);
 }

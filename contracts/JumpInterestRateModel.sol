@@ -14,7 +14,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
  */
 
 //SPDX-License-Identifier: BSD 3-Clause
-pragma solidity 0.8.12;
+pragma solidity 0.8.13;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -35,6 +35,7 @@ contract JumpInterestRateModel is Ownable {
     /*///////////////////////////////////////////////////////////////
                               LIBRARIES 
     //////////////////////////////////////////////////////////////*/
+
     using IntMath for uint256;
 
     /*///////////////////////////////////////////////////////////////

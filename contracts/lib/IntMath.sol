@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: CC-BY-4.0
-pragma solidity 0.8.12;
+pragma solidity 0.8.13;
 
 /**
  * @dev We assume that all numbers passed to {bmul} and {bdiv} have a mantissa of 1e18
@@ -12,6 +12,50 @@ pragma solidity 0.8.12;
 library IntMath {
     // Base Mantissa of all numbers in Interest Protocol
     uint256 private constant BASE = 1e18;
+
+    /**
+     * @dev Adjusts the price to have 18 decimal houses to work easier with most {ERC20}.
+     *
+     * @param price The price of the token
+     * @param decimals The current decimals the price has
+     * @return uint256 the new price supporting 18 decimal houses
+     */
+    function toBase(uint256 price, uint8 decimals)
+        internal
+        pure
+        returns (uint256)
+    {
+        uint256 baseDecimals = 18;
+
+        if (decimals == baseDecimals) return price;
+
+        if (decimals < baseDecimals)
+            return price * 10**(baseDecimals - decimals);
+
+        return price / 10**(decimals - baseDecimals);
+    }
+
+    /**
+     * @dev Adjusts the price to have `decimal` houses to work easier with most {ERC20}.
+     *
+     * @param price The price of the token
+     * @param decimals The current decimals the price has
+     * @return uint256 the new price supporting `decimals` decimal houses
+     */
+    function fromBase(uint256 price, uint8 decimals)
+        internal
+        pure
+        returns (uint256)
+    {
+        uint256 baseDecimals = 18;
+
+        if (decimals == baseDecimals) return price;
+
+        if (decimals < baseDecimals)
+            return price / 10**(baseDecimals - decimals);
+
+        return price * 10**(decimals - baseDecimals);
+    }
 
     /**
      * @dev Function ensures that the return value keeps the right mantissa

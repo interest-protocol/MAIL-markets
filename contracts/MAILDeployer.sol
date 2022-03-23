@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: MIT
-pragma solidity 0.8.12;
+pragma solidity 0.8.13;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol";
@@ -12,6 +12,8 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     /*///////////////////////////////////////////////////////////////
                                 STATE
     //////////////////////////////////////////////////////////////*/
+
+    uint256 private constant INITIAL_MAX_LTV = 0.5e18;
 
     //solhint-disable-next-line var-name-mixedcase
     address public immutable UNISWAP_V3_FACTORY;
@@ -31,7 +33,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     //solhint-disable-next-line var-name-mixedcase
     address public immutable ORACLE;
 
-    address public riskyAsset;
+    address public riskyToken;
 
     // Address to collect the reserve funds
     address public treasury;
@@ -39,8 +41,10 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     // % of interest rate to be collected by the treasury
     uint256 public reserveFactor;
 
-    // Contract to calculate borrow and supply rate for the risky asset
-    address public riskyAssetInterestRateModel;
+    // Contract to calculate borrow and supply rate for the risky token
+    address public riskyTokenInterestRateModel;
+
+    uint256 public riskyTokenLTV;
 
     // Array containing all the current fees supported by Uniswap V3
     uint24[] public fees;
@@ -54,6 +58,9 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     // Token => Interest Rate Model (BTC/USDC/USDT/BRIDGE_TOKEN)
     mapping(address => address) public getInterestRateModel;
 
+    // Token => LTV
+    mapping(address => uint256) public maxLTVOf;
+
     /*///////////////////////////////////////////////////////////////
                             CONSTRUCTOR
     //////////////////////////////////////////////////////////////*/
@@ -61,13 +68,13 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     /**
      * @param uniswapV3Factory The address of Uniswap V3 Factory
      * @param btc The ERC20 address for BTC
-     * @param bridgeToken The address of the Wrapped version of the native token for this network - e.g. Wrapped Ether
+     * @param wrappedNativeToken The address of the Wrapped version of the native token for this network - e.g. Wrapped Ether
      * @param usdc The ERC20 address for USDC
      * @param usdt The ERC20 address for
      * @param oracle The oracle used by MAIL lending markets
      * @param _treasury The address that will collect all protocol fees
      * @param _reserveFactor The % of the interest rate that will be sent to the treasury. It is a 18 mantissa number
-     * @param modelData Data about the interest rate models for usdc, btc, bridgeToken, usdt and risky asset
+     * @param modelData Data about the interest rate models for usdc, btc, wrappedNativeToken, usdt and risky token
      *
      * Requirements:
      *
@@ -76,7 +83,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     constructor(
         address uniswapV3Factory,
         address btc,
-        address bridgeToken,
+        address wrappedNativeToken,
         address usdc,
         address usdt,
         address oracle,
@@ -87,9 +94,9 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         (
             address btcModel,
             address usdcModel,
-            address bridgeTokenModel,
+            address wrappedNativeTokenModel,
             address usdtModel,
-            address riskyAssetModel
+            address riskytokenModel
         ) = abi.decode(
                 modelData,
                 (address, address, address, address, address)
@@ -99,8 +106,8 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         require(btcModel != address(0), "btc: no zero address");
         require(usdcModel != address(0), "usdc: no zero address");
         require(usdtModel != address(0), "usdt: no zero address");
-        require(bridgeTokenModel != address(0), "bt: no zero address");
-        require(riskyAssetModel != address(0), "ra: no zero address");
+        require(wrappedNativeTokenModel != address(0), "bt: no zero address");
+        require(riskytokenModel != address(0), "ra: no zero address");
         require(uniswapV3Factory != address(0), "uni: no zero address");
         require(oracle != address(0), "oracle: no zero address");
 
@@ -117,7 +124,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         // Update Global state
         UNISWAP_V3_FACTORY = uniswapV3Factory;
         BTC = btc;
-        BRIDGE_TOKEN = bridgeToken;
+        BRIDGE_TOKEN = wrappedNativeToken;
         USDC = usdc;
         USDT = usdt;
         ORACLE = oracle;
@@ -125,31 +132,45 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         reserveFactor = _reserveFactor;
 
         // Map the token to the right interest rate model
-        getInterestRateModel[address(btc)] = btcModel;
-        getInterestRateModel[address(usdc)] = usdcModel;
-        getInterestRateModel[address(usdt)] = usdtModel;
-        getInterestRateModel[address(bridgeToken)] = bridgeTokenModel;
+        getInterestRateModel[btc] = btcModel;
+        getInterestRateModel[usdc] = usdcModel;
+        getInterestRateModel[usdt] = usdtModel;
+        getInterestRateModel[wrappedNativeToken] = wrappedNativeTokenModel;
+        riskyTokenInterestRateModel = riskytokenModel;
 
-        riskyAssetInterestRateModel = riskyAssetModel;
+        // Set Initial LTV
+        maxLTVOf[btc] = INITIAL_MAX_LTV;
+        maxLTVOf[usdc] = INITIAL_MAX_LTV;
+        maxLTVOf[usdt] = INITIAL_MAX_LTV;
+        maxLTVOf[wrappedNativeToken] = INITIAL_MAX_LTV;
+        riskyTokenLTV = INITIAL_MAX_LTV;
     }
 
     /*///////////////////////////////////////////////////////////////
-                        VIEW 
+                                    VIEW 
     //////////////////////////////////////////////////////////////*/
 
     /**
-     * @dev Computes the address of a market address for the a `riskyAsset`.
-     *
-     * @param _riskyAsset Market address for this asset will be returned
-     * @return address The market address for the `riskyAsset`.
+     * @dev Total amount of fees supported by UniswapV3
+     * @return uint256 The number of fees
      */
-    function predictMarketAddress(address _riskyAsset)
+    function getFeesLength() external view returns (uint256) {
+        return fees.length;
+    }
+
+    /**
+     * @dev Computes the address of a market address for the a `riskyToken`.
+     *
+     * @param _riskytoken Market address for this token will be returned
+     * @return address The market address for the `riskytoken`.
+     */
+    function predictMarketAddress(address _riskytoken)
         external
         view
         returns (address)
     {
         address deployer = address(this);
-        bytes32 salt = keccak256(abi.encode(_riskyAsset));
+        bytes32 salt = keccak256(abi.encode(_riskytoken));
         bytes32 initCodeHash = keccak256(
             abi.encodePacked(type(MAIL).creationCode)
         );
@@ -176,41 +197,41 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     //////////////////////////////////////////////////////////////*/
 
     /**
-     * @dev It deploys a MAIL market for the `risky` asset
+     * @dev It deploys a MAIL market for the `risky` token
      *
-     * @param _riskyAsset Any ERC20 asset with a pool in UniswapV3
+     * @param _riskyToken Any ERC20 token with a pool in UniswapV3
      * @return market the address of the new deployed market.
      *
      * Requirements:
      *
-     * - Risky Asset cannot be BTC, BRIDGE_TOKEN, USDC, USDT or the zero address
-     * - Risky asset must have a pool in UniswapV3
-     * - There is no deployed market for this `risky asset`.
+     * - Risky token cannot be BTC, BRIDGE_TOKEN, USDC, USDT or the zero address
+     * - Risky token must have a pool in UniswapV3
+     * - There is no deployed market for this `_riskyToken`.
      */
-    function deploy(address _riskyAsset) external returns (address market) {
-        // Make sure the `riskyAsset` is different than BTC, BRIDGE_TOKEN, USDC, USDT, zero address
-        require(_riskyAsset != BTC, "MD: cannot be BTC");
-        require(_riskyAsset != BRIDGE_TOKEN, "MD: cannot be BRIDGE_TOKEN");
-        require(_riskyAsset != USDC, "MD: cannot be USDC");
-        require(_riskyAsset != USDT, "MD: cannot be USDT");
-        require(_riskyAsset != address(0), "MD: no zero address");
+    function deploy(address _riskyToken) external returns (address market) {
+        // Make sure the `riskytoken` is different than BTC, BRIDGE_TOKEN, USDC, USDT, zero address
+        require(_riskyToken != BTC, "MD: cannot be BTC");
+        require(_riskyToken != BRIDGE_TOKEN, "MD: cannot be BRIDGE_TOKEN");
+        require(_riskyToken != USDC, "MD: cannot be USDC");
+        require(_riskyToken != USDT, "MD: cannot be USDT");
+        require(_riskyToken != address(0), "MD: no zero address");
         // Checks if a pool exists
-        require(_doesPoolExist(_riskyAsset), "MD: no pool for this asset");
-        // Checks that no market has been deployed for the `riskyAsset`.
+        require(_doesPoolExist(_riskyToken), "MD: no pool for this token");
+        // Checks that no market has been deployed for the `riskyToken`.
         require(
-            getMarket[_riskyAsset] == address(0),
+            getMarket[_riskyToken] == address(0),
             "MD: market already deployed"
         );
-        riskyAsset = _riskyAsset;
+        riskyToken = _riskyToken;
 
         // Deploy the market
         market = address(
-            new MAIL{salt: keccak256(abi.encodePacked(_riskyAsset))}()
+            new MAIL{salt: keccak256(abi.encodePacked(_riskyToken))}()
         );
 
-        riskyAsset = address(0);
+        riskyToken = address(0);
         // Update global state
-        getMarket[_riskyAsset] = market;
+        getMarket[_riskyToken] = market;
 
         emit MarketCreated(market);
     }
@@ -220,14 +241,14 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     //////////////////////////////////////////////////////////////*/
 
     /**
-     * @dev Checks if UniswapV3 has a pool for `riskyAsset`
+     * @dev Checks if UniswapV3 has a pool for `riskytoken`
      *
-     * @param _riskyAsset Checks if UniswapV3 has a pool for this address and the `BRIDGE_TOKEN`
+     * @param _riskytoken Checks if UniswapV3 has a pool for this address and the `BRIDGE_TOKEN`
      * @return bool If there is a pool or not.
      */
-    function _doesPoolExist(address _riskyAsset) private view returns (bool) {
+    function _doesPoolExist(address _riskytoken) private view returns (bool) {
         // Save gas
-        address bridgeToken = BRIDGE_TOKEN;
+        address wrappedNativeToken = BRIDGE_TOKEN;
         IUniswapV3Factory uniswapV3Factory = IUniswapV3Factory(
             UNISWAP_V3_FACTORY
         );
@@ -237,11 +258,11 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         // save gas
         uint24[] memory _fees = fees;
 
-        // Loop through all the fees and check if there is a `riskyAsset` and `BRIDGE_TOKEN` pool for the fee
+        // Loop through all the fees and check if there is a `_riskytoken` and `BRIDGE_TOKEN` pool for the fee
         for (uint256 i; i < _fees.length; i++) {
             address pool = uniswapV3Factory.getPool(
-                bridgeToken,
-                _riskyAsset,
+                wrappedNativeToken,
+                _riskytoken,
                 _fees[i]
             );
             if (pool != address(0)) {
@@ -321,21 +342,57 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     }
 
     /**
-     * @dev This updates the interest rate model for the risky asset
+     * @dev This updates the interest rate model for the risky token
      *
-     * @param interestRateModel The interest rate model for the risky asset
+     * @param interestRateModel The interest rate model for the risky token
      *
      * Requirements:
      *
      * - Only the Int Governance can update this value.
      * - Interest rate model and token cannot be the address zero
      */
-    function setRiskyAssetInterestRateModel(address interestRateModel)
+    function setRiskyTokenInterestRateModel(address interestRateModel)
         external
         onlyOwner
     {
         require(interestRateModel != address(0), "MD: no zero address");
-        riskyAssetInterestRateModel = interestRateModel;
+        riskyTokenInterestRateModel = interestRateModel;
         emit SetInterestRateModel(address(0), interestRateModel);
+    }
+
+    /**
+     * @dev Allows the Int Governance to update tokens' max LTV.
+     *
+     * @param token The ERC20 that will have a new LTV
+     * @param amount The new LTV
+     *
+     * Requirements:
+     *
+     * - Only the owner can update this value to protect the markets agaisnt volatility
+     * - MAX LTV is 90% for BTC, Native Token, USDC, USDT
+     */
+    function setTokenLTV(address token, uint256 amount) external onlyOwner {
+        require(0.9e18 >= amount, "MD: LTV too high");
+        maxLTVOf[token] = amount;
+
+        emit SetNewTokenLTV(token, amount);
+    }
+
+    /**
+     * @dev Allows the Int Governance to update the max LTV for the risky asser.
+     *
+     * @param amount The new LTV
+     *
+     * Requirements:
+     *
+     * - Only the owner can update this value to protect the markets agaisnt volatility
+     * - MAX LTV is 70% for risky assets.
+     */
+    function setRiskyTokenLTV(uint256 amount) external onlyOwner {
+        require(0.7e18 >= amount, "MD: LTV too high");
+
+        riskyTokenLTV = amount;
+
+        emit SetNewTokenLTV(address(0), amount);
     }
 }

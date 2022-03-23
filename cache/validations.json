@@ -2,6 +2,3226 @@
   "version": "3.2",
   "log": [
     {
+      "OwnableUpgradeable": {
+        "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21",
+        "inherit": [
+          "ContextUpgradeable",
+          "Initializable"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_initialized",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Initializable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:39"
+            },
+            {
+              "label": "_initializing",
+              "offset": 1,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Initializable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:44"
+            },
+            {
+              "label": "__gap",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_array(t_uint256)50_storage",
+              "contract": "ContextUpgradeable",
+              "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+            },
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "51",
+              "type": "t_address",
+              "contract": "OwnableUpgradeable",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+            },
+            {
+              "label": "__gap",
+              "offset": 0,
+              "slot": "52",
+              "type": "t_array(t_uint256)49_storage",
+              "contract": "OwnableUpgradeable",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:87"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_uint256)49_storage": {
+              "label": "uint256[49]",
+              "numberOfBytes": "1568"
+            },
+            "t_array(t_uint256)50_storage": {
+              "label": "uint256[50]",
+              "numberOfBytes": "1600"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IERC1822ProxiableUpgradeable": {
+        "src": "@openzeppelin/contracts-upgradeable/interfaces/draft-IERC1822Upgradeable.sol:10",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "proxiableUUID()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "ERC1967UpgradeUpgradeable": {
+        "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:20",
+        "inherit": [
+          "Initializable"
+        ],
+        "libraries": [
+          "StorageSlotUpgradeable",
+          "AddressUpgradeable"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_initialized",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Initializable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:39"
+            },
+            {
+              "label": "_initializing",
+              "offset": 1,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Initializable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:44"
+            },
+            {
+              "label": "__gap",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_array(t_uint256)50_storage",
+              "contract": "ERC1967UpgradeUpgradeable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:211"
+            }
+          ],
+          "types": {
+            "t_array(t_uint256)50_storage": {
+              "label": "uint256[50]",
+              "numberOfBytes": "1600"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IBeaconUpgradeable": {
+        "src": "@openzeppelin/contracts-upgradeable/proxy/beacon/IBeaconUpgradeable.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "implementation()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "Initializable": {
+        "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:35",
+        "inherit": [],
+        "libraries": [
+          "AddressUpgradeable"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_initialized",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Initializable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:39"
+            },
+            {
+              "label": "_initializing",
+              "offset": 1,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Initializable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:44"
+            }
+          ],
+          "types": {
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "UUPSUpgradeable": {
+        "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:22",
+        "inherit": [
+          "ERC1967UpgradeUpgradeable",
+          "IERC1822ProxiableUpgradeable",
+          "Initializable"
+        ],
+        "libraries": [],
+        "methods": [
+          "proxiableUUID()",
+          "upgradeTo(address)",
+          "upgradeToAndCall(address,bytes)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_initialized",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Initializable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:39"
+            },
+            {
+              "label": "_initializing",
+              "offset": 1,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Initializable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:44"
+            },
+            {
+              "label": "__gap",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_array(t_uint256)50_storage",
+              "contract": "ERC1967UpgradeUpgradeable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:211"
+            },
+            {
+              "label": "__gap",
+              "offset": 0,
+              "slot": "51",
+              "type": "t_array(t_uint256)50_storage",
+              "contract": "UUPSUpgradeable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:107"
+            }
+          ],
+          "types": {
+            "t_array(t_uint256)50_storage": {
+              "label": "uint256[50]",
+              "numberOfBytes": "1600"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IERC20Upgradeable": {
+        "src": "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IERC20MetadataUpgradeable": {
+        "src": "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol:13",
+        "inherit": [
+          "IERC20Upgradeable"
+        ],
+        "libraries": [],
+        "methods": [
+          "name()",
+          "symbol()",
+          "decimals()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "AddressUpgradeable": {
+        "src": "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol:9",
+        "version": {
+          "withMetadata": "961aa5db9588e780e4fd9dd2ed89e6bbe220774e3d145acde59b4fd2479fd9b5",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "ContextUpgradeable": {
+        "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:17",
+        "inherit": [
+          "Initializable"
+        ],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_initialized",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Initializable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:39"
+            },
+            {
+              "label": "_initializing",
+              "offset": 1,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Initializable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:44"
+            },
+            {
+              "label": "__gap",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_array(t_uint256)50_storage",
+              "contract": "ContextUpgradeable",
+              "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+            }
+          ],
+          "types": {
+            "t_array(t_uint256)50_storage": {
+              "label": "uint256[50]",
+              "numberOfBytes": "1600"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "StorageSlotUpgradeable": {
+        "src": "@openzeppelin/contracts-upgradeable/utils/StorageSlotUpgradeable.sol:32",
+        "version": {
+          "withMetadata": "5c08e1735993fd343f545bc388cd1d3df884183ce8527cb3104f9d95e22dd893",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "SafeCastUpgradeable": {
+        "src": "@openzeppelin/contracts-upgradeable/utils/math/SafeCastUpgradeable.sol:21",
+        "version": {
+          "withMetadata": "6818168388c6f9a4115871ef6521c8c7329faa500594ac5967a8242ddcffc2a1",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "Ownable": {
+        "src": "@openzeppelin/contracts/access/Ownable.sol:20",
+        "inherit": [
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin/contracts/access/Ownable.sol:28"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IERC20": {
+        "src": "@openzeppelin/contracts/token/ERC20/IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "Context": {
+        "src": "@openzeppelin/contracts/utils/Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "SafeCast": {
+        "src": "@openzeppelin/contracts/utils/math/SafeCast.sol:21",
+        "version": {
+          "withMetadata": "60bc1ad4d312ed62bd1b89a18bdc83fba20e647af2df26d035a66b61d772aa06",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3Factory": {
+        "src": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "feeAmountTickSpacing(uint24)",
+          "getPool(address,address,uint24)",
+          "createPool(address,address,uint24)",
+          "setOwner(address)",
+          "enableFeeAmount(uint24,int24)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3Pool": {
+        "src": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol:15",
+        "inherit": [
+          "IUniswapV3PoolEvents",
+          "IUniswapV3PoolOwnerActions",
+          "IUniswapV3PoolActions",
+          "IUniswapV3PoolDerivedState",
+          "IUniswapV3PoolState",
+          "IUniswapV3PoolImmutables"
+        ],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "initialize(uint160)",
+          "mint(address,int24,int24,uint128,bytes)",
+          "collect(address,int24,int24,uint128,uint128)",
+          "burn(int24,int24,uint128)",
+          "swap(address,bool,int256,uint160,bytes)",
+          "flash(address,uint256,uint256,bytes)",
+          "increaseObservationCardinalityNext(uint16)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolDerivedState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "observe(uint32[])",
+          "snapshotCumulativesInside(int24,int24)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolEvents": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolEvents.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolImmutables": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "factory()",
+          "token0()",
+          "token1()",
+          "fee()",
+          "tickSpacing()",
+          "maxLiquidityPerTick()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolOwnerActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "setFeeProtocol(uint8,uint8)",
+          "collectProtocol(address,uint128,uint128)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "slot0()",
+          "feeGrowthGlobal0X128()",
+          "feeGrowthGlobal1X128()",
+          "protocolFees()",
+          "liquidity()",
+          "ticks(int24)",
+          "tickBitmap(int16)",
+          "positions(bytes32)",
+          "observations(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "JumpInterestRateModel": {
+        "src": "contracts/JumpInterestRateModel.sol:23",
+        "version": {
+          "withMetadata": "b8d1bd2958df1cb6c750e38989b217995c401858d5ae3548458c75f5b145cc74",
+          "withoutMetadata": "37d6bc9ce0c28442580bec049c5b4991d2d1426c6c1033299c9409c204599c61",
+          "linkedWithoutMetadata": "37d6bc9ce0c28442580bec049c5b4991d2d1426c6c1033299c9409c204599c61"
+        },
+        "inherit": [
+          "Ownable",
+          "Context"
+        ],
+        "libraries": [
+          "IntMath"
+        ],
+        "methods": [
+          "(uint256,uint256,uint256,uint256,uint256)",
+          "getBorrowRatePerBlock(uint256,uint256,uint256)",
+          "getSupplyRatePerBlock(uint256,uint256,uint256,uint256)",
+          "updateJumpRateModel(uint256,uint256,uint256,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "JumpInterestRateModel",
+            "src": "contracts/JumpInterestRateModel.sol:73"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BLOCKS_PER_YEAR",
+            "src": "contracts/JumpInterestRateModel.sol:48"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            },
+            {
+              "label": "baseRatePerBlock",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:53"
+            },
+            {
+              "label": "multiplierPerBlock",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:58"
+            },
+            {
+              "label": "jumpMultiplierPerBlock",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:63"
+            },
+            {
+              "label": "kink",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:68"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "MAIL": {
+        "src": "contracts/MAIL.sol:15",
+        "version": {
+          "withMetadata": "a23a7d88958da377a811e7f8a766322c8ce124d030e7dfb7a5d8d14b7823bbde",
+          "withoutMetadata": "be92a1026f412e91a7aa247b84bbb003c774dfb2d1c34a4438eaa1911c518c50",
+          "linkedWithoutMetadata": "be92a1026f412e91a7aa247b84bbb003c774dfb2d1c34a4438eaa1911c518c50"
+        },
+        "inherit": [],
+        "libraries": [
+          "SafeCast",
+          "RebaseLibrary",
+          "IntMath"
+        ],
+        "methods": [
+          "()",
+          "getCash(address)",
+          "accrue(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "MAIL",
+            "src": "contracts/MAIL.sol:91"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "MAIL_DEPLOYER",
+            "src": "contracts/MAIL.sol:59"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BTC",
+            "src": "contracts/MAIL.sol:62"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BRIDGE_TOKEN",
+            "src": "contracts/MAIL.sol:65"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDC",
+            "src": "contracts/MAIL.sol:68"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDT",
+            "src": "contracts/MAIL.sol:71"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "RISKY_TOKEN",
+            "src": "contracts/MAIL.sol:74"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "ORACLE",
+            "src": "contracts/MAIL.sol:77"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "balanceOf",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "contract": "MAIL",
+              "src": "contracts/MAIL.sol:80"
+            },
+            {
+              "label": "borrowOf",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "contract": "MAIL",
+              "src": "contracts/MAIL.sol:83"
+            },
+            {
+              "label": "marketOf",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_mapping(t_address,t_struct(Market)3009_storage)",
+              "contract": "MAIL",
+              "src": "contracts/MAIL.sol:85"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(address => mapping(address => uint256))",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_struct(Market)3009_storage)": {
+              "label": "mapping(address => struct MAIL.Market)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_struct(Market)3009_storage": {
+              "label": "struct MAIL.Market",
+              "members": [
+                {
+                  "label": "lastAccruedBlock",
+                  "type": "t_uint128",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "totalReserves",
+                  "type": "t_uint128",
+                  "offset": 16,
+                  "slot": "0"
+                },
+                {
+                  "label": "totalRewards",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "loan",
+                  "type": "t_struct(Rebase)4863_storage",
+                  "offset": 0,
+                  "slot": "2"
+                }
+              ],
+              "numberOfBytes": "96"
+            },
+            "t_struct(Rebase)4863_storage": {
+              "label": "struct Rebase",
+              "members": [
+                {
+                  "label": "elastic",
+                  "type": "t_uint128",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "base",
+                  "type": "t_uint128",
+                  "offset": 16,
+                  "slot": "0"
+                }
+              ],
+              "numberOfBytes": "32"
+            },
+            "t_uint128": {
+              "label": "uint128",
+              "numberOfBytes": "16"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "MAILDeployer": {
+        "src": "contracts/MAILDeployer.sol:11",
+        "version": {
+          "withMetadata": "00bca312841b2183199b5d061cac123f2389285e30c2254ea0033634a4b3b440",
+          "withoutMetadata": "d8c4bd9d95777e23d9d503e9eefe400f8b8778bde4a37f1f9e128d4149068c38",
+          "linkedWithoutMetadata": "d8c4bd9d95777e23d9d503e9eefe400f8b8778bde4a37f1f9e128d4149068c38"
+        },
+        "inherit": [
+          "IMAILDeployer",
+          "Ownable",
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address,address,address,address,address,address,uint256,bytes)",
+          "getFeesLength()",
+          "predictMarketAddress(address)",
+          "deploy(address)",
+          "addUniswapV3Fee(uint24)",
+          "setReserveFactor(uint256)",
+          "setTreasury(address)",
+          "setInterestRateModel(address,address)",
+          "setRiskyTokenInterestRateModel(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "MAILDeployer",
+            "src": "contracts/MAILDeployer.sol:76"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "UNISWAP_V3_FACTORY",
+            "src": "contracts/MAILDeployer.sol:17"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BTC",
+            "src": "contracts/MAILDeployer.sol:20"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BRIDGE_TOKEN",
+            "src": "contracts/MAILDeployer.sol:23"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDC",
+            "src": "contracts/MAILDeployer.sol:26"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDT",
+            "src": "contracts/MAILDeployer.sol:29"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "ORACLE",
+            "src": "contracts/MAILDeployer.sol:32"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            },
+            {
+              "label": "riskyToken",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:34"
+            },
+            {
+              "label": "treasury",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_address",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:37"
+            },
+            {
+              "label": "reserveFactor",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_uint256",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:40"
+            },
+            {
+              "label": "riskyTokenInterestRateModel",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_address",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:43"
+            },
+            {
+              "label": "fees",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_array(t_uint24)dyn_storage",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:46"
+            },
+            {
+              "label": "_hasFee",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_mapping(t_uint256,t_bool)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:49"
+            },
+            {
+              "label": "getMarket",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_mapping(t_address,t_address)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:52"
+            },
+            {
+              "label": "getInterestRateModel",
+              "offset": 0,
+              "slot": "8",
+              "type": "t_mapping(t_address,t_address)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:55"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_uint24)dyn_storage": {
+              "label": "uint24[]",
+              "numberOfBytes": "32"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_mapping(t_address,t_address)": {
+              "label": "mapping(address => address)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_bool)": {
+              "label": "mapping(uint256 => bool)",
+              "numberOfBytes": "32"
+            },
+            "t_uint24": {
+              "label": "uint24",
+              "numberOfBytes": "3"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "Oracle": {
+        "src": "contracts/Oracle.sol:27",
+        "version": {
+          "withMetadata": "84b0f8e7e89f6e7d900b898f96fae559e0b5a1161d8933e8e9b721649ebadddf",
+          "withoutMetadata": "3bd2111522b262ad40b4e1299d0d142df04bfc231828b8e1f68c677a3e3c6c15",
+          "linkedWithoutMetadata": "3bd2111522b262ad40b4e1299d0d142df04bfc231828b8e1f68c677a3e3c6c15"
+        },
+        "inherit": [
+          "UUPSUpgradeable",
+          "ERC1967UpgradeUpgradeable",
+          "IERC1822ProxiableUpgradeable",
+          "OwnableUpgradeable",
+          "ContextUpgradeable",
+          "Initializable"
+        ],
+        "libraries": [
+          "IntMath",
+          "SafeCastUpgradeable",
+          "IntERC20"
+        ],
+        "methods": [
+          "initialize(address,address,address,address,address)",
+          "getRiskytokenPrice(address,uint256)",
+          "getUSDPrice(address,uint256)",
+          "getwrappedNativeTokenUSDPrice(uint256)",
+          "setFeed(address,address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_initialized",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Initializable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:39"
+            },
+            {
+              "label": "_initializing",
+              "offset": 1,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Initializable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:44"
+            },
+            {
+              "label": "__gap",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_array(t_uint256)50_storage",
+              "contract": "ContextUpgradeable",
+              "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+            },
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "51",
+              "type": "t_address",
+              "contract": "OwnableUpgradeable",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+            },
+            {
+              "label": "__gap",
+              "offset": 0,
+              "slot": "52",
+              "type": "t_array(t_uint256)49_storage",
+              "contract": "OwnableUpgradeable",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:87"
+            },
+            {
+              "label": "__gap",
+              "offset": 0,
+              "slot": "101",
+              "type": "t_array(t_uint256)50_storage",
+              "contract": "ERC1967UpgradeUpgradeable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:211"
+            },
+            {
+              "label": "__gap",
+              "offset": 0,
+              "slot": "151",
+              "type": "t_array(t_uint256)50_storage",
+              "contract": "UUPSUpgradeable",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:107"
+            },
+            {
+              "label": "UNISWAP_V3_FACTORY",
+              "offset": 0,
+              "slot": "201",
+              "type": "t_contract(IUniswapV3Factory)2244",
+              "contract": "Oracle",
+              "src": "contracts/Oracle.sol:46"
+            },
+            {
+              "label": "LIBRARY_WRAPPER",
+              "offset": 0,
+              "slot": "202",
+              "type": "t_contract(ILibraryWrapper)4397",
+              "contract": "Oracle",
+              "src": "contracts/Oracle.sol:49"
+            },
+            {
+              "label": "BRIDGE_TOKEN_USD",
+              "offset": 0,
+              "slot": "203",
+              "type": "t_contract(AggregatorV3Interface)4370",
+              "contract": "Oracle",
+              "src": "contracts/Oracle.sol:52"
+            },
+            {
+              "label": "MAIL_DEPLOYER",
+              "offset": 0,
+              "slot": "204",
+              "type": "t_contract(IMAILDeployer)4491",
+              "contract": "Oracle",
+              "src": "contracts/Oracle.sol:55"
+            },
+            {
+              "label": "WRAPPED_BRIDGE_TOKEN",
+              "offset": 0,
+              "slot": "205",
+              "type": "t_address",
+              "contract": "Oracle",
+              "src": "contracts/Oracle.sol:58"
+            },
+            {
+              "label": "getUSDFeeds",
+              "offset": 0,
+              "slot": "206",
+              "type": "t_mapping(t_address,t_contract(AggregatorV3Interface)4370)",
+              "contract": "Oracle",
+              "src": "contracts/Oracle.sol:61"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_uint256)49_storage": {
+              "label": "uint256[49]",
+              "numberOfBytes": "1568"
+            },
+            "t_array(t_uint256)50_storage": {
+              "label": "uint256[50]",
+              "numberOfBytes": "1600"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_contract(AggregatorV3Interface)4370": {
+              "label": "contract AggregatorV3Interface",
+              "numberOfBytes": "20"
+            },
+            "t_contract(ILibraryWrapper)4397": {
+              "label": "contract ILibraryWrapper",
+              "numberOfBytes": "20"
+            },
+            "t_contract(IMAILDeployer)4491": {
+              "label": "contract IMAILDeployer",
+              "numberOfBytes": "20"
+            },
+            "t_contract(IUniswapV3Factory)2244": {
+              "label": "contract IUniswapV3Factory",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_address,t_contract(AggregatorV3Interface)4370)": {
+              "label": "mapping(address => contract AggregatorV3Interface)",
+              "numberOfBytes": "32"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "AggregatorV3Interface": {
+        "src": "contracts/interfaces/AggregatorV3Interface.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "decimals()",
+          "description()",
+          "version()",
+          "getRoundData(uint80)",
+          "latestRoundData()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "ILibraryWrapper": {
+        "src": "contracts/interfaces/ILibraryWrapper.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getQuoteAtTick(int24,uint128,address,address)",
+          "consult(address,uint32)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IMAILDeployer": {
+        "src": "contracts/interfaces/IMAILDeployer.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "BTC()",
+          "BRIDGE_TOKEN()",
+          "USDC()",
+          "USDT()",
+          "ORACLE()",
+          "UNISWAP_V3_FACTORY()",
+          "riskyToken()",
+          "getInterestRateModel(address)",
+          "treasury()",
+          "reserveFactor()",
+          "riskyTokenInterestRateModel()",
+          "fees(uint256)",
+          "getFeesLength()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IOracle": {
+        "src": "contracts/interfaces/IOracle.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getwrappedNativeTokenUSDPrice(uint256)",
+          "getUSDPrice(address,uint256)",
+          "getRiskytokenPrice(address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "InterestRateModelInterface": {
+        "src": "contracts/interfaces/InterestRateModelInterface.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getBorrowRatePerBlock(uint256,uint256,uint256)",
+          "getSupplyRatePerBlock(uint256,uint256,uint256,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IntERC20": {
+        "src": "contracts/lib/IntERC20.sol:7",
+        "version": {
+          "withMetadata": "b446097fb195423948922225a569bab1104c64fe4446afd30e511d06773f9305",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IntMath": {
+        "src": "contracts/lib/IntMath.sol:12",
+        "version": {
+          "withMetadata": "d182cce04de58122d807214caa22f454caeb4e73e3ae56214c78bad03ba9e768",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "RebaseLibrary": {
+        "src": "contracts/lib/Rebase.sol:25",
+        "version": {
+          "withMetadata": "5b091cba25c002793e99f38c62582590d622f68fdcd07401456aa69bb4864f14",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [
+          "SafeCast",
+          "IntMath"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "IUniswapV3Pool": {
+        "src": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol:15",
+        "inherit": [
+          "IUniswapV3PoolEvents",
+          "IUniswapV3PoolOwnerActions",
+          "IUniswapV3PoolActions",
+          "IUniswapV3PoolDerivedState",
+          "IUniswapV3PoolState",
+          "IUniswapV3PoolImmutables"
+        ],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "initialize(uint160)",
+          "mint(address,int24,int24,uint128,bytes)",
+          "collect(address,int24,int24,uint128,uint128)",
+          "burn(int24,int24,uint128)",
+          "swap(address,bool,int256,uint160,bytes)",
+          "flash(address,uint256,uint256,bytes)",
+          "increaseObservationCardinalityNext(uint16)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolDerivedState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "observe(uint32[])",
+          "snapshotCumulativesInside(int24,int24)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolEvents": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolEvents.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolImmutables": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "factory()",
+          "token0()",
+          "token1()",
+          "fee()",
+          "tickSpacing()",
+          "maxLiquidityPerTick()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolOwnerActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "setFeeProtocol(uint8,uint8)",
+          "collectProtocol(address,uint128,uint128)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "slot0()",
+          "feeGrowthGlobal0X128()",
+          "feeGrowthGlobal1X128()",
+          "protocolFees()",
+          "liquidity()",
+          "ticks(int24)",
+          "tickBitmap(int16)",
+          "positions(bytes32)",
+          "observations(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "FullMath": {
+        "src": "@uniswap/v3-core/contracts/libraries/FullMath.sol:7",
+        "version": {
+          "withMetadata": "cf2c4d4d3bea0b2e9ef49240613f3cb48d73dcd714b95b447441facc9fa72621",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "TickMath": {
+        "src": "@uniswap/v3-core/contracts/libraries/TickMath.sol:7",
+        "version": {
+          "withMetadata": "e2ce058f5eb0ffc8e9823618f74bd13009d16afb69f48051ee868452d0b1b42b",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "OracleLibrary": {
+        "src": "@uniswap/v3-periphery/contracts/libraries/OracleLibrary.sol:10",
+        "version": {
+          "withMetadata": "ec706103110d63f0bca2201eb87bd0dd95a3b491e265e37e024061326bee6f5c",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [
+          "TickMath",
+          "FullMath"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "LibraryWrapper": {
+        "src": "contracts/LibraryWrapper.sol:6",
+        "version": {
+          "withMetadata": "d548a96d97c1fdff2bd820a7416005b085948ff69b9ab6b3a3dd6b81ee908e23",
+          "withoutMetadata": "e4ab0024928009b3f669fd7306deeba62633bdf3148cd2ab8ae485a8fc3bee50",
+          "linkedWithoutMetadata": "e4ab0024928009b3f669fd7306deeba62633bdf3148cd2ab8ae485a8fc3bee50"
+        },
+        "inherit": [],
+        "libraries": [
+          "OracleLibrary"
+        ],
+        "methods": [
+          "consult(address,uint32)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "IUniswapV3Pool": {
+        "src": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol:15",
+        "inherit": [
+          "IUniswapV3PoolEvents",
+          "IUniswapV3PoolOwnerActions",
+          "IUniswapV3PoolActions",
+          "IUniswapV3PoolDerivedState",
+          "IUniswapV3PoolState",
+          "IUniswapV3PoolImmutables"
+        ],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "initialize(uint160)",
+          "mint(address,int24,int24,uint128,bytes)",
+          "collect(address,int24,int24,uint128,uint128)",
+          "burn(int24,int24,uint128)",
+          "swap(address,bool,int256,uint160,bytes)",
+          "flash(address,uint256,uint256,bytes)",
+          "increaseObservationCardinalityNext(uint16)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolDerivedState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "observe(uint32[])",
+          "snapshotCumulativesInside(int24,int24)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolEvents": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolEvents.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolImmutables": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "factory()",
+          "token0()",
+          "token1()",
+          "fee()",
+          "tickSpacing()",
+          "maxLiquidityPerTick()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolOwnerActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "setFeeProtocol(uint8,uint8)",
+          "collectProtocol(address,uint128,uint128)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "slot0()",
+          "feeGrowthGlobal0X128()",
+          "feeGrowthGlobal1X128()",
+          "protocolFees()",
+          "liquidity()",
+          "ticks(int24)",
+          "tickBitmap(int16)",
+          "positions(bytes32)",
+          "observations(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "FullMath": {
+        "src": "@uniswap/v3-core/contracts/libraries/FullMath.sol:7",
+        "version": {
+          "withMetadata": "cf2c4d4d3bea0b2e9ef49240613f3cb48d73dcd714b95b447441facc9fa72621",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "TickMath": {
+        "src": "@uniswap/v3-core/contracts/libraries/TickMath.sol:7",
+        "version": {
+          "withMetadata": "e2ce058f5eb0ffc8e9823618f74bd13009d16afb69f48051ee868452d0b1b42b",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "OracleLibrary": {
+        "src": "@uniswap/v3-periphery/contracts/libraries/OracleLibrary.sol:10",
+        "version": {
+          "withMetadata": "ec706103110d63f0bca2201eb87bd0dd95a3b491e265e37e024061326bee6f5c",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [
+          "TickMath",
+          "FullMath"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "LibraryWrapper": {
+        "src": "contracts/LibraryWrapper.sol:6",
+        "version": {
+          "withMetadata": "d548a96d97c1fdff2bd820a7416005b085948ff69b9ab6b3a3dd6b81ee908e23",
+          "withoutMetadata": "e4ab0024928009b3f669fd7306deeba62633bdf3148cd2ab8ae485a8fc3bee50",
+          "linkedWithoutMetadata": "e4ab0024928009b3f669fd7306deeba62633bdf3148cd2ab8ae485a8fc3bee50"
+        },
+        "inherit": [],
+        "libraries": [
+          "OracleLibrary"
+        ],
+        "methods": [
+          "consult(address,uint32)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "IUniswapV3Pool": {
+        "src": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol:15",
+        "inherit": [
+          "IUniswapV3PoolEvents",
+          "IUniswapV3PoolOwnerActions",
+          "IUniswapV3PoolActions",
+          "IUniswapV3PoolDerivedState",
+          "IUniswapV3PoolState",
+          "IUniswapV3PoolImmutables"
+        ],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "initialize(uint160)",
+          "mint(address,int24,int24,uint128,bytes)",
+          "collect(address,int24,int24,uint128,uint128)",
+          "burn(int24,int24,uint128)",
+          "swap(address,bool,int256,uint160,bytes)",
+          "flash(address,uint256,uint256,bytes)",
+          "increaseObservationCardinalityNext(uint16)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolDerivedState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "observe(uint32[])",
+          "snapshotCumulativesInside(int24,int24)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolEvents": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolEvents.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolImmutables": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "factory()",
+          "token0()",
+          "token1()",
+          "fee()",
+          "tickSpacing()",
+          "maxLiquidityPerTick()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolOwnerActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "setFeeProtocol(uint8,uint8)",
+          "collectProtocol(address,uint128,uint128)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "slot0()",
+          "feeGrowthGlobal0X128()",
+          "feeGrowthGlobal1X128()",
+          "protocolFees()",
+          "liquidity()",
+          "ticks(int24)",
+          "tickBitmap(int16)",
+          "positions(bytes32)",
+          "observations(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "FullMath": {
+        "src": "@uniswap/v3-core/contracts/libraries/FullMath.sol:7",
+        "version": {
+          "withMetadata": "cf2c4d4d3bea0b2e9ef49240613f3cb48d73dcd714b95b447441facc9fa72621",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "TickMath": {
+        "src": "@uniswap/v3-core/contracts/libraries/TickMath.sol:7",
+        "version": {
+          "withMetadata": "e2ce058f5eb0ffc8e9823618f74bd13009d16afb69f48051ee868452d0b1b42b",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "OracleLibrary": {
+        "src": "@uniswap/v3-periphery/contracts/libraries/OracleLibrary.sol:10",
+        "version": {
+          "withMetadata": "ec706103110d63f0bca2201eb87bd0dd95a3b491e265e37e024061326bee6f5c",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [
+          "TickMath",
+          "FullMath"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "LibraryWrapper": {
+        "src": "contracts/LibraryWrapper.sol:6",
+        "version": {
+          "withMetadata": "d548a96d97c1fdff2bd820a7416005b085948ff69b9ab6b3a3dd6b81ee908e23",
+          "withoutMetadata": "e4ab0024928009b3f669fd7306deeba62633bdf3148cd2ab8ae485a8fc3bee50",
+          "linkedWithoutMetadata": "e4ab0024928009b3f669fd7306deeba62633bdf3148cd2ab8ae485a8fc3bee50"
+        },
+        "inherit": [],
+        "libraries": [
+          "OracleLibrary"
+        ],
+        "methods": [
+          "consult(address,uint32)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "IUniswapV3Pool": {
+        "src": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol:15",
+        "inherit": [
+          "IUniswapV3PoolEvents",
+          "IUniswapV3PoolOwnerActions",
+          "IUniswapV3PoolActions",
+          "IUniswapV3PoolDerivedState",
+          "IUniswapV3PoolState",
+          "IUniswapV3PoolImmutables"
+        ],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "initialize(uint160)",
+          "mint(address,int24,int24,uint128,bytes)",
+          "collect(address,int24,int24,uint128,uint128)",
+          "burn(int24,int24,uint128)",
+          "swap(address,bool,int256,uint160,bytes)",
+          "flash(address,uint256,uint256,bytes)",
+          "increaseObservationCardinalityNext(uint16)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolDerivedState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "observe(uint32[])",
+          "snapshotCumulativesInside(int24,int24)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolEvents": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolEvents.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolImmutables": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "factory()",
+          "token0()",
+          "token1()",
+          "fee()",
+          "tickSpacing()",
+          "maxLiquidityPerTick()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolOwnerActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "setFeeProtocol(uint8,uint8)",
+          "collectProtocol(address,uint128,uint128)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "slot0()",
+          "feeGrowthGlobal0X128()",
+          "feeGrowthGlobal1X128()",
+          "protocolFees()",
+          "liquidity()",
+          "ticks(int24)",
+          "tickBitmap(int16)",
+          "positions(bytes32)",
+          "observations(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "FullMath": {
+        "src": "@uniswap/v3-core/contracts/libraries/FullMath.sol:7",
+        "version": {
+          "withMetadata": "cf2c4d4d3bea0b2e9ef49240613f3cb48d73dcd714b95b447441facc9fa72621",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "TickMath": {
+        "src": "@uniswap/v3-core/contracts/libraries/TickMath.sol:7",
+        "version": {
+          "withMetadata": "e2ce058f5eb0ffc8e9823618f74bd13009d16afb69f48051ee868452d0b1b42b",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "OracleLibrary": {
+        "src": "@uniswap/v3-periphery/contracts/libraries/OracleLibrary.sol:10",
+        "version": {
+          "withMetadata": "ec706103110d63f0bca2201eb87bd0dd95a3b491e265e37e024061326bee6f5c",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [
+          "TickMath",
+          "FullMath"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "LibraryWrapper": {
+        "src": "contracts/LibraryWrapper.sol:6",
+        "version": {
+          "withMetadata": "d548a96d97c1fdff2bd820a7416005b085948ff69b9ab6b3a3dd6b81ee908e23",
+          "withoutMetadata": "e4ab0024928009b3f669fd7306deeba62633bdf3148cd2ab8ae485a8fc3bee50",
+          "linkedWithoutMetadata": "e4ab0024928009b3f669fd7306deeba62633bdf3148cd2ab8ae485a8fc3bee50"
+        },
+        "inherit": [],
+        "libraries": [
+          "OracleLibrary"
+        ],
+        "methods": [
+          "consult(address,uint32)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "IUniswapV3Pool": {
+        "src": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol:15",
+        "inherit": [
+          "IUniswapV3PoolEvents",
+          "IUniswapV3PoolOwnerActions",
+          "IUniswapV3PoolActions",
+          "IUniswapV3PoolDerivedState",
+          "IUniswapV3PoolState",
+          "IUniswapV3PoolImmutables"
+        ],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "initialize(uint160)",
+          "mint(address,int24,int24,uint128,bytes)",
+          "collect(address,int24,int24,uint128,uint128)",
+          "burn(int24,int24,uint128)",
+          "swap(address,bool,int256,uint160,bytes)",
+          "flash(address,uint256,uint256,bytes)",
+          "increaseObservationCardinalityNext(uint16)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolDerivedState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "observe(uint32[])",
+          "snapshotCumulativesInside(int24,int24)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolEvents": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolEvents.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolImmutables": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "factory()",
+          "token0()",
+          "token1()",
+          "fee()",
+          "tickSpacing()",
+          "maxLiquidityPerTick()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolOwnerActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "setFeeProtocol(uint8,uint8)",
+          "collectProtocol(address,uint128,uint128)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "slot0()",
+          "feeGrowthGlobal0X128()",
+          "feeGrowthGlobal1X128()",
+          "protocolFees()",
+          "liquidity()",
+          "ticks(int24)",
+          "tickBitmap(int16)",
+          "positions(bytes32)",
+          "observations(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "FullMath": {
+        "src": "@uniswap/v3-core/contracts/libraries/FullMath.sol:7",
+        "version": {
+          "withMetadata": "cf2c4d4d3bea0b2e9ef49240613f3cb48d73dcd714b95b447441facc9fa72621",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "TickMath": {
+        "src": "@uniswap/v3-core/contracts/libraries/TickMath.sol:7",
+        "version": {
+          "withMetadata": "e2ce058f5eb0ffc8e9823618f74bd13009d16afb69f48051ee868452d0b1b42b",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "OracleLibrary": {
+        "src": "@uniswap/v3-periphery/contracts/libraries/OracleLibrary.sol:10",
+        "version": {
+          "withMetadata": "ec706103110d63f0bca2201eb87bd0dd95a3b491e265e37e024061326bee6f5c",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [
+          "TickMath",
+          "FullMath"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "LibraryWrapper": {
+        "src": "contracts/LibraryWrapper.sol:6",
+        "version": {
+          "withMetadata": "d548a96d97c1fdff2bd820a7416005b085948ff69b9ab6b3a3dd6b81ee908e23",
+          "withoutMetadata": "e4ab0024928009b3f669fd7306deeba62633bdf3148cd2ab8ae485a8fc3bee50",
+          "linkedWithoutMetadata": "e4ab0024928009b3f669fd7306deeba62633bdf3148cd2ab8ae485a8fc3bee50"
+        },
+        "inherit": [],
+        "libraries": [
+          "OracleLibrary"
+        ],
+        "methods": [
+          "consult(address,uint32)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "IUniswapV3Pool": {
+        "src": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol:15",
+        "inherit": [
+          "IUniswapV3PoolEvents",
+          "IUniswapV3PoolOwnerActions",
+          "IUniswapV3PoolActions",
+          "IUniswapV3PoolDerivedState",
+          "IUniswapV3PoolState",
+          "IUniswapV3PoolImmutables"
+        ],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "initialize(uint160)",
+          "mint(address,int24,int24,uint128,bytes)",
+          "collect(address,int24,int24,uint128,uint128)",
+          "burn(int24,int24,uint128)",
+          "swap(address,bool,int256,uint160,bytes)",
+          "flash(address,uint256,uint256,bytes)",
+          "increaseObservationCardinalityNext(uint16)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolDerivedState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "observe(uint32[])",
+          "snapshotCumulativesInside(int24,int24)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolEvents": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolEvents.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolImmutables": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "factory()",
+          "token0()",
+          "token1()",
+          "fee()",
+          "tickSpacing()",
+          "maxLiquidityPerTick()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolOwnerActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "setFeeProtocol(uint8,uint8)",
+          "collectProtocol(address,uint128,uint128)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "slot0()",
+          "feeGrowthGlobal0X128()",
+          "feeGrowthGlobal1X128()",
+          "protocolFees()",
+          "liquidity()",
+          "ticks(int24)",
+          "tickBitmap(int16)",
+          "positions(bytes32)",
+          "observations(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "FullMath": {
+        "src": "@uniswap/v3-core/contracts/libraries/FullMath.sol:7",
+        "version": {
+          "withMetadata": "cf2c4d4d3bea0b2e9ef49240613f3cb48d73dcd714b95b447441facc9fa72621",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "TickMath": {
+        "src": "@uniswap/v3-core/contracts/libraries/TickMath.sol:7",
+        "version": {
+          "withMetadata": "e2ce058f5eb0ffc8e9823618f74bd13009d16afb69f48051ee868452d0b1b42b",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "OracleLibrary": {
+        "src": "@uniswap/v3-periphery/contracts/libraries/OracleLibrary.sol:10",
+        "version": {
+          "withMetadata": "ec706103110d63f0bca2201eb87bd0dd95a3b491e265e37e024061326bee6f5c",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [
+          "TickMath",
+          "FullMath"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "LibraryWrapper": {
+        "src": "contracts/LibraryWrapper.sol:6",
+        "version": {
+          "withMetadata": "d548a96d97c1fdff2bd820a7416005b085948ff69b9ab6b3a3dd6b81ee908e23",
+          "withoutMetadata": "e4ab0024928009b3f669fd7306deeba62633bdf3148cd2ab8ae485a8fc3bee50",
+          "linkedWithoutMetadata": "e4ab0024928009b3f669fd7306deeba62633bdf3148cd2ab8ae485a8fc3bee50"
+        },
+        "inherit": [],
+        "libraries": [
+          "OracleLibrary"
+        ],
+        "methods": [
+          "consult(address,uint32)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "IUniswapV3Pool": {
+        "src": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol:15",
+        "inherit": [
+          "IUniswapV3PoolEvents",
+          "IUniswapV3PoolOwnerActions",
+          "IUniswapV3PoolActions",
+          "IUniswapV3PoolDerivedState",
+          "IUniswapV3PoolState",
+          "IUniswapV3PoolImmutables"
+        ],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "initialize(uint160)",
+          "mint(address,int24,int24,uint128,bytes)",
+          "collect(address,int24,int24,uint128,uint128)",
+          "burn(int24,int24,uint128)",
+          "swap(address,bool,int256,uint160,bytes)",
+          "flash(address,uint256,uint256,bytes)",
+          "increaseObservationCardinalityNext(uint16)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolDerivedState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "observe(uint32[])",
+          "snapshotCumulativesInside(int24,int24)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolEvents": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolEvents.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolImmutables": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "factory()",
+          "token0()",
+          "token1()",
+          "fee()",
+          "tickSpacing()",
+          "maxLiquidityPerTick()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolOwnerActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "setFeeProtocol(uint8,uint8)",
+          "collectProtocol(address,uint128,uint128)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "slot0()",
+          "feeGrowthGlobal0X128()",
+          "feeGrowthGlobal1X128()",
+          "protocolFees()",
+          "liquidity()",
+          "ticks(int24)",
+          "tickBitmap(int16)",
+          "positions(bytes32)",
+          "observations(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "FullMath": {
+        "src": "@uniswap/v3-core/contracts/libraries/FullMath.sol:7",
+        "version": {
+          "withMetadata": "cf2c4d4d3bea0b2e9ef49240613f3cb48d73dcd714b95b447441facc9fa72621",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "TickMath": {
+        "src": "@uniswap/v3-core/contracts/libraries/TickMath.sol:7",
+        "version": {
+          "withMetadata": "e2ce058f5eb0ffc8e9823618f74bd13009d16afb69f48051ee868452d0b1b42b",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "OracleLibrary": {
+        "src": "@uniswap/v3-periphery/contracts/libraries/OracleLibrary.sol:10",
+        "version": {
+          "withMetadata": "ec706103110d63f0bca2201eb87bd0dd95a3b491e265e37e024061326bee6f5c",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [
+          "TickMath",
+          "FullMath"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "LibraryWrapper": {
+        "src": "contracts/LibraryWrapper.sol:6",
+        "version": {
+          "withMetadata": "d548a96d97c1fdff2bd820a7416005b085948ff69b9ab6b3a3dd6b81ee908e23",
+          "withoutMetadata": "e4ab0024928009b3f669fd7306deeba62633bdf3148cd2ab8ae485a8fc3bee50",
+          "linkedWithoutMetadata": "e4ab0024928009b3f669fd7306deeba62633bdf3148cd2ab8ae485a8fc3bee50"
+        },
+        "inherit": [],
+        "libraries": [
+          "OracleLibrary"
+        ],
+        "methods": [
+          "consult(address,uint32)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "IUniswapV3Pool": {
+        "src": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol:15",
+        "inherit": [
+          "IUniswapV3PoolEvents",
+          "IUniswapV3PoolOwnerActions",
+          "IUniswapV3PoolActions",
+          "IUniswapV3PoolDerivedState",
+          "IUniswapV3PoolState",
+          "IUniswapV3PoolImmutables"
+        ],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "initialize(uint160)",
+          "mint(address,int24,int24,uint128,bytes)",
+          "collect(address,int24,int24,uint128,uint128)",
+          "burn(int24,int24,uint128)",
+          "swap(address,bool,int256,uint160,bytes)",
+          "flash(address,uint256,uint256,bytes)",
+          "increaseObservationCardinalityNext(uint16)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolDerivedState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "observe(uint32[])",
+          "snapshotCumulativesInside(int24,int24)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolEvents": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolEvents.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolImmutables": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "factory()",
+          "token0()",
+          "token1()",
+          "fee()",
+          "tickSpacing()",
+          "maxLiquidityPerTick()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolOwnerActions": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "setFeeProtocol(uint8,uint8)",
+          "collectProtocol(address,uint128,uint128)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3PoolState": {
+        "src": "@uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "slot0()",
+          "feeGrowthGlobal0X128()",
+          "feeGrowthGlobal1X128()",
+          "protocolFees()",
+          "liquidity()",
+          "ticks(int24)",
+          "tickBitmap(int16)",
+          "positions(bytes32)",
+          "observations(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "FullMath": {
+        "src": "@uniswap/v3-core/contracts/libraries/FullMath.sol:7",
+        "version": {
+          "withMetadata": "cf2c4d4d3bea0b2e9ef49240613f3cb48d73dcd714b95b447441facc9fa72621",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "TickMath": {
+        "src": "@uniswap/v3-core/contracts/libraries/TickMath.sol:7",
+        "version": {
+          "withMetadata": "e2ce058f5eb0ffc8e9823618f74bd13009d16afb69f48051ee868452d0b1b42b",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "OracleLibrary": {
+        "src": "@uniswap/v3-periphery/contracts/libraries/OracleLibrary.sol:10",
+        "version": {
+          "withMetadata": "ec706103110d63f0bca2201eb87bd0dd95a3b491e265e37e024061326bee6f5c",
+          "withoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8",
+          "linkedWithoutMetadata": "aaa148c474cd10e1a6cd0a52c0b55f1aa9b7bb7b42d7f1cb5acaea4f42f04bc8"
+        },
+        "inherit": [],
+        "libraries": [
+          "TickMath",
+          "FullMath"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "LibraryWrapper": {
+        "src": "contracts/LibraryWrapper.sol:6",
+        "version": {
+          "withMetadata": "d548a96d97c1fdff2bd820a7416005b085948ff69b9ab6b3a3dd6b81ee908e23",
+          "withoutMetadata": "e4ab0024928009b3f669fd7306deeba62633bdf3148cd2ab8ae485a8fc3bee50",
+          "linkedWithoutMetadata": "e4ab0024928009b3f669fd7306deeba62633bdf3148cd2ab8ae485a8fc3bee50"
+        },
+        "inherit": [],
+        "libraries": [
+          "OracleLibrary"
+        ],
+        "methods": [
+          "consult(address,uint32)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
       "Ownable": {
         "src": "@openzeppelin/contracts/access/Ownable.sol:20",
         "inherit": [
