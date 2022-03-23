@@ -14,22 +14,24 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     //////////////////////////////////////////////////////////////*/
 
     //solhint-disable-next-line var-name-mixedcase
-    address private immutable UNISWAP_V3_FACTORY;
+    address public immutable UNISWAP_V3_FACTORY;
 
     //solhint-disable-next-line var-name-mixedcase
-    address private immutable BTC;
+    address public immutable BTC;
 
     //solhint-disable-next-line var-name-mixedcase
-    address private immutable BRIDGE_TOKEN;
+    address public immutable BRIDGE_TOKEN;
 
     //solhint-disable-next-line var-name-mixedcase
-    address private immutable USDC;
+    address public immutable USDC;
 
     //solhint-disable-next-line var-name-mixedcase
-    address private immutable USDT;
+    address public immutable USDT;
 
     //solhint-disable-next-line var-name-mixedcase
-    address private immutable ORACLE;
+    address public immutable ORACLE;
+
+    address public riskyAsset;
 
     // Address to collect the reserve funds
     address public treasury;
@@ -61,14 +63,11 @@ contract MAILDeployer is Ownable, IMAILDeployer {
      * @param btc The ERC20 address for BTC
      * @param bridgeToken The address of the Wrapped version of the native token for this network - e.g. Wrapped Ether
      * @param usdc The ERC20 address for USDC
-     * @param usdt The ERC20 address for USDT
-     * @param btcModel The address of the Interest Rate Model contract for BTC
-     * @param usdcModel The address of the Interest Rate Model contract for USDC
-     * @param bridgeTokenModel The address of the Interest Rate Model contract for the wrapped Native Token
-     * @param usdtModel The address of the Interest Rate Model contract for USDT
-     * @param riskyAssetModel The address of the Interest Rate Model contract for USDT
+     * @param usdt The ERC20 address for
+     * @param oracle The oracle used by MAIL lending markets
      * @param _treasury The address that will collect all protocol fees
      * @param _reserveFactor The % of the interest rate that will be sent to the treasury. It is a 18 mantissa number
+     * @param modelData Data about the interest rate models for usdc, btc, bridgeToken, usdt and risky asset
      *
      * Requirements:
      *
@@ -81,14 +80,21 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         address usdc,
         address usdt,
         address oracle,
-        address btcModel,
-        address usdcModel,
-        address bridgeTokenModel,
-        address usdtModel,
-        address riskyAssetModel,
         address _treasury,
-        uint256 _reserveFactor
+        uint256 _reserveFactor,
+        bytes memory modelData
     ) {
+        (
+            address btcModel,
+            address usdcModel,
+            address bridgeTokenModel,
+            address usdtModel,
+            address riskyAssetModel
+        ) = abi.decode(
+                modelData,
+                (address, address, address, address, address)
+            );
+
         // Protect agaisnt wrongly passing the zero address
         require(btcModel != address(0), "btc: no zero address");
         require(usdcModel != address(0), "usdc: no zero address");
@@ -134,16 +140,16 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     /**
      * @dev Computes the address of a market address for the a `riskyAsset`.
      *
-     * @param riskyAsset Market address for this asset will be returned
+     * @param _riskyAsset Market address for this asset will be returned
      * @return address The market address for the `riskyAsset`.
      */
-    function predictMarketAddress(address riskyAsset)
+    function predictMarketAddress(address _riskyAsset)
         external
         view
         returns (address)
     {
         address deployer = address(this);
-        bytes32 salt = keccak256(abi.encode(riskyAsset));
+        bytes32 salt = keccak256(abi.encode(_riskyAsset));
         bytes32 initCodeHash = keccak256(
             abi.encodePacked(type(MAIL).creationCode)
         );
@@ -172,7 +178,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     /**
      * @dev It deploys a MAIL market for the `risky` asset
      *
-     * @param riskyAsset Any ERC20 asset with a pool in UniswapV3
+     * @param _riskyAsset Any ERC20 asset with a pool in UniswapV3
      * @return market the address of the new deployed market.
      *
      * Requirements:
@@ -181,35 +187,30 @@ contract MAILDeployer is Ownable, IMAILDeployer {
      * - Risky asset must have a pool in UniswapV3
      * - There is no deployed market for this `risky asset`.
      */
-    function deploy(address riskyAsset) external returns (address market) {
+    function deploy(address _riskyAsset) external returns (address market) {
         // Make sure the `riskyAsset` is different than BTC, BRIDGE_TOKEN, USDC, USDT, zero address
-        require(riskyAsset != BTC, "MD: cannot be BTC");
-        require(riskyAsset != BRIDGE_TOKEN, "MD: cannot be BRIDGE_TOKEN");
-        require(riskyAsset != USDC, "MD: cannot be USDC");
-        require(riskyAsset != USDT, "MD: cannot be USDT");
-        require(riskyAsset != address(0), "MD: no zero address");
+        require(_riskyAsset != BTC, "MD: cannot be BTC");
+        require(_riskyAsset != BRIDGE_TOKEN, "MD: cannot be BRIDGE_TOKEN");
+        require(_riskyAsset != USDC, "MD: cannot be USDC");
+        require(_riskyAsset != USDT, "MD: cannot be USDT");
+        require(_riskyAsset != address(0), "MD: no zero address");
         // Checks if a pool exists
-        require(_doesPoolExist(riskyAsset), "MD: no pool for this asset");
+        require(_doesPoolExist(_riskyAsset), "MD: no pool for this asset");
         // Checks that no market has been deployed for the `riskyAsset`.
         require(
-            getMarket[riskyAsset] == address(0),
+            getMarket[_riskyAsset] == address(0),
             "MD: market already deployed"
         );
+        riskyAsset = _riskyAsset;
 
         // Deploy the market
         market = address(
-            new MAIL{salt: keccak256(abi.encode(riskyAsset))}(
-                BTC,
-                BRIDGE_TOKEN,
-                USDC,
-                USDT,
-                riskyAsset,
-                ORACLE
-            )
+            new MAIL{salt: keccak256(abi.encodePacked(_riskyAsset))}()
         );
 
+        riskyAsset = address(0);
         // Update global state
-        getMarket[riskyAsset] = market;
+        getMarket[_riskyAsset] = market;
 
         emit MarketCreated(market);
     }
@@ -221,10 +222,10 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     /**
      * @dev Checks if UniswapV3 has a pool for `riskyAsset`
      *
-     * @param riskyAsset Checks if UniswapV3 has a pool for this address and the `BRIDGE_TOKEN`
+     * @param _riskyAsset Checks if UniswapV3 has a pool for this address and the `BRIDGE_TOKEN`
      * @return bool If there is a pool or not.
      */
-    function _doesPoolExist(address riskyAsset) private view returns (bool) {
+    function _doesPoolExist(address _riskyAsset) private view returns (bool) {
         // Save gas
         address bridgeToken = BRIDGE_TOKEN;
         IUniswapV3Factory uniswapV3Factory = IUniswapV3Factory(
@@ -240,7 +241,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         for (uint256 i; i < _fees.length; i++) {
             address pool = uniswapV3Factory.getPool(
                 bridgeToken,
-                riskyAsset,
+                _riskyAsset,
                 _fees[i]
             );
             if (pool != address(0)) {

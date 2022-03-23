@@ -99,22 +99,34 @@ contract JumpInterestRateModel is Ownable {
      * @param totalBorrowAmount The total amount being borrowed
      * @param reserves Amount of cash that belongs to the reserves.
      */
-    function getBorrowRate(
+    function getBorrowRatePerBlock(
         uint256 cash,
         uint256 totalBorrowAmount,
         uint256 reserves
     ) external view returns (uint256) {
-        return _getBorrowRate(cash, totalBorrowAmount, reserves);
+        return _getBorrowRatePerBlock(cash, totalBorrowAmount, reserves);
     }
 
-    function getSupplyRate(
+    /**
+     * @dev Calculates the supply rate for a lending market using the borrow and utilization rate.
+     *
+     * @param cash The avaliable liquidity to be borrowed
+     * @param totalBorrowAmount The total amount being borrowed
+     * @param reserves Amount of cash that belongs to the reserves.
+     * @param reserveFactor The % of the interest rate that is to be used for reserves.
+     */
+    function getSupplyRatePerBlock(
         uint256 cash,
         uint256 totalBorrowAmount,
         uint256 reserves,
         uint256 reserveFactor
     ) external view returns (uint256) {
-        uint256 investorsFactor = uint256(1e18) - reserveFactor;
-        uint256 borrowRate = _getBorrowRate(cash, totalBorrowAmount, reserves);
+        uint256 investorsFactor = 1 ether - reserveFactor;
+        uint256 borrowRate = _getBorrowRatePerBlock(
+            cash,
+            totalBorrowAmount,
+            reserves
+        );
         uint256 borrowRateToInvestors = borrowRate.bmul(investorsFactor);
         return
             _getUtilizationRate(cash, totalBorrowAmount, reserves).bmul(
@@ -133,7 +145,7 @@ contract JumpInterestRateModel is Ownable {
      * @param totalBorrowAmount The total amount being borrowed
      * @param reserves Amount of cash that belongs to the reserves.
      */
-    function _getBorrowRate(
+    function _getBorrowRatePerBlock(
         uint256 cash,
         uint256 totalBorrowAmount,
         uint256 reserves
@@ -188,6 +200,8 @@ contract JumpInterestRateModel is Ownable {
         multiplierPerBlock = multiplierPerYear.bdiv((blocksPerYear * _kink));
 
         jumpMultiplierPerBlock = jumpMultiplierPerYear / blocksPerYear;
+
+        kink = _kink;
     }
 
     /*///////////////////////////////////////////////////////////////

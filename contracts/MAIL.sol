@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: MIT
+//SPDX-License-Identifier: BUSL-1.1
 pragma solidity 0.8.12;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -24,19 +24,14 @@ contract MAIL {
     //solhint-disable-next-line var-name-mixedcase
     address private immutable ORACLE;
 
-    constructor(
-        address btc,
-        address bridgeToken,
-        address usdc,
-        address usdt,
-        address riskyAsset,
-        address oracle
-    ) {
-        BTC = btc;
-        BRIDGE_TOKEN = bridgeToken;
-        USDC = usdc;
-        USDT = usdt;
-        RISKY_ASSET = riskyAsset;
-        ORACLE = oracle;
+    constructor() {
+        IMAILDeployer mailDeployer = IMAILDeployer(msg.sender);
+
+        BTC = mailDeployer.BTC();
+        BRIDGE_TOKEN = mailDeployer.BRIDGE_TOKEN();
+        USDC = mailDeployer.USDC();
+        USDT = mailDeployer.USDT();
+        RISKY_ASSET = mailDeployer.riskyAsset();
+        ORACLE = mailDeployer.ORACLE();
     }
 }

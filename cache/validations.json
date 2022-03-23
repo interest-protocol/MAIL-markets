@@ -1,0 +1,2509 @@
+{
+  "version": "3.2",
+  "log": [
+    {
+      "Ownable": {
+        "src": "@openzeppelin/contracts/access/Ownable.sol:20",
+        "inherit": [
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin/contracts/access/Ownable.sol:28"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "Context": {
+        "src": "@openzeppelin/contracts/utils/Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "JumpInterestRateModel": {
+        "src": "contracts/JumpInterestRateModel.sol:23",
+        "version": {
+          "withMetadata": "9cff33360931c20aa58416f5dd5de253d2fc245a12fe83588d2fc12389cded04",
+          "withoutMetadata": "e08648ba798f026ef0d6c456ac96f35a1380779ee4e8c583bc556b815aad9f88",
+          "linkedWithoutMetadata": "e08648ba798f026ef0d6c456ac96f35a1380779ee4e8c583bc556b815aad9f88"
+        },
+        "inherit": [
+          "Ownable",
+          "Context"
+        ],
+        "libraries": [
+          "IntMath"
+        ],
+        "methods": [
+          "(uint256,uint256,uint256,uint256,uint256)",
+          "getBorrowRatePerBlock(uint256,uint256,uint256)",
+          "getSupplyRatePerBlock(uint256,uint256,uint256,uint256)",
+          "updateJumpRateModel(uint256,uint256,uint256,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "JumpInterestRateModel",
+            "src": "contracts/JumpInterestRateModel.sol:73"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BLOCKS_PER_YEAR",
+            "src": "contracts/JumpInterestRateModel.sol:48"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            },
+            {
+              "label": "baseRatePerBlock",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:53"
+            },
+            {
+              "label": "multiplierPerBlock",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:58"
+            },
+            {
+              "label": "jumpMultiplierPerBlock",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:63"
+            },
+            {
+              "label": "kink",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:68"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IntMath": {
+        "src": "contracts/lib/IntMath.sol:12",
+        "version": {
+          "withMetadata": "3aedc38f91ee219314a8d669be59002aadfa4c0d07c3e246ed3657ee0bee3715",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "Ownable": {
+        "src": "@openzeppelin/contracts/access/Ownable.sol:20",
+        "inherit": [
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin/contracts/access/Ownable.sol:28"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IERC20": {
+        "src": "@openzeppelin/contracts/token/ERC20/IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "Context": {
+        "src": "@openzeppelin/contracts/utils/Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3Factory": {
+        "src": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "feeAmountTickSpacing(uint24)",
+          "getPool(address,address,uint24)",
+          "createPool(address,address,uint24)",
+          "setOwner(address)",
+          "enableFeeAmount(uint24,int24)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "MAIL": {
+        "src": "contracts/MAIL.sol:8",
+        "version": {
+          "withMetadata": "68836c55e5477484a9db59158792d87c51bf8e3c0b3e504a0190a50ca774b93e",
+          "withoutMetadata": "1360817faedcbb01dfbb888342956fd903e75d3dd4b3311d9615806b91f27302",
+          "linkedWithoutMetadata": "1360817faedcbb01dfbb888342956fd903e75d3dd4b3311d9615806b91f27302"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "MAIL",
+            "src": "contracts/MAIL.sol:27"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BTC",
+            "src": "contracts/MAIL.sol:10"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BRIDGE_TOKEN",
+            "src": "contracts/MAIL.sol:13"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDC",
+            "src": "contracts/MAIL.sol:16"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDT",
+            "src": "contracts/MAIL.sol:19"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "RISKY_ASSET",
+            "src": "contracts/MAIL.sol:22"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "ORACLE",
+            "src": "contracts/MAIL.sol:25"
+          }
+        ],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "MAILDeployer": {
+        "src": "contracts/MAILDeployer.sol:11",
+        "version": {
+          "withMetadata": "285a69d1f9e671761f04b8c7de57c12b41e7a0cf86047171ef4196a99780407e",
+          "withoutMetadata": "41458d4c2af750fbeb055b6ba836ccb42a3d1f30cf72e87d5a69fe2fc3340df0",
+          "linkedWithoutMetadata": "41458d4c2af750fbeb055b6ba836ccb42a3d1f30cf72e87d5a69fe2fc3340df0"
+        },
+        "inherit": [
+          "IMAILDeployer",
+          "Ownable",
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address,address,address,address,address,address,uint256,bytes)",
+          "predictMarketAddress(address)",
+          "deploy(address)",
+          "addUniswapV3Fee(uint24)",
+          "setReserveFactor(uint256)",
+          "setTreasury(address)",
+          "setInterestRateModel(address,address)",
+          "setRiskyAssetInterestRateModel(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "MAILDeployer",
+            "src": "contracts/MAILDeployer.sol:76"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "UNISWAP_V3_FACTORY",
+            "src": "contracts/MAILDeployer.sol:17"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BTC",
+            "src": "contracts/MAILDeployer.sol:20"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BRIDGE_TOKEN",
+            "src": "contracts/MAILDeployer.sol:23"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDC",
+            "src": "contracts/MAILDeployer.sol:26"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDT",
+            "src": "contracts/MAILDeployer.sol:29"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "ORACLE",
+            "src": "contracts/MAILDeployer.sol:32"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            },
+            {
+              "label": "riskyAsset",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:34"
+            },
+            {
+              "label": "treasury",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_address",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:37"
+            },
+            {
+              "label": "reserveFactor",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_uint256",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:40"
+            },
+            {
+              "label": "riskyAssetInterestRateModel",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_address",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:43"
+            },
+            {
+              "label": "fees",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_array(t_uint24)dyn_storage",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:46"
+            },
+            {
+              "label": "_hasFee",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_mapping(t_uint256,t_bool)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:49"
+            },
+            {
+              "label": "getMarket",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_mapping(t_address,t_address)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:52"
+            },
+            {
+              "label": "getInterestRateModel",
+              "offset": 0,
+              "slot": "8",
+              "type": "t_mapping(t_address,t_address)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:55"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_uint24)dyn_storage": {
+              "label": "uint24[]",
+              "numberOfBytes": "32"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_mapping(t_address,t_address)": {
+              "label": "mapping(address => address)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_bool)": {
+              "label": "mapping(uint256 => bool)",
+              "numberOfBytes": "32"
+            },
+            "t_uint24": {
+              "label": "uint24",
+              "numberOfBytes": "3"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IMAILDeployer": {
+        "src": "contracts/interfaces/IMAILDeployer.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "BTC()",
+          "BRIDGE_TOKEN()",
+          "USDC()",
+          "USDT()",
+          "ORACLE()",
+          "UNISWAP_V3_FACTORY()",
+          "riskyAsset()",
+          "getInterestRateModel(address)",
+          "treasury()",
+          "reserveFactor()",
+          "riskyAssetInterestRateModel()",
+          "fees(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "Ownable": {
+        "src": "@openzeppelin/contracts/access/Ownable.sol:20",
+        "inherit": [
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin/contracts/access/Ownable.sol:28"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "Context": {
+        "src": "@openzeppelin/contracts/utils/Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "JumpInterestRateModel": {
+        "src": "contracts/JumpInterestRateModel.sol:23",
+        "version": {
+          "withMetadata": "18633e1ba8f21930c7f840967ae9a12140c46884e05bc060ac26707884373115",
+          "withoutMetadata": "e08648ba798f026ef0d6c456ac96f35a1380779ee4e8c583bc556b815aad9f88",
+          "linkedWithoutMetadata": "e08648ba798f026ef0d6c456ac96f35a1380779ee4e8c583bc556b815aad9f88"
+        },
+        "inherit": [
+          "Ownable",
+          "Context"
+        ],
+        "libraries": [
+          "IntMath"
+        ],
+        "methods": [
+          "(uint256,uint256,uint256,uint256,uint256)",
+          "getBorrowRatePerBlock(uint256,uint256,uint256)",
+          "getSupplyRatePerBlock(uint256,uint256,uint256,uint256)",
+          "updateJumpRateModel(uint256,uint256,uint256,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "JumpInterestRateModel",
+            "src": "contracts/JumpInterestRateModel.sol:73"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BLOCKS_PER_YEAR",
+            "src": "contracts/JumpInterestRateModel.sol:48"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            },
+            {
+              "label": "baseRatePerBlock",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:53"
+            },
+            {
+              "label": "multiplierPerBlock",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:58"
+            },
+            {
+              "label": "jumpMultiplierPerBlock",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:63"
+            },
+            {
+              "label": "kink",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:68"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IntMath": {
+        "src": "contracts/lib/IntMath.sol:12",
+        "version": {
+          "withMetadata": "3aedc38f91ee219314a8d669be59002aadfa4c0d07c3e246ed3657ee0bee3715",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "Ownable": {
+        "src": "@openzeppelin/contracts/access/Ownable.sol:20",
+        "inherit": [
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin/contracts/access/Ownable.sol:28"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "Context": {
+        "src": "@openzeppelin/contracts/utils/Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "JumpInterestRateModel": {
+        "src": "contracts/JumpInterestRateModel.sol:23",
+        "version": {
+          "withMetadata": "247349ba299a5f4d2af1d7fa1ff6f4042441a74cfb85e4505b0f7224d9177298",
+          "withoutMetadata": "e7cc05473908edd888026eb5db48a773a50e23953c461f2b247b37ec2e9bb431",
+          "linkedWithoutMetadata": "e7cc05473908edd888026eb5db48a773a50e23953c461f2b247b37ec2e9bb431"
+        },
+        "inherit": [
+          "Ownable",
+          "Context"
+        ],
+        "libraries": [
+          "IntMath"
+        ],
+        "methods": [
+          "(uint256,uint256,uint256,uint256,uint256)",
+          "getBorrowRate(uint256,uint256,uint256)",
+          "getSupplyRate(uint256,uint256,uint256,uint256)",
+          "updateJumpRateModel(uint256,uint256,uint256,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "JumpInterestRateModel",
+            "src": "contracts/JumpInterestRateModel.sol:73"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BLOCKS_PER_YEAR",
+            "src": "contracts/JumpInterestRateModel.sol:48"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            },
+            {
+              "label": "baseRatePerBlock",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:53"
+            },
+            {
+              "label": "multiplierPerBlock",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:58"
+            },
+            {
+              "label": "jumpMultiplierPerBlock",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:63"
+            },
+            {
+              "label": "kink",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:68"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IntMath": {
+        "src": "contracts/lib/IntMath.sol:12",
+        "version": {
+          "withMetadata": "3aedc38f91ee219314a8d669be59002aadfa4c0d07c3e246ed3657ee0bee3715",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "Ownable": {
+        "src": "@openzeppelin/contracts/access/Ownable.sol:20",
+        "inherit": [
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin/contracts/access/Ownable.sol:28"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IERC20": {
+        "src": "@openzeppelin/contracts/token/ERC20/IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "Context": {
+        "src": "@openzeppelin/contracts/utils/Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3Factory": {
+        "src": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "feeAmountTickSpacing(uint24)",
+          "getPool(address,address,uint24)",
+          "createPool(address,address,uint24)",
+          "setOwner(address)",
+          "enableFeeAmount(uint24,int24)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "MAIL": {
+        "src": "contracts/MAIL.sol:8",
+        "version": {
+          "withMetadata": "70537bf5d7e5a54f37e227a1e136adfc37e6bd30a79bc902cafb8a81ca4597c7",
+          "withoutMetadata": "92a40091417208f8eb2566f829c7df1f93d91ed8e7a1341a003976bff27aad82",
+          "linkedWithoutMetadata": "92a40091417208f8eb2566f829c7df1f93d91ed8e7a1341a003976bff27aad82"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "(address,address,address,address,address,address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "MAIL",
+            "src": "contracts/MAIL.sol:27"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BTC",
+            "src": "contracts/MAIL.sol:10"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BRIDGE_TOKEN",
+            "src": "contracts/MAIL.sol:13"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDC",
+            "src": "contracts/MAIL.sol:16"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDT",
+            "src": "contracts/MAIL.sol:19"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "RISKY_ASSET",
+            "src": "contracts/MAIL.sol:22"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "ORACLE",
+            "src": "contracts/MAIL.sol:25"
+          }
+        ],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "MAILDeployer": {
+        "src": "contracts/MAILDeployer.sol:11",
+        "version": {
+          "withMetadata": "56f352b86f83974adab51f3084876da631c701b9639aa344cf2be29d2ae6bed6",
+          "withoutMetadata": "a47bf6f496535d3d933fb5381a04547ea142739f6d5313015e13ef63b7c41a8d",
+          "linkedWithoutMetadata": "a47bf6f496535d3d933fb5381a04547ea142739f6d5313015e13ef63b7c41a8d"
+        },
+        "inherit": [
+          "IMAILDeployer",
+          "Ownable",
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address,address,address,address,address,address,uint256,bytes)",
+          "predictMarketAddress(address)",
+          "deploy(address)",
+          "addUniswapV3Fee(uint24)",
+          "setReserveFactor(uint256)",
+          "setTreasury(address)",
+          "setInterestRateModel(address,address)",
+          "setRiskyAssetInterestRateModel(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "MAILDeployer",
+            "src": "contracts/MAILDeployer.sol:74"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "UNISWAP_V3_FACTORY",
+            "src": "contracts/MAILDeployer.sol:17"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BTC",
+            "src": "contracts/MAILDeployer.sol:20"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BRIDGE_TOKEN",
+            "src": "contracts/MAILDeployer.sol:23"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDC",
+            "src": "contracts/MAILDeployer.sol:26"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDT",
+            "src": "contracts/MAILDeployer.sol:29"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "ORACLE",
+            "src": "contracts/MAILDeployer.sol:32"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            },
+            {
+              "label": "treasury",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:35"
+            },
+            {
+              "label": "reserveFactor",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:38"
+            },
+            {
+              "label": "riskyAssetInterestRateModel",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:41"
+            },
+            {
+              "label": "fees",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_array(t_uint24)dyn_storage",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:44"
+            },
+            {
+              "label": "_hasFee",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_mapping(t_uint256,t_bool)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:47"
+            },
+            {
+              "label": "getMarket",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_mapping(t_address,t_address)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:50"
+            },
+            {
+              "label": "getInterestRateModel",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_mapping(t_address,t_address)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:53"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_uint24)dyn_storage": {
+              "label": "uint24[]",
+              "numberOfBytes": "32"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_mapping(t_address,t_address)": {
+              "label": "mapping(address => address)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_bool)": {
+              "label": "mapping(uint256 => bool)",
+              "numberOfBytes": "32"
+            },
+            "t_uint24": {
+              "label": "uint24",
+              "numberOfBytes": "3"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IMAILDeployer": {
+        "src": "contracts/interfaces/IMAILDeployer.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getInterestRateModel(address)",
+          "treasury()",
+          "reserveFactor()",
+          "riskyAssetInterestRateModel()",
+          "fees(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "Ownable": {
+        "src": "@openzeppelin/contracts/access/Ownable.sol:20",
+        "inherit": [
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin/contracts/access/Ownable.sol:28"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IERC20": {
+        "src": "@openzeppelin/contracts/token/ERC20/IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "Context": {
+        "src": "@openzeppelin/contracts/utils/Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3Factory": {
+        "src": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "feeAmountTickSpacing(uint24)",
+          "getPool(address,address,uint24)",
+          "createPool(address,address,uint24)",
+          "setOwner(address)",
+          "enableFeeAmount(uint24,int24)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "MAIL": {
+        "src": "contracts/MAIL.sol:8",
+        "version": {
+          "withMetadata": "37d331a101b24291365ef2c8def9cf84fd81a76840d503d34ab6bd3c864f57fb",
+          "withoutMetadata": "92a40091417208f8eb2566f829c7df1f93d91ed8e7a1341a003976bff27aad82",
+          "linkedWithoutMetadata": "92a40091417208f8eb2566f829c7df1f93d91ed8e7a1341a003976bff27aad82"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "(address,address,address,address,address,address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "MAIL",
+            "src": "contracts/MAIL.sol:27"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BTC",
+            "src": "contracts/MAIL.sol:10"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BRIDGE_TOKEN",
+            "src": "contracts/MAIL.sol:13"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDC",
+            "src": "contracts/MAIL.sol:16"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDT",
+            "src": "contracts/MAIL.sol:19"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "RISKY_ASSET",
+            "src": "contracts/MAIL.sol:22"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "ORACLE",
+            "src": "contracts/MAIL.sol:25"
+          }
+        ],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "MAILDeployer": {
+        "src": "contracts/MAILDeployer.sol:11",
+        "version": {
+          "withMetadata": "bcf90fc9465f7c90e0923756ee28696231d088a4862a517af37b0c2a85ab8342",
+          "withoutMetadata": "4010e804ae82b0fb987c5b6240e2f2f26a656051ce30c8b9053cb05427ace247",
+          "linkedWithoutMetadata": "4010e804ae82b0fb987c5b6240e2f2f26a656051ce30c8b9053cb05427ace247"
+        },
+        "inherit": [
+          "IMAILDeployer",
+          "Ownable",
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address,address,address,address,address,address,uint256,bytes)",
+          "predictMarketAddress(address)",
+          "deploy(address)",
+          "addUniswapV3Fee(uint24)",
+          "setReserveFactor(uint256)",
+          "setTreasury(address)",
+          "setInterestRateModel(address,address)",
+          "setRiskyAssetInterestRateModel(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "MAILDeployer",
+            "src": "contracts/MAILDeployer.sol:74"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "UNISWAP_V3_FACTORY",
+            "src": "contracts/MAILDeployer.sol:17"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BTC",
+            "src": "contracts/MAILDeployer.sol:20"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BRIDGE_TOKEN",
+            "src": "contracts/MAILDeployer.sol:23"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDC",
+            "src": "contracts/MAILDeployer.sol:26"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDT",
+            "src": "contracts/MAILDeployer.sol:29"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "ORACLE",
+            "src": "contracts/MAILDeployer.sol:32"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            },
+            {
+              "label": "treasury",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:35"
+            },
+            {
+              "label": "reserveFactor",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:38"
+            },
+            {
+              "label": "riskyAssetInterestRateModel",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:41"
+            },
+            {
+              "label": "fees",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_array(t_uint24)dyn_storage",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:44"
+            },
+            {
+              "label": "_hasFee",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_mapping(t_uint256,t_bool)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:47"
+            },
+            {
+              "label": "getMarket",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_mapping(t_address,t_address)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:50"
+            },
+            {
+              "label": "getInterestRateModel",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_mapping(t_address,t_address)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:53"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_uint24)dyn_storage": {
+              "label": "uint24[]",
+              "numberOfBytes": "32"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_mapping(t_address,t_address)": {
+              "label": "mapping(address => address)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_bool)": {
+              "label": "mapping(uint256 => bool)",
+              "numberOfBytes": "32"
+            },
+            "t_uint24": {
+              "label": "uint24",
+              "numberOfBytes": "3"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IMAILDeployer": {
+        "src": "contracts/interfaces/IMAILDeployer.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getInterestRateModel(address)",
+          "treasury()",
+          "reserveFactor()",
+          "riskyAssetInterestRateModel()",
+          "fees(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "Ownable": {
+        "src": "@openzeppelin/contracts/access/Ownable.sol:20",
+        "inherit": [
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin/contracts/access/Ownable.sol:28"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IERC20": {
+        "src": "@openzeppelin/contracts/token/ERC20/IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "Context": {
+        "src": "@openzeppelin/contracts/utils/Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3Factory": {
+        "src": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "feeAmountTickSpacing(uint24)",
+          "getPool(address,address,uint24)",
+          "createPool(address,address,uint24)",
+          "setOwner(address)",
+          "enableFeeAmount(uint24,int24)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "MAIL": {
+        "src": "contracts/MAIL.sol:8",
+        "version": {
+          "withMetadata": "22ba868c367a3c0141ed4a4e6c29c01cba2547a38db6d2e2adff5d578d13c140",
+          "withoutMetadata": "92a40091417208f8eb2566f829c7df1f93d91ed8e7a1341a003976bff27aad82",
+          "linkedWithoutMetadata": "92a40091417208f8eb2566f829c7df1f93d91ed8e7a1341a003976bff27aad82"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "(address,address,address,address,address,address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "MAIL",
+            "src": "contracts/MAIL.sol:27"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BTC",
+            "src": "contracts/MAIL.sol:10"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BRIDGE_TOKEN",
+            "src": "contracts/MAIL.sol:13"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDC",
+            "src": "contracts/MAIL.sol:16"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDT",
+            "src": "contracts/MAIL.sol:19"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "RISKY_ASSET",
+            "src": "contracts/MAIL.sol:22"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "ORACLE",
+            "src": "contracts/MAIL.sol:25"
+          }
+        ],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "MAILDeployer": {
+        "src": "contracts/MAILDeployer.sol:11",
+        "version": {
+          "withMetadata": "2c9f70bc5b0b03c2c5347b0ccfe9424691164f3fc9b5ba71e22c6e53f2fe5a53",
+          "withoutMetadata": "06272a55879d55838a76e48aa7139a558d00d96939630995a16bc256b1ac7ea5",
+          "linkedWithoutMetadata": "06272a55879d55838a76e48aa7139a558d00d96939630995a16bc256b1ac7ea5"
+        },
+        "inherit": [
+          "IMAILDeployer",
+          "Ownable",
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address,address,address,address,address,address,uint256,bytes)",
+          "predictMarketAddress(address)",
+          "deploy(address)",
+          "addUniswapV3Fee(uint24)",
+          "setReserveFactor(uint256)",
+          "setTreasury(address)",
+          "setInterestRateModel(address,address)",
+          "setRiskyAssetInterestRateModel(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "MAILDeployer",
+            "src": "contracts/MAILDeployer.sol:77"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "UNISWAP_V3_FACTORY",
+            "src": "contracts/MAILDeployer.sol:17"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BTC",
+            "src": "contracts/MAILDeployer.sol:20"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BRIDGE_TOKEN",
+            "src": "contracts/MAILDeployer.sol:23"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDC",
+            "src": "contracts/MAILDeployer.sol:26"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDT",
+            "src": "contracts/MAILDeployer.sol:29"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "ORACLE",
+            "src": "contracts/MAILDeployer.sol:32"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            },
+            {
+              "label": "treasury",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:35"
+            },
+            {
+              "label": "reserveFactor",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:38"
+            },
+            {
+              "label": "riskyAssetInterestRateModel",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:41"
+            },
+            {
+              "label": "fees",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_array(t_uint24)dyn_storage",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:44"
+            },
+            {
+              "label": "_hasFee",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_mapping(t_uint256,t_bool)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:47"
+            },
+            {
+              "label": "getMarket",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_mapping(t_address,t_address)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:50"
+            },
+            {
+              "label": "getInterestRateModel",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_mapping(t_address,t_address)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:53"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_uint24)dyn_storage": {
+              "label": "uint24[]",
+              "numberOfBytes": "32"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_mapping(t_address,t_address)": {
+              "label": "mapping(address => address)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_bool)": {
+              "label": "mapping(uint256 => bool)",
+              "numberOfBytes": "32"
+            },
+            "t_uint24": {
+              "label": "uint24",
+              "numberOfBytes": "3"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IMAILDeployer": {
+        "src": "contracts/interfaces/IMAILDeployer.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "treasury()",
+          "reserveFactor()",
+          "riskyAssetInterestRateModel()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "Ownable": {
+        "src": "@openzeppelin/contracts/access/Ownable.sol:20",
+        "inherit": [
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin/contracts/access/Ownable.sol:28"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IERC20": {
+        "src": "@openzeppelin/contracts/token/ERC20/IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "Context": {
+        "src": "@openzeppelin/contracts/utils/Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3Factory": {
+        "src": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "feeAmountTickSpacing(uint24)",
+          "getPool(address,address,uint24)",
+          "createPool(address,address,uint24)",
+          "setOwner(address)",
+          "enableFeeAmount(uint24,int24)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "MAIL": {
+        "src": "contracts/MAIL.sol:8",
+        "version": {
+          "withMetadata": "22ba868c367a3c0141ed4a4e6c29c01cba2547a38db6d2e2adff5d578d13c140",
+          "withoutMetadata": "92a40091417208f8eb2566f829c7df1f93d91ed8e7a1341a003976bff27aad82",
+          "linkedWithoutMetadata": "92a40091417208f8eb2566f829c7df1f93d91ed8e7a1341a003976bff27aad82"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "(address,address,address,address,address,address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "MAIL",
+            "src": "contracts/MAIL.sol:27"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BTC",
+            "src": "contracts/MAIL.sol:10"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BRIDGE_TOKEN",
+            "src": "contracts/MAIL.sol:13"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDC",
+            "src": "contracts/MAIL.sol:16"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDT",
+            "src": "contracts/MAIL.sol:19"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "RISKY_ASSET",
+            "src": "contracts/MAIL.sol:22"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "ORACLE",
+            "src": "contracts/MAIL.sol:25"
+          }
+        ],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "MAILDeployer": {
+        "src": "contracts/MAILDeployer.sol:11",
+        "version": {
+          "withMetadata": "77ed7740013e8c6b8ece79b83e696e4b525d2ffe56396ef05fbf30059f114018",
+          "withoutMetadata": "b563da2baa1cdac87870977398627e5519023ca152d7805e90842c30c4dc4b5a",
+          "linkedWithoutMetadata": "b563da2baa1cdac87870977398627e5519023ca152d7805e90842c30c4dc4b5a"
+        },
+        "inherit": [
+          "IMAILDeployer",
+          "Ownable",
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address,address,address,address,address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "MAILDeployer",
+            "src": "contracts/MAILDeployer.sol:77"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "UNISWAP_V3_FACTORY",
+            "src": "contracts/MAILDeployer.sol:17"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BTC",
+            "src": "contracts/MAILDeployer.sol:20"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BRIDGE_TOKEN",
+            "src": "contracts/MAILDeployer.sol:23"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDC",
+            "src": "contracts/MAILDeployer.sol:26"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDT",
+            "src": "contracts/MAILDeployer.sol:29"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "ORACLE",
+            "src": "contracts/MAILDeployer.sol:32"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            },
+            {
+              "label": "treasury",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:35"
+            },
+            {
+              "label": "reserveFactor",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:38"
+            },
+            {
+              "label": "riskyAssetInterestRateModel",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_address",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:41"
+            },
+            {
+              "label": "fees",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_array(t_uint24)dyn_storage",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:44"
+            },
+            {
+              "label": "_hasFee",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_mapping(t_uint256,t_bool)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:47"
+            },
+            {
+              "label": "getMarket",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_mapping(t_address,t_address)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:50"
+            },
+            {
+              "label": "getInterestRateModel",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_mapping(t_address,t_address)",
+              "contract": "MAILDeployer",
+              "src": "contracts/MAILDeployer.sol:53"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_uint24)dyn_storage": {
+              "label": "uint24[]",
+              "numberOfBytes": "32"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_mapping(t_address,t_address)": {
+              "label": "mapping(address => address)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_bool)": {
+              "label": "mapping(uint256 => bool)",
+              "numberOfBytes": "32"
+            },
+            "t_uint24": {
+              "label": "uint24",
+              "numberOfBytes": "3"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IMAILDeployer": {
+        "src": "contracts/interfaces/IMAILDeployer.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "treasury()",
+          "reserveFactor()",
+          "riskyAssetInterestRateModel()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    },
+    {
+      "Ownable": {
+        "src": "@openzeppelin/contracts/access/Ownable.sol:20",
+        "inherit": [
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin/contracts/access/Ownable.sol:28"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IERC20": {
+        "src": "@openzeppelin/contracts/token/ERC20/IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "Context": {
+        "src": "@openzeppelin/contracts/utils/Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IUniswapV3Factory": {
+        "src": "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "feeAmountTickSpacing(uint24)",
+          "getPool(address,address,uint24)",
+          "createPool(address,address,uint24)",
+          "setOwner(address)",
+          "enableFeeAmount(uint24,int24)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "JumpInterestRateModel": {
+        "src": "contracts/JumpInterestRateModel.sol:23",
+        "version": {
+          "withMetadata": "18110c42edf5b07edb57a3eb6b5584a754f185c84861ae12db0e621c322ac63b",
+          "withoutMetadata": "d8a550f5d559007b1b43512b1165985555f1f2072fe4bb552541bb243bed6ef0",
+          "linkedWithoutMetadata": "d8a550f5d559007b1b43512b1165985555f1f2072fe4bb552541bb243bed6ef0"
+        },
+        "inherit": [
+          "Ownable",
+          "Context"
+        ],
+        "libraries": [
+          "IntMath"
+        ],
+        "methods": [
+          "(uint256,uint256,uint256,uint256,uint256)",
+          "getBorrowRate(uint256,uint256,uint256)",
+          "getSupplyRate(uint256,uint256,uint256,uint256)",
+          "updateJumpRateModel(uint256,uint256,uint256,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "JumpInterestRateModel",
+            "src": "contracts/JumpInterestRateModel.sol:73"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BLOCKS_PER_YEAR",
+            "src": "contracts/JumpInterestRateModel.sol:48"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            },
+            {
+              "label": "baseRatePerBlock",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:53"
+            },
+            {
+              "label": "multiplierPerBlock",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:58"
+            },
+            {
+              "label": "jumpMultiplierPerBlock",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:63"
+            },
+            {
+              "label": "kink",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_uint256",
+              "contract": "JumpInterestRateModel",
+              "src": "contracts/JumpInterestRateModel.sol:68"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "MAIL": {
+        "src": "contracts/MAIL.sol:8",
+        "version": {
+          "withMetadata": "37d331a101b24291365ef2c8def9cf84fd81a76840d503d34ab6bd3c864f57fb",
+          "withoutMetadata": "92a40091417208f8eb2566f829c7df1f93d91ed8e7a1341a003976bff27aad82",
+          "linkedWithoutMetadata": "92a40091417208f8eb2566f829c7df1f93d91ed8e7a1341a003976bff27aad82"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "(address,address,address,address,address,address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "MAIL",
+            "src": "contracts/MAIL.sol:27"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BTC",
+            "src": "contracts/MAIL.sol:10"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "BRIDGE_TOKEN",
+            "src": "contracts/MAIL.sol:13"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDC",
+            "src": "contracts/MAIL.sol:16"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "USDT",
+            "src": "contracts/MAIL.sol:19"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "RISKY_ASSET",
+            "src": "contracts/MAIL.sol:22"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "ORACLE",
+            "src": "contracts/MAIL.sol:25"
+          }
+        ],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "MAILDeployer": {
+        "src": "contracts/MAILDeployer.sol:11",
+        "version": {
+          "withMetadata": "fc452519860131cd45af3e5cb3c3e235d0e9644844641aa76b1952507c564f01",
+          "withoutMetadata": "e995971688f4274c86d3f3f0f49164046bdb0d20dfd33a74cb476ee162f3547c",
+          "linkedWithoutMetadata": "e995971688f4274c86d3f3f0f49164046bdb0d20dfd33a74cb476ee162f3547c"
+        },
+        "inherit": [
+          "Ownable",
+          "Context"
+        ],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.1",
+          "flat": true
+        }
+      },
+      "IMAILDeployer": {
+        "src": "contracts/interfaces/IMAILDeployer.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "getInterestRateModel(address)",
+          "treasury()",
+          "reserveFactor()",
+          "riskyAssetInterestRateModel()",
+          "fees(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      },
+      "IntMath": {
+        "src": "contracts/lib/IntMath.sol:12",
+        "version": {
+          "withMetadata": "3aedc38f91ee219314a8d669be59002aadfa4c0d07c3e246ed3657ee0bee3715",
+          "withoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff",
+          "linkedWithoutMetadata": "08d24783a787f8a51dea0c166bb6f91a4f0865e02d03d749f102d332e6ead0ff"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.1",
+          "flat": false
+        }
+      }
+    }
+  ]
+}

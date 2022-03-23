@@ -2,6 +2,26 @@
 pragma solidity 0.8.12;
 
 interface IMAILDeployer {
+    //solhint-disable-next-line func-name-mixedcase
+    function BTC() external view returns (address);
+
+    //solhint-disable-next-line func-name-mixedcase
+    function BRIDGE_TOKEN() external view returns (address);
+
+    //solhint-disable-next-line func-name-mixedcase
+    function USDC() external view returns (address);
+
+    //solhint-disable-next-line func-name-mixedcase
+    function USDT() external view returns (address);
+
+    //solhint-disable-next-line func-name-mixedcase
+    function ORACLE() external view returns (address);
+
+    //solhint-disable-next-line func-name-mixedcase
+    function UNISWAP_V3_FACTORY() external view returns (address);
+
+    function riskyAsset() external view returns (address);
+
     function getInterestRateModel(address token)
         external
         view
