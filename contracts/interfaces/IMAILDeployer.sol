@@ -6,7 +6,7 @@ interface IMAILDeployer {
     function BTC() external view returns (address);
 
     //solhint-disable-next-line func-name-mixedcase
-    function BRIDGE_TOKEN() external view returns (address);
+    function WRAPPED_NATIVE_TOKEN() external view returns (address);
 
     //solhint-disable-next-line func-name-mixedcase
     function USDC() external view returns (address);
@@ -41,7 +41,11 @@ interface IMAILDeployer {
 
     function maxLTVOf(address token) external view returns (uint256);
 
-    function owner() external view returns (address);
+    function router() external view returns (address);
+
+    function liquidationFee() external view returns (uint256);
+
+    function liquidatorPortion() external view returns (uint256);
 
     event MarketCreated(address indexed market);
 
@@ -57,4 +61,10 @@ interface IMAILDeployer {
     event NewUniSwapFee(uint256 indexed fee);
 
     event SetNewTokenLTV(address indexed token, uint256 amount);
+
+    event SetRouter(address indexed router);
+
+    event SetLiquidationFee(uint256 indexed fee);
+
+    event SetLiquidatorPortion(uint256 indexed portion);
 }

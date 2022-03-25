@@ -22,7 +22,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     address public immutable BTC;
 
     //solhint-disable-next-line var-name-mixedcase
-    address public immutable BRIDGE_TOKEN;
+    address public immutable WRAPPED_NATIVE_TOKEN;
 
     //solhint-disable-next-line var-name-mixedcase
     address public immutable USDC;
@@ -32,6 +32,9 @@ contract MAILDeployer is Ownable, IMAILDeployer {
 
     //solhint-disable-next-line var-name-mixedcase
     address public immutable ORACLE;
+
+    //solhint-disable-next-line var-name-mixedcase
+    address public router;
 
     address public riskyToken;
 
@@ -48,6 +51,10 @@ contract MAILDeployer is Ownable, IMAILDeployer {
 
     // Array containing all the current fees supported by Uniswap V3
     uint24[] public fees;
+
+    uint256 public liquidationFee;
+
+    uint256 public liquidatorPortion;
 
     // FEE -> BOOL A mapping to prevent duplicates to the `fees` array
     mapping(uint256 => bool) private _hasFee;
@@ -87,63 +94,27 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         address usdc,
         address usdt,
         address oracle,
+        address _router,
         address _treasury,
         uint256 _reserveFactor,
         bytes memory modelData
     ) {
-        (
-            address btcModel,
-            address usdcModel,
-            address wrappedNativeTokenModel,
-            address usdtModel,
-            address riskytokenModel
-        ) = abi.decode(
-                modelData,
-                (address, address, address, address, address)
-            );
-
-        // Protect agaisnt wrongly passing the zero address
-        require(btcModel != address(0), "btc: no zero address");
-        require(usdcModel != address(0), "usdc: no zero address");
-        require(usdtModel != address(0), "usdt: no zero address");
-        require(wrappedNativeTokenModel != address(0), "bt: no zero address");
-        require(riskytokenModel != address(0), "ra: no zero address");
-        require(uniswapV3Factory != address(0), "uni: no zero address");
-        require(oracle != address(0), "oracle: no zero address");
-
-        // Add current supported UniswapV3 fees
-        fees.push(500);
-        fees.push(3000);
-        fees.push(10000);
-
-        // Update the guard map
-        _hasFee[500] = true;
-        _hasFee[3000] = true;
-        _hasFee[10000] = true;
-
         // Update Global state
         UNISWAP_V3_FACTORY = uniswapV3Factory;
         BTC = btc;
-        BRIDGE_TOKEN = wrappedNativeToken;
+        WRAPPED_NATIVE_TOKEN = wrappedNativeToken;
         USDC = usdc;
         USDT = usdt;
         ORACLE = oracle;
         treasury = _treasury;
         reserveFactor = _reserveFactor;
+        router = _router;
 
-        // Map the token to the right interest rate model
-        getInterestRateModel[btc] = btcModel;
-        getInterestRateModel[usdc] = usdcModel;
-        getInterestRateModel[usdt] = usdtModel;
-        getInterestRateModel[wrappedNativeToken] = wrappedNativeTokenModel;
-        riskyTokenInterestRateModel = riskytokenModel;
+        _initializeFees();
 
-        // Set Initial LTV
-        maxLTVOf[btc] = INITIAL_MAX_LTV;
-        maxLTVOf[usdc] = INITIAL_MAX_LTV;
-        maxLTVOf[usdt] = INITIAL_MAX_LTV;
-        maxLTVOf[wrappedNativeToken] = INITIAL_MAX_LTV;
-        riskyTokenLTV = INITIAL_MAX_LTV;
+        _initializeModels(modelData);
+
+        _initializeMAXLTV();
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -211,7 +182,11 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     function deploy(address _riskyToken) external returns (address market) {
         // Make sure the `riskytoken` is different than BTC, BRIDGE_TOKEN, USDC, USDT, zero address
         require(_riskyToken != BTC, "MD: cannot be BTC");
-        require(_riskyToken != BRIDGE_TOKEN, "MD: cannot be BRIDGE_TOKEN");
+        //solhint-disable-next-line reason-string
+        require(
+            _riskyToken != WRAPPED_NATIVE_TOKEN,
+            "MD: cannot be WRAPPED_NATIVE_TOKEN"
+        );
         require(_riskyToken != USDC, "MD: cannot be USDC");
         require(_riskyToken != USDT, "MD: cannot be USDT");
         require(_riskyToken != address(0), "MD: no zero address");
@@ -248,7 +223,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
      */
     function _doesPoolExist(address _riskytoken) private view returns (bool) {
         // Save gas
-        address wrappedNativeToken = BRIDGE_TOKEN;
+        address wrappedNativeToken = WRAPPED_NATIVE_TOKEN;
         IUniswapV3Factory uniswapV3Factory = IUniswapV3Factory(
             UNISWAP_V3_FACTORY
         );
@@ -272,6 +247,67 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         }
 
         return hasPool;
+    }
+
+    /*///////////////////////////////////////////////////////////////
+                        PRIVATE FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
+
+    /**
+     * @dev An initializer to set the current fees supported by Uniswap. Done to avoid stock local variable limit
+     */
+    function _initializeFees() private {
+        // Add current supported UniswapV3 fees
+        fees.push(500);
+        fees.push(3000);
+        fees.push(10000);
+
+        // Update the guard map
+        _hasFee[500] = true;
+        _hasFee[3000] = true;
+        _hasFee[10000] = true;
+    }
+
+    /**
+     * @dev An initializer to set the max ltv per asset. Done to avoid stack local variable limit
+     */
+    function _initializeMAXLTV() private {
+        // Set Initial LTV
+        maxLTVOf[BTC] = INITIAL_MAX_LTV;
+        maxLTVOf[USDC] = INITIAL_MAX_LTV;
+        maxLTVOf[USDT] = INITIAL_MAX_LTV;
+        maxLTVOf[WRAPPED_NATIVE_TOKEN] = INITIAL_MAX_LTV;
+        riskyTokenLTV = INITIAL_MAX_LTV;
+    }
+
+    /**
+     * @dev An initializer to set the interest rate models of the assets. Done to avoid stack local variable limit
+     */
+    function _initializeModels(bytes memory modelData) private {
+        (
+            address btcModel,
+            address usdcModel,
+            address wrappedNativeTokenModel,
+            address usdtModel,
+            address riskytokenModel
+        ) = abi.decode(
+                modelData,
+                (address, address, address, address, address)
+            );
+
+        // Protect agaisnt wrongly passing the zero address
+        require(btcModel != address(0), "btc: no zero address");
+        require(usdcModel != address(0), "usdc: no zero address");
+        require(usdtModel != address(0), "usdt: no zero address");
+        require(wrappedNativeTokenModel != address(0), "bt: no zero address");
+        require(riskytokenModel != address(0), "ra: no zero address");
+
+        // Map the token to the right interest rate model
+        getInterestRateModel[BTC] = btcModel;
+        getInterestRateModel[USDC] = usdcModel;
+        getInterestRateModel[USDT] = usdtModel;
+        getInterestRateModel[WRAPPED_NATIVE_TOKEN] = wrappedNativeTokenModel;
+        riskyTokenInterestRateModel = riskytokenModel;
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -394,5 +430,53 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         riskyTokenLTV = amount;
 
         emit SetNewTokenLTV(address(0), amount);
+    }
+
+    /**
+     * @dev Allows the Int Governance to update the router.
+     *
+     * @param _router The new router address
+     *
+     * Requirements:
+     *
+     * - Only the Int Governance can update this value to protect the markets agaisnt a rogue Router contract
+     */
+    function setRouter(address _router) external onlyOwner {
+        require(router != address(0), "MD: no zero address");
+        router = _router;
+
+        emit SetRouter(_router);
+    }
+
+    /**
+     * @dev Allows the Int Governance to update the liquidation fee.
+     *
+     * @param fee The new liquidation fee
+     *
+     * Requirements:
+     *
+     * - Only Int Governance can update this value
+     */
+    function setLiquidationFee(uint256 fee) external onlyOwner {
+        require(fee > 0 && fee <= 0.3e18, "MD: fee out of bounds");
+        liquidationFee = fee;
+
+        emit SetLiquidationFee(fee);
+    }
+
+    /**
+     * @dev Allows the Int Governance to update the liquidator portion
+     *
+     * @param fee The new liquidator portion
+     *
+     * Requirements:
+     *
+     * - Only Int Governance can update this value
+     */
+    function setLiquidatorPortion(uint256 fee) external onlyOwner {
+        require(fee > 0.95e18, "MD: too low");
+        liquidatorPortion = fee;
+
+        emit SetLiquidatorPortion(fee);
     }
 }
