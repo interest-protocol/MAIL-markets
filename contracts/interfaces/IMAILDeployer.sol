@@ -3,22 +3,10 @@ pragma solidity 0.8.13;
 
 interface IMAILDeployer {
     //solhint-disable-next-line func-name-mixedcase
-    function BTC() external view returns (address);
-
-    //solhint-disable-next-line func-name-mixedcase
-    function WRAPPED_NATIVE_TOKEN() external view returns (address);
-
-    //solhint-disable-next-line func-name-mixedcase
-    function USDC() external view returns (address);
-
-    //solhint-disable-next-line func-name-mixedcase
-    function USDT() external view returns (address);
+    function ROUTER() external view returns (address);
 
     //solhint-disable-next-line func-name-mixedcase
     function ORACLE() external view returns (address);
-
-    //solhint-disable-next-line func-name-mixedcase
-    function UNISWAP_V3_FACTORY() external view returns (address);
 
     function riskyToken() external view returns (address);
 
@@ -41,8 +29,6 @@ interface IMAILDeployer {
 
     function maxLTVOf(address token) external view returns (uint256);
 
-    function router() external view returns (address);
-
     function liquidationFee() external view returns (uint256);
 
     function liquidatorPortion() external view returns (uint256);
@@ -61,8 +47,6 @@ interface IMAILDeployer {
     event NewUniSwapFee(uint256 indexed fee);
 
     event SetNewTokenLTV(address indexed token, uint256 amount);
-
-    event SetRouter(address indexed router);
 
     event SetLiquidationFee(uint256 indexed fee);
 

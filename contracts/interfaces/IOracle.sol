@@ -2,12 +2,7 @@
 pragma solidity 0.8.13;
 
 interface IOracle {
-    function getwrappedNativeTokenUSDPrice(uint256 amount)
-        external
-        view
-        returns (uint256);
-
-    function getUSDPrice(address token, uint256 amount)
+    function getETHPrice(address token, uint256 amount)
         external
         view
         returns (uint256);

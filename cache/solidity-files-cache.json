@@ -38,8 +38,8 @@
       ]
     },
     "/Users/jmvc/Desktop/MAIL-markets/contracts/MAILDeployer.sol": {
-      "lastModificationDate": 1648227620750,
-      "contentHash": "c33cc997a0da46b0378f9ba68b205a12",
+      "lastModificationDate": 1648390349349,
+      "contentHash": "56d81638727a560721f1a2e8df95a5fd",
       "sourceName": "contracts/MAILDeployer.sol",
       "solcConfig": {
         "version": "0.8.13",
@@ -153,8 +153,8 @@
       ]
     },
     "/Users/jmvc/Desktop/MAIL-markets/contracts/MAIL.sol": {
-      "lastModificationDate": 1648228450416,
-      "contentHash": "3097fbdf5d157972e5d66439aae0e3d2",
+      "lastModificationDate": 1648390195457,
+      "contentHash": "d1419cd291dd056dc5b278da45579653",
       "sourceName": "contracts/MAIL.sol",
       "solcConfig": {
         "version": "0.8.13",
@@ -384,8 +384,8 @@
       ]
     },
     "/Users/jmvc/Desktop/MAIL-markets/contracts/Oracle.sol": {
-      "lastModificationDate": 1648060556627,
-      "contentHash": "c0438ec914b5bfbb847b9f076e4a7844",
+      "lastModificationDate": 1648394906019,
+      "contentHash": "1463cd6a8331051adf0323c302360fb1",
       "sourceName": "contracts/Oracle.sol",
       "solcConfig": {
         "version": "0.8.13",
@@ -1619,6 +1619,344 @@
       ],
       "artifacts": [
         "Address"
+      ]
+    },
+    "/Users/jmvc/Desktop/MAIL-markets/contracts/mock/MockChainLinkFeed.sol": {
+      "lastModificationDate": 1648391755555,
+      "contentHash": "199eb9ee8c719812e3568911febda9a3",
+      "sourceName": "contracts/mock/MockChainLinkFeed.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/AggregatorV3Interface.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "MockChainLinkFeed"
+      ]
+    },
+    "/Users/jmvc/Desktop/MAIL-markets/contracts/mock/MockLibraryWrapper.sol": {
+      "lastModificationDate": 1648392763825,
+      "contentHash": "e56f4c77468fddadd6bb9c92886b2734",
+      "sourceName": "contracts/mock/MockLibraryWrapper.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "MockLibraryWrapper"
+      ]
+    },
+    "/Users/jmvc/Desktop/MAIL-markets/contracts/mock/MockMailDeployer.sol": {
+      "lastModificationDate": 1648391683212,
+      "contentHash": "5a3b98187a3dcbf2cd99297b7bfee23f",
+      "sourceName": "contracts/mock/MockMailDeployer.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "MockMailDeployer"
+      ]
+    },
+    "/Users/jmvc/Desktop/MAIL-markets/contracts/mock/MockUniswapFactoryV3.sol": {
+      "lastModificationDate": 1648391030205,
+      "contentHash": "b343630fb99767c23432c592ba21324c",
+      "sourceName": "contracts/mock/MockUniswapFactoryV3.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "MockUniswapFactoryV3"
+      ]
+    },
+    "/Users/jmvc/Desktop/MAIL-markets/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
+      "lastModificationDate": 1647620466521,
+      "contentHash": "bab063ddd80e9cc9e313361fef7ef07f",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC20.sol",
+        "./extensions/IERC20Metadata.sol",
+        "../../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "/Users/jmvc/Desktop/MAIL-markets/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+      "lastModificationDate": 1647620467552,
+      "contentHash": "909ab67fc5c25033fe6cd364f8c056f9",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20Metadata"
+      ]
+    },
+    "/Users/jmvc/Desktop/MAIL-markets/contracts/mock/erc-20/MockERC209Decimal.sol": {
+      "lastModificationDate": 1648484224966,
+      "contentHash": "a6b3774335954f78ad71b439c298f085",
+      "sourceName": "contracts/mock/erc-20/MockERC209Decimal.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "MockERC209Decimals"
+      ]
+    },
+    "/Users/jmvc/Desktop/MAIL-markets/contracts/mock/erc-20/MockERC20.sol": {
+      "lastModificationDate": 1648484040274,
+      "contentHash": "04f1c75ae95b027c9ea5ca534e65d1fa",
+      "sourceName": "contracts/mock/erc-20/MockERC20.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "MockERC20"
+      ]
+    },
+    "/Users/jmvc/Desktop/MAIL-markets/contracts/mock/erc-20/MockERC2020Decimal.sol": {
+      "lastModificationDate": 1648484850376,
+      "contentHash": "cb2900e991221b3eaa30ff28e6f3f3cc",
+      "sourceName": "contracts/mock/erc-20/MockERC2020Decimal.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "MockERC2020Decimals"
       ]
     }
   }

@@ -18,7 +18,7 @@ import "./lib/IntERC20.sol";
 /**
  * @dev We scale all numbers to 18 decimals to easily work with IntMath library. The toBase functions reads the decimals and scales them. And the fromBase puts them back to their original decimal houses.
  */
-contract MAIL {
+contract MAILMarket {
     /*///////////////////////////////////////////////////////////////
                                 EVENTS
     //////////////////////////////////////////////////////////////*/
@@ -60,8 +60,8 @@ contract MAIL {
     );
 
     event Borrow(
-        address indexed caller,
         address indexed borrower,
+        address indexed recipient,
         address indexed token,
         uint256 principal,
         uint256 amount
@@ -122,22 +122,36 @@ contract MAIL {
      */
     uint256 private constant BORROW_RATE_MAX_MANTISSA = 0.0005e16;
 
+    address private constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
+
+    // Requests
+    uint8 private constant ADD_COLLATERAL_REQUEST = 0;
+
+    uint8 private constant WITHDRAW_COLLATERAL_REQUEST = 1;
+
+    uint8 private constant BORROW_REQUEST = 2;
+
+    uint8 private constant REPAY_REQUEST = 3;
+
     //solhint-disable-next-line var-name-mixedcase
     address private immutable MAIL_DEPLOYER; // Deployer of this contract
 
     //solhint-disable-next-line var-name-mixedcase
-    address private immutable RISKY_TOKEN; //
+    address private immutable RISKY_TOKEN;
 
     //solhint-disable-next-line var-name-mixedcase
     address private immutable ORACLE;
 
     //solhint-disable-next-line var-name-mixedcase
+    address private immutable ROUTER;
+
+    //solhint-disable-next-line var-name-mixedcase
     address[] private MARKETS;
 
-    // Token => Account => Collateral Balance
+    // Token => User => Collateral Balance
     mapping(address => mapping(address => uint256)) public balanceOf;
 
-    // Token => Account => Borrow Balance
+    // Token => User => Borrow Balance
     mapping(address => mapping(address => uint256)) public borrowOf;
 
     // Token => Market
@@ -146,7 +160,7 @@ contract MAIL {
     // Token => Bool
     mapping(address => bool) public isMarket;
 
-    // Token => Account => Account
+    // Token => User => Account
     mapping(address => mapping(address => Account)) public accountOf;
 
     // Token => Total Supply
@@ -161,29 +175,37 @@ contract MAIL {
         IMAILDeployer mailDeployer = IMAILDeployer(msg.sender);
 
         // Get the token addresses from the MAIL Deployer
-        address btc = mailDeployer.BTC();
-        address usdt = mailDeployer.USDT();
-        address usdc = mailDeployer.USDC();
-        address wrappedNativeToken = mailDeployer.WRAPPED_NATIVE_TOKEN();
         address riskyToken = mailDeployer.riskyToken();
 
         // Update the Global state
         RISKY_TOKEN = riskyToken;
         ORACLE = mailDeployer.ORACLE();
         MAIL_DEPLOYER = msg.sender;
+        ROUTER = mailDeployer.ROUTER();
 
         // Whitelist all tokens supported by this contract
-        isMarket[usdt] = true;
-        isMarket[btc] = true;
-        isMarket[usdc] = true;
-        isMarket[wrappedNativeToken] = true;
+
+        // BTC
+        isMarket[0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599] = true;
+        // USDT
+        isMarket[0xdAC17F958D2ee523a2206206994597C13D831ec7] = true;
+        // USDC
+        isMarket[0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48] = true;
+        // WETH
+        isMarket[WETH] = true;
+        // Risky Token
         isMarket[riskyToken] = true;
 
         // Update the tokens array to easily fetch data about all markets
-        MARKETS.push(btc);
-        MARKETS.push(usdt);
-        MARKETS.push(usdc);
-        MARKETS.push(wrappedNativeToken);
+        // BTC
+        MARKETS.push(0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599);
+        // USDT
+        MARKETS.push(0xdAC17F958D2ee523a2206206994597C13D831ec7);
+        // USDC
+        MARKETS.push(0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48);
+        // WETH
+        MARKETS.push(WETH);
+        // Risky Token
         MARKETS.push(riskyToken);
     }
 
@@ -196,7 +218,7 @@ contract MAIL {
      *
      * @param token The token that must be whitelisted.
      */
-    modifier isTokenListed(address token) {
+    modifier isMarketListed(address token) {
         require(isMarket[token], "MAIL: token not listed");
         _;
     }
@@ -242,7 +264,7 @@ contract MAIL {
      */
     function getReserves(address token, uint256 amount)
         external
-        isTokenListed(token)
+        isMarketListed(token)
     {
         // Type the `MAIL_DEPLOYER` to access its functions
         IMAILDeployer mailDeployer = IMAILDeployer(MAIL_DEPLOYER);
@@ -250,7 +272,7 @@ contract MAIL {
         // Only the owner of `mailDeployer` can send reserves to the treasury as they reduce liquidity and earnings.
         require(
             msg.sender == IOwnable(address(mailDeployer)).owner(),
-            "MAIL: not authorized"
+            "MAIL: only owner"
         );
 
         // Save storage in memory to save gas.
@@ -296,7 +318,7 @@ contract MAIL {
      */
     function despositReserves(address token, uint256 amount)
         external
-        isTokenListed(token)
+        isMarketListed(token)
     {
         // Save the market information in memory
         Market memory market = marketOf[token];
@@ -326,7 +348,7 @@ contract MAIL {
      *
      * - Token must be listed in this pool; otherwise makes no sense to update an unlisted market.
      */
-    function accrue(address token) external isTokenListed(token) {
+    function accrue(address token) external isMarketListed(token) {
         // Call the internal {_accrue}.
         _accrue(token);
     }
@@ -350,48 +372,11 @@ contract MAIL {
         address token,
         uint256 amount,
         address to
-    ) external isTokenListed(token) {
-        require(amount > 0, "MAIL: no zero deposits");
-        require(to != address(0), "MAIL: no zero address deposits");
-
+    ) external isMarketListed(token) {
         // Update the debt and rewards of this market
         _accrue(token);
 
-        // Save storage in memory to save gas
-        uint256 totalSupply = totalSupplyOf[token];
-        Account memory account = accountOf[token][to];
-        uint256 _totalRewards = marketOf[token].totalRewardsPerToken;
-
-        // If the market is empty. There are no rewards or if it is the `to` first deposit.
-        uint256 rewards;
-
-        // If the`to` has deposited before. We update the rewards.
-        if (account.balance > 0) {
-            rewards =
-                uint256(account.balance).bmul(_totalRewards) -
-                account.rewardDebt;
-        }
-
-        // Get tokens from `msg.sender`. It does not have to be the `to` address.
-        IERC20(token).safeTransferFrom(msg.sender, address(this), amount);
-
-        // All values in this contract use decimals 18.
-        uint256 baseAmount = _getBaseAmount(token, amount);
-
-        // We "compound" the rewards to the user to be readily avaliable to be lent.
-        uint256 newAmount = baseAmount + rewards;
-
-        // Update Local State
-        account.balance += newAmount.toUint128();
-        account.rewardDebt = uint256(account.balance).bmul(_totalRewards);
-        totalSupply += newAmount;
-
-        // Update Global state
-        totalSupplyOf[token] = totalSupply;
-        accountOf[token][to] = account;
-
-        // Emit event
-        emit Deposit(msg.sender, to, token, amount, rewards);
+        _deposit(token, amount, msg.sender, to);
     }
 
     /**
@@ -399,7 +384,7 @@ contract MAIL {
      *
      * @param token The ERC20 token the `msg.sender` wishes to withdraw
      * @param amount The number of `token` the `msg.sender` wishes to withdraw
-     * @param from The account, which will have its token withdrawn
+     * @param to The account, which will receive the tokens
      *
      * Requirements:
      *
@@ -411,52 +396,12 @@ contract MAIL {
     function withdraw(
         address token,
         uint256 amount,
-        address from
-    ) external isTokenListed(token) isSolvent {
-        // Security checks
-        require(amount > 0, "MAIL: no zero withdraws");
-        // Router contracts improves UX for users to quickly borrow between pools
-        require(
-            msg.sender == from ||
-                IMAILDeployer(MAIL_DEPLOYER).router() == msg.sender,
-            "MAIL: not allowed to withdraw"
-        );
-
+        address to
+    ) external isMarketListed(token) isSolvent {
         // Accumulate interest and rewards.
         _accrue(token);
 
-        // Save storage in memory to save gas
-        uint256 totalSupply = totalSupplyOf[token];
-        Account memory account = accountOf[token][from];
-        uint256 _totalRewards = marketOf[token].totalRewardsPerToken;
-
-        // Calculate the rewards for the `to` address.
-        uint256 rewards = uint256(account.balance).bmul(_totalRewards) -
-            account.rewardDebt;
-
-        // All values in this contract use decimals 18
-        uint256 baseAmount = _getBaseAmount(token, amount);
-
-        // Make sure the market has enough liquidity
-        require(getCash(token) >= baseAmount, "MAIL: not enough cash");
-
-        // Update state in memory
-        account.balance -= baseAmount.toUint128();
-        account.rewardDebt = uint256(account.balance).bmul(_totalRewards);
-        totalSupply -= baseAmount;
-
-        // Update state in storage
-        totalSupplyOf[token] = totalSupply;
-        accountOf[token][from] = account;
-
-        // Send tokens to `msg.sender`.
-        IERC20(token).safeTransfer(
-            msg.sender,
-            amount + rewards.fromBase(token.safeDecimals())
-        );
-
-        // emit event
-        emit Withdraw(from, msg.sender, token, amount, rewards);
+        _withdraw(token, amount, msg.sender, to);
     }
 
     /**
@@ -464,7 +409,7 @@ contract MAIL {
      *
      * @param token The loan will be issued in this token
      * @param amount Indicates how many `token` the `from` will loan.
-     * @param from The account that is opening the loan
+     * @param to The account, which will receive the tokens
      *
      * Requirements:
      *
@@ -476,58 +421,12 @@ contract MAIL {
     function borrow(
         address token,
         uint256 amount,
-        address from
-    ) external isTokenListed(token) isSolvent {
-        // Security checks
-        require(amount > 0, "MAIL: no zero withdraws");
-        // Router contracts improves UX for users to quickly borrow between pools
-        require(
-            msg.sender == from ||
-                IMAILDeployer(MAIL_DEPLOYER).router() == msg.sender,
-            "MAIL: not allowed to withdraw"
-        );
-
+        address to
+    ) external isMarketListed(token) isSolvent {
         // Update the debt and rewards
         _accrue(token);
 
-        // Make sure the amount has 18 decimals
-        uint256 baseAmount = _getBaseAmount(token, amount);
-
-        // Make sure the market has enough liquidity
-        require(getCash(token) >= baseAmount, "MAIL: not enough cash");
-
-        // Read from memory
-        uint256 totalSupply = totalSupplyOf[token];
-        Account memory account = accountOf[token][from];
-        Market memory market = marketOf[token];
-        Rebase memory loan = market.loan;
-        uint256 _totalRewards = market.totalRewardsPerToken;
-        // Update the state in memory
-        (Rebase memory _loan, uint256 principal) = loan.add(baseAmount, true);
-
-        // Uniswap style block sope
-        {
-            // Calculate the user rewards
-            uint256 rewards = uint256(account.balance).bmul(_totalRewards) -
-                account.rewardDebt;
-
-            market.loan = _loan;
-            account.principal += principal.toUint128();
-            account.balance += rewards.toUint128();
-            account.rewardDebt = uint256(account.balance).bmul(_totalRewards);
-            totalSupply += totalSupply;
-
-            // Update the state in storage
-            totalSupplyOf[token] = totalSupply;
-            accountOf[token][from] = account;
-            marketOf[token] = market;
-        }
-
-        // Transfer the loan `token` to the `msg.sender`.
-        IERC20(token).safeTransfer(msg.sender, amount);
-
-        // Emit event
-        emit Borrow(msg.sender, from, token, principal, amount);
+        _borrow(token, amount, msg.sender, to);
     }
 
     /**
@@ -548,37 +447,34 @@ contract MAIL {
         address token,
         uint256 principal,
         address to
-    ) external isTokenListed(token) {
-        // Security checks read above
-        require(principal > 0, "MAIL: principal cannot be 0");
-        require(to != address(0), "MAIL: no to zero address");
-
+    ) external isMarketListed(token) {
         // Update the debt and rewards
         _accrue(token);
 
-        // Save storage in memory to save gas
-        Market memory market = marketOf[token];
-        Rebase memory loan = market.loan;
-        Account memory account = accountOf[token][to];
-        (Rebase memory _loan, uint256 debt) = loan.sub(principal, true);
+        _repay(token, principal, msg.sender, to);
+    }
 
-        // Get the tokens from `msg.sender`
-        IERC20(token).safeTransferFrom(
-            msg.sender,
-            address(this),
-            debt.fromBase(token.safeDecimals())
+    function request(
+        address from,
+        uint8[] calldata requests,
+        bytes[] calldata requestArgs
+    ) external {
+        require(
+            msg.sender == from || msg.sender == ROUTER,
+            "MAIL: not authorized"
         );
+        bool checkForSolvency;
 
-        // Update the state in memory
-        market.loan = _loan;
-        account.principal -= principal.toUint128();
+        for (uint256 i; i < requests.length; i++) {
+            uint8 requestAction = requests[i];
 
-        // Update the state in storage
-        marketOf[token] = market;
-        accountOf[token][to] = account;
+            if (_checkForSolvency(requestAction)) checkForSolvency = true;
 
-        // Emit event
-        emit Repay(msg.sender, to, token, principal, debt);
+            _request(from, requestAction, requestArgs[i]);
+        }
+
+        if (checkForSolvency)
+            require(_isSolvent(from), "MAIL: from is insolvent");
     }
 
     /**
@@ -633,6 +529,8 @@ contract MAIL {
                 // Save borrower account info in memory
                 Account memory account = accountOf[borrowToken][borrower];
 
+                principal = _getBaseAmount(borrowToken, principal);
+
                 // It is impossible to repay more than what the `borrower` owes
                 principalToRepay = principal > account.principal
                     ? account.principal
@@ -681,29 +579,33 @@ contract MAIL {
             if (borrowToken == collateralToken) {
                 collateralToCover = debt + fee;
             } else {
-                // Fetch the price of the total debt in USD
-                uint256 amountOwedInUSD = _getTokenPrice(
+                // Fetch the price of the total debt in ETH
+                uint256 amountOwedInETH = _getTokenPrice(
                     borrowToken,
                     debt + fee
                 );
 
-                // Find the price of one `collateralToken` in USD.
-                uint256 borrowTokenPriceInUSD = _getTokenPrice(
+                // Find the price of one `collateralToken` in ETH.
+                uint256 collateralTokenPriceInETH = _getTokenPrice(
                     collateralToken,
                     1 ether
                 );
 
-                // Calculate how many collateral tokens we need to cover `amountOwedInUSD`.
-                collateralToCover = amountOwedInUSD.bdiv(borrowTokenPriceInUSD);
+                // Calculate how many collateral tokens we need to cover `amountOwedInETH`.
+                collateralToCover = amountOwedInETH.bdiv(
+                    collateralTokenPriceInETH
+                );
             }
 
             // Save borrower and recipient collateral market account info in memory
             Account memory borrowerCollateralAccount = accountOf[
                 collateralToken
             ][borrower];
+
             Account memory recipientCollateralAccount = accountOf[
                 collateralToken
             ][recipient];
+
             Market memory collateralMarket = marketOf[collateralToken];
 
             // Protocol charges a fee for reserves
@@ -741,15 +643,312 @@ contract MAIL {
                             PRIVATE FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
+    function _request(
+        address from,
+        uint8 requestAction,
+        bytes calldata data
+    ) private {
+        if (requestAction == ADD_COLLATERAL_REQUEST) {
+            (address token, uint256 amount, address to) = abi.decode(
+                data,
+                (address, uint256, address)
+            );
+            require(isMarket[token], "MAIL: token not listed");
+            _deposit(token, amount, from, to);
+            return;
+        }
+
+        if (requestAction == WITHDRAW_COLLATERAL_REQUEST) {
+            (address token, uint256 amount, address to) = abi.decode(
+                data,
+                (address, uint256, address)
+            );
+            require(isMarket[token], "MAIL: token not listed");
+            _accrue(token);
+            _withdraw(token, amount, from, to);
+            return;
+        }
+
+        if (requestAction == REPAY_REQUEST) {
+            (address token, uint256 principal, address to) = abi.decode(
+                data,
+                (address, uint256, address)
+            );
+            require(isMarket[token], "MAIL: token not listed");
+            _accrue(token);
+            _repay(token, principal, from, to);
+            return;
+        }
+
+        if (requestAction == BORROW_REQUEST) {
+            (address token, uint256 amount, address to) = abi.decode(
+                data,
+                (address, uint256, address)
+            );
+            require(isMarket[token], "MAIL: token not listed");
+            _accrue(token);
+            _borrow(token, amount, from, to);
+            return;
+        }
+
+        revert("MAIL: invalid request");
+    }
+
+    /**
+     * @dev Helper function to check if we should check for solvency in the request functions
+     *
+     * @param __request The request action
+     * @return bool if true the function should check for solvency
+     */
+    function _checkForSolvency(uint8 __request) private pure returns (bool) {
+        if (__request == WITHDRAW_COLLATERAL_REQUEST) return true;
+        if (__request == BORROW_REQUEST) return true;
+
+        return false;
+    }
+
+    /**
+     * @dev It allows any account to deposit tokens for the `to` address.
+     *
+     * @param token The ERC20 the `msg.sender` wishes to deposit
+     * @param amount The number of `token` that will be deposited
+     * @param from The account that is transferring the tokens
+     * @param to The address that the deposit will be assigned to
+     *
+     * Requirements:
+     *
+     * - The amount cannot be zero
+     * - The `to` must not be the zero address to avoid loss of funds
+     * - The `from` must provide an allowance greater than `amount` to use this function.
+     */
+    function _deposit(
+        address token,
+        uint256 amount,
+        address from,
+        address to
+    ) private {
+        require(amount > 0, "MAIL: no zero deposits");
+        require(to != address(0), "MAIL: no zero address deposits");
+
+        // Save storage in memory to save gas
+        uint256 totalSupply = totalSupplyOf[token];
+        Account memory account = accountOf[token][to];
+        uint256 _totalRewards = marketOf[token].totalRewardsPerToken;
+
+        // If the market is empty. There are no rewards or if it is the `to` first deposit.
+        uint256 rewards;
+
+        // If the`to` has deposited before. We update the rewards.
+        if (account.balance > 0) {
+            rewards =
+                uint256(account.balance).bmul(_totalRewards) -
+                account.rewardDebt;
+        }
+
+        // Get tokens from `msg.sender`. It does not have to be the `to` address.
+        IERC20(token).safeTransferFrom(from, address(this), amount);
+
+        // All values in this contract use decimals 18.
+        uint256 baseAmount = _getBaseAmount(token, amount);
+
+        // We "compound" the rewards to the user to be readily avaliable to be lent.
+        uint256 newAmount = baseAmount + rewards;
+
+        // Update Local State
+        account.balance += newAmount.toUint128();
+        account.rewardDebt = uint256(account.balance).bmul(_totalRewards);
+        totalSupply += newAmount;
+
+        // Update Global state
+        totalSupplyOf[token] = totalSupply;
+        accountOf[token][to] = account;
+
+        // Emit event
+        emit Deposit(from, to, token, amount, rewards);
+    }
+
+    /**
+     * @dev Allows the `from` to withdraw `from` his/her tokens or the `router` from `MAIL_DEPLOYER`.
+     *
+     * @param token The ERC20 token the `msg.sender` wishes to withdraw
+     * @param amount The number of `token` the `msg.sender` wishes to withdraw
+     * @param from The account, which will have its token withdrawn
+     * @param to The account, which will receive the withdrawn tokens
+     *
+     * Requirements:
+     *
+     * - The amount has to be greater than 0
+     * - The market must have enough liquidity
+     */
+    function _withdraw(
+        address token,
+        uint256 amount,
+        address from,
+        address to
+    ) private {
+        // Security checks
+        require(amount > 0, "MAIL: no zero withdraws");
+
+        // Save storage in memory to save gas
+        uint256 totalSupply = totalSupplyOf[token];
+        Account memory account = accountOf[token][from];
+        uint256 _totalRewards = marketOf[token].totalRewardsPerToken;
+
+        // Calculate the rewards for the `to` address.
+        uint256 rewards = uint256(account.balance).bmul(_totalRewards) -
+            account.rewardDebt;
+
+        // All values in this contract use decimals 18
+        uint256 baseAmount = _getBaseAmount(token, amount);
+
+        // Make sure the market has enough liquidity
+        require(getCash(token) >= baseAmount, "MAIL: not enough cash");
+
+        // Update state in memory
+        account.balance -= baseAmount.toUint128();
+        account.rewardDebt = uint256(account.balance).bmul(_totalRewards);
+        totalSupply -= baseAmount;
+
+        // Update state in storage
+        totalSupplyOf[token] = totalSupply;
+        accountOf[token][from] = account;
+
+        // Send tokens to `msg.sender`.
+        IERC20(token).safeTransfer(
+            to,
+            amount + rewards.fromBase(token.safeDecimals())
+        );
+
+        // emit event
+        emit Withdraw(from, to, token, amount, rewards);
+    }
+
+    /**
+     * @dev It allows the `msg.sender` or the router to open a loan position for the `from` address.
+     *
+     * @param token The loan will be issued in this token
+     * @param amount Indicates how many `token` the `from` will loan.
+     * @param from The account that is opening the loan
+     * @param to The account, which will receive the tokens
+     *
+     * Requirements:
+     *
+     * - The `from` must be the `msg.sender` or the router.
+     * - The `amount` cannot be the zero address
+     * - The `token` must be supported by this market.
+     * - There must be ebough liquidity to be borrowed.
+     */
+    function _borrow(
+        address token,
+        uint256 amount,
+        address from,
+        address to
+    ) private {
+        // Security checks
+        require(amount > 0, "MAIL: no zero withdraws");
+
+        // Make sure the amount has 18 decimals
+        uint256 baseAmount = _getBaseAmount(token, amount);
+
+        // Make sure the market has enough liquidity
+        require(getCash(token) >= baseAmount, "MAIL: not enough cash");
+
+        // Read from memory
+        Account memory account = accountOf[token][from];
+        Market memory market = marketOf[token];
+        Rebase memory loan = market.loan;
+
+        uint256 principal;
+
+        // Update the state in memory
+        (market.loan, principal) = loan.add(baseAmount, true);
+
+        // Update memory
+        account.principal += principal.toUint128();
+
+        //  Update storage
+        accountOf[token][from] = account;
+        marketOf[token] = market;
+
+        // Transfer the loan `token` to the `msg.sender`.
+        IERC20(token).safeTransfer(to, amount);
+
+        // Emit event
+        emit Borrow(from, to, token, principal, amount);
+    }
+
+    /**
+     * @dev It allows a `msg.sender` to pay the debt of the `to` address
+     *
+     * @param token The token in which the loan is denominated in
+     * @param principal How many shares of the loan will be paid by the `msg.sender`
+     * @param from The account that is paying.
+     * @param to The account, which will have its loan  paid for.
+     *
+     * Requirements:
+     *
+     * - The `to` address cannot be the zero address
+     * - The `principal` cannot be the zero address
+     * - The token must be supported by this contract
+     * - The `msg.sender` must approve this contract to use this function
+     */
+    function _repay(
+        address token,
+        uint256 principal,
+        address from,
+        address to
+    ) private {
+        // Security checks read above
+        require(principal > 0, "MAIL: principal cannot be 0");
+        require(to != address(0), "MAIL: no to zero address");
+
+        // Update the debt and rewards
+        _accrue(token);
+
+        // Save storage in memory to save gas
+        Market memory market = marketOf[token];
+        Rebase memory loan = market.loan;
+        Account memory account = accountOf[token][to];
+        (Rebase memory _loan, uint256 debt) = loan.sub(principal, true);
+
+        // Get the tokens from `msg.sender`
+        IERC20(token).safeTransferFrom(
+            from,
+            address(this),
+            debt.fromBase(token.safeDecimals())
+        );
+
+        // Update the state in memory
+        market.loan = _loan;
+        account.principal -= principal.toUint128();
+
+        // Update the state in storage
+        marketOf[token] = market;
+        accountOf[token][to] = account;
+
+        // Emit event
+        emit Repay(from, to, token, principal, debt);
+    }
+
+    /**
+     * @dev Helper function to fetch a `token` price from the oracle for an `amount`.
+     *
+     * @param token An ERC20 token, that we wish to get the price for
+     * @param amount The amount of `token` to calculate the price
+     * @return The price with 18 decimals in USD for the `token`
+     */
     function _getTokenPrice(address token, uint256 amount)
         private
         view
         returns (uint256)
     {
+        if (token == WETH) return amount;
+
+        // Risky token uses a different Oracle function
         if (token == RISKY_TOKEN)
             return IOracle(ORACLE).getRiskytokenPrice(token, amount);
 
-        return IOracle(ORACLE).getUSDPrice(token, amount);
+        return IOracle(ORACLE).getETHPrice(token, amount);
     }
 
     /**
@@ -765,49 +964,93 @@ contract MAIL {
         address riskyToken = RISKY_TOKEN;
         IOracle oracle = IOracle(ORACLE);
 
-        // Accumulators
-        uint256 totalDebtInUSD;
-        uint256 totalCollateralInUSD;
+        // Total amount of loans in ETH
+        uint256 totalDebtInETH;
+        // Total collateral in ETH
+        uint256 totalCollateralInETH;
 
+        // Need to iterate through all markets to know the total balance sheet of a user.
         for (uint256 i; i < tokens.length; i++) {
             address token = tokens[i];
             Account memory account = accountOf[token][user];
 
+            // If a user does not have any loans or balance we do not need to do anything
             if (account.balance == 0 && account.principal == 0) continue;
 
-            (Market memory market, ) = _viewAccrue(
-                mailDeployer,
-                token,
-                getCash(token)
-            );
+            // If the user does has any balance, we need to up his/her collateral.
+            if (account.balance > 0) {
+                if (token == riskyToken) {
+                    // Need to reduce the collateral by the ltv ratio
+                    uint256 ltvRatio = IMAILDeployer(mailDeployer)
+                        .riskyTokenLTV();
+                    totalCollateralInETH += oracle
+                        .getRiskytokenPrice(token, uint256(account.balance))
+                        .bmul(ltvRatio);
+                } else if (token == WETH) {
+                    uint256 ltvRatio = IMAILDeployer(mailDeployer).maxLTVOf(
+                        token
+                    );
+                    totalCollateralInETH += uint256(account.balance).bmul(
+                        ltvRatio
+                    );
+                } else {
+                    // Need to reduce the collateral by the ltv ratio
+                    uint256 ltvRatio = IMAILDeployer(mailDeployer).maxLTVOf(
+                        token
+                    );
+                    totalCollateralInETH += oracle
+                        .getETHPrice(token, uint256(account.balance))
+                        .bmul(ltvRatio);
+                }
+            }
+
+            // If the user does not have any open loans, we do not need to do any further calculations.
+            if (account.principal == 0) continue;
+
+            Market memory market = marketOf[token];
+
+            // If we already accrued in this block. We do not need to accrue again.
+            if (market.lastAccruedBlock != block.number) {
+                // If the user has loans. We need to accrue the market first.
+                // We get the accrued values without actually accrueing to save gas.
+                (market, ) = _viewAccrue(
+                    mailDeployer,
+                    market,
+                    token,
+                    getCash(token)
+                );
+            }
 
             Rebase memory loan = market.loan;
 
+            // Find out how much the user owes.
             uint256 amountOwed = loan.toElastic(account.principal, true);
 
+            // Update the collateral and debt depending if it is a risky token or not.
             if (token == riskyToken) {
-                totalDebtInUSD += oracle.getRiskytokenPrice(
+                totalDebtInETH += oracle.getRiskytokenPrice(
                     riskyToken,
                     amountOwed
                 );
-
-                uint256 tvlRatio = IMAILDeployer(mailDeployer).riskyTokenLTV();
-                totalCollateralInUSD += oracle
-                    .getUSDPrice(token, account.balance)
-                    .bmul(tvlRatio);
+            } else if (token == WETH) {
+                totalDebtInETH += amountOwed;
             } else {
-                totalDebtInUSD += oracle.getUSDPrice(token, amountOwed);
-                uint256 tvlRatio = IMAILDeployer(mailDeployer).maxLTVOf(token);
-                totalCollateralInUSD += oracle
-                    .getUSDPrice(token, account.balance)
-                    .bmul(tvlRatio);
+                totalDebtInETH += oracle.getETHPrice(token, amountOwed);
             }
         }
 
+        // If the user has no debt, he is solvent.
         return
-            totalDebtInUSD == 0 ? true : totalCollateralInUSD > totalDebtInUSD;
+            totalDebtInETH == 0 ? true : totalCollateralInETH > totalDebtInETH;
     }
 
+    /**
+     * @dev A helper function to scale a number to 18 decimals to easily interact with IntMath
+     *
+     * @param token The ERC20 associated with the amount. We will read its decimals and scale to 18 decimals
+     * @param amount The number to scale up or down
+     * @return uint256 The number of tokens with 18 decimals
+     */
     function _getBaseAmount(address token, uint256 amount)
         private
         view
@@ -816,53 +1059,82 @@ contract MAIL {
         return amount.toBase(token.safeDecimals());
     }
 
+    /**
+     * @dev Helper function to update the loan data of the `token` market.
+     *
+     * @param token The market token
+     */
     function _accrue(address token) private {
-        uint256 currentBlock = block.number;
-
+        // Save storage in memory to save gas
         Market memory market = marketOf[token];
+        // If this function is called in the same block. There is nothing to do. As it is updated already.
+        if (block.number == market.lastAccruedBlock) return;
+
         Rebase memory loan = market.loan;
 
-        uint256 lastAccruedBlock = market.lastAccruedBlock;
-
-        if (currentBlock == lastAccruedBlock) return;
-
-        market.lastAccruedBlock = block.number.toUint128();
-
+        // If there are no loans. There is nothing else to do. We simply update the storage and return.
         if (loan.base == 0) {
+            // Update the lastAccruedBlock in memory to the current block.
+            market.lastAccruedBlock = block.number.toUint128();
             marketOf[token] = market;
             return;
         }
+
+        // Find out how much cash we currently have.
         uint256 cash = getCash(token);
 
+        // Interest accumulated for logging purposes.
         uint256 interestAccumulated;
 
-        (marketOf[token], interestAccumulated) = _viewAccrue(
+        // Calculate the accrue value and update the storage and update the interest accumulated
+        (market, interestAccumulated) = _viewAccrue(
             MAIL_DEPLOYER,
+            market,
             token,
             cash
         );
 
+        // Indicate that we have calculated all needed information up to this block.
+        market.lastAccruedBlock = block.number.toUint128();
+
+        // Update the storage
+        marketOf[token] = market;
+
+        // Emit event
         emit Accrue(token, cash, interestAccumulated, loan.base, loan.elastic);
     }
 
+    /**
+     * @dev Helper function to encapsulate the accrue logic in view function to save gas on the {_isSolvent}.
+     *
+     * @param mailDeployer the deployer of all Mail Pools
+     * @param market The current market we wish to know the loan after accrueing the interest rate
+     * @param token The token of the `market`.
+     * @param cash The current cash in this pool.
+     * @return (market, interestAccumulated) The market with its loan updated and the interest accumulated
+     */
     function _viewAccrue(
         address mailDeployer,
+        Market memory market,
         address token,
         uint256 cash
     ) private view returns (Market memory, uint256) {
-        Market memory market = marketOf[token];
+        // Save loan in memory
         Rebase memory loan = market.loan;
 
+        // Get the interest rate model for the `token`.
         InterestRateModelInterface interestRateModel = InterestRateModelInterface(
                 IMAILDeployer(mailDeployer).getInterestRateModel(token)
             );
 
+        // Calculate the borrow rate per block
         uint256 borrowRatePerBlock = interestRateModel.getBorrowRatePerBlock(
             cash,
             loan.elastic,
             market.totalReserves
         );
 
+        // Make sure it is not very high
         require(
             BORROW_RATE_MAX_MANTISSA > borrowRatePerBlock,
             "MAIL: borrow rate too high"
@@ -870,9 +1142,11 @@ contract MAIL {
 
         // Uniswap block scope style
         {
+            // Calculate borrow rate per block with the number of blocks since the last update
             uint256 interestAccumulated = (block.number -
                 market.lastAccruedBlock) * borrowRatePerBlock;
 
+            // Calculate the supply rate per block with the number of blocks since the last update
             uint256 rewardsInterestAccumulated = (block.number -
                 market.lastAccruedBlock) *
                 interestRateModel.getSupplyRatePerBlock(
@@ -882,26 +1156,31 @@ contract MAIL {
                     IMAILDeployer(mailDeployer).reserveFactor()
                 );
 
+            // Multiply the borrow rate by the total elastic loan to get the nominal value
             uint256 newDebt = interestAccumulated.bmul(loan.elastic);
 
-            uint256 newRewards = uint256(loan.elastic).bmul(
-                rewardsInterestAccumulated
-            );
+            // Multiply the supply rate by the total elastic loan to get the nominal value
+            uint256 newRewards = rewardsInterestAccumulated.bmul(loan.elastic);
 
+            // The borrow rate total collected must always be higher than the rewards
             assert(newDebt > newRewards);
 
+            // Update the loanin memory.
             (loan, ) = loan.add(newDebt, true);
 
+            // Save storage in memory
             uint256 totalSupply = totalSupplyOf[token];
 
             // If we have open loans, the total supply must be greater than 0
             assert(totalSupply > 0);
 
+            // Difference between borrow rate and supply rate is the reserves
             market.totalReserves += (newDebt - newRewards).toUint128();
-            market.lastAccruedBlock = block.number.toUint128();
+            // Update the calculated information
             market.loan = loan;
             market.totalRewardsPerToken += newRewards.bdiv(totalSupply);
 
+            // Return the pair
             return (market, interestAccumulated);
         }
     }

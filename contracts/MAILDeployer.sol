@@ -8,6 +8,9 @@ import "./interfaces/IMAILDeployer.sol";
 
 import "./MAIL.sol";
 
+/**
+ * @notice It is meant to run on Ethereum
+ */
 contract MAILDeployer is Ownable, IMAILDeployer {
     /*///////////////////////////////////////////////////////////////
                                 STATE
@@ -16,25 +19,26 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     uint256 private constant INITIAL_MAX_LTV = 0.5e18;
 
     //solhint-disable-next-line var-name-mixedcase
-    address public immutable UNISWAP_V3_FACTORY;
+    address private constant UNISWAP_V3_FACTORY =
+        0x1F98431c8aD98523631AE4a59f267346ea31F984;
 
     //solhint-disable-next-line var-name-mixedcase
-    address public immutable BTC;
+    address private constant BTC = 0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599;
 
     //solhint-disable-next-line var-name-mixedcase
-    address public immutable WRAPPED_NATIVE_TOKEN;
+    address private constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
 
     //solhint-disable-next-line var-name-mixedcase
-    address public immutable USDC;
+    address private constant USDC = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
 
     //solhint-disable-next-line var-name-mixedcase
-    address public immutable USDT;
+    address private constant USDT = 0xdAC17F958D2ee523a2206206994597C13D831ec7;
 
     //solhint-disable-next-line var-name-mixedcase
     address public immutable ORACLE;
 
     //solhint-disable-next-line var-name-mixedcase
-    address public router;
+    address public immutable ROUTER;
 
     address public riskyToken;
 
@@ -73,11 +77,6 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     //////////////////////////////////////////////////////////////*/
 
     /**
-     * @param uniswapV3Factory The address of Uniswap V3 Factory
-     * @param btc The ERC20 address for BTC
-     * @param wrappedNativeToken The address of the Wrapped version of the native token for this network - e.g. Wrapped Ether
-     * @param usdc The ERC20 address for USDC
-     * @param usdt The ERC20 address for
      * @param oracle The oracle used by MAIL lending markets
      * @param _treasury The address that will collect all protocol fees
      * @param _reserveFactor The % of the interest rate that will be sent to the treasury. It is a 18 mantissa number
@@ -88,11 +87,6 @@ contract MAILDeployer is Ownable, IMAILDeployer {
      * - None of the tokens, interest rate models and oracle can be the zero address
      */
     constructor(
-        address uniswapV3Factory,
-        address btc,
-        address wrappedNativeToken,
-        address usdc,
-        address usdt,
         address oracle,
         address _router,
         address _treasury,
@@ -100,15 +94,13 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         bytes memory modelData
     ) {
         // Update Global state
-        UNISWAP_V3_FACTORY = uniswapV3Factory;
-        BTC = btc;
-        WRAPPED_NATIVE_TOKEN = wrappedNativeToken;
-        USDC = usdc;
-        USDT = usdt;
         ORACLE = oracle;
+        ROUTER = _router;
+
         treasury = _treasury;
         reserveFactor = _reserveFactor;
-        router = _router;
+        liquidatorPortion = 0.98e18; // 98%
+        liquidationFee = 0.15e18; // 15%
 
         _initializeFees();
 
@@ -143,7 +135,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         address deployer = address(this);
         bytes32 salt = keccak256(abi.encode(_riskytoken));
         bytes32 initCodeHash = keccak256(
-            abi.encodePacked(type(MAIL).creationCode)
+            abi.encodePacked(type(MAILMarket).creationCode)
         );
 
         return
@@ -182,11 +174,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     function deploy(address _riskyToken) external returns (address market) {
         // Make sure the `riskytoken` is different than BTC, BRIDGE_TOKEN, USDC, USDT, zero address
         require(_riskyToken != BTC, "MD: cannot be BTC");
-        //solhint-disable-next-line reason-string
-        require(
-            _riskyToken != WRAPPED_NATIVE_TOKEN,
-            "MD: cannot be WRAPPED_NATIVE_TOKEN"
-        );
+        require(_riskyToken != WETH, "MD: cannot be WETH");
         require(_riskyToken != USDC, "MD: cannot be USDC");
         require(_riskyToken != USDT, "MD: cannot be USDT");
         require(_riskyToken != address(0), "MD: no zero address");
@@ -201,7 +189,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
 
         // Deploy the market
         market = address(
-            new MAIL{salt: keccak256(abi.encodePacked(_riskyToken))}()
+            new MAILMarket{salt: keccak256(abi.encodePacked(_riskyToken))}()
         );
 
         riskyToken = address(0);
@@ -223,7 +211,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
      */
     function _doesPoolExist(address _riskytoken) private view returns (bool) {
         // Save gas
-        address wrappedNativeToken = WRAPPED_NATIVE_TOKEN;
+        address weth = WETH;
         IUniswapV3Factory uniswapV3Factory = IUniswapV3Factory(
             UNISWAP_V3_FACTORY
         );
@@ -236,7 +224,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         // Loop through all the fees and check if there is a `_riskytoken` and `BRIDGE_TOKEN` pool for the fee
         for (uint256 i; i < _fees.length; i++) {
             address pool = uniswapV3Factory.getPool(
-                wrappedNativeToken,
+                weth,
                 _riskytoken,
                 _fees[i]
             );
@@ -276,7 +264,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         maxLTVOf[BTC] = INITIAL_MAX_LTV;
         maxLTVOf[USDC] = INITIAL_MAX_LTV;
         maxLTVOf[USDT] = INITIAL_MAX_LTV;
-        maxLTVOf[WRAPPED_NATIVE_TOKEN] = INITIAL_MAX_LTV;
+        maxLTVOf[WETH] = INITIAL_MAX_LTV;
         riskyTokenLTV = INITIAL_MAX_LTV;
     }
 
@@ -306,7 +294,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         getInterestRateModel[BTC] = btcModel;
         getInterestRateModel[USDC] = usdcModel;
         getInterestRateModel[USDT] = usdtModel;
-        getInterestRateModel[WRAPPED_NATIVE_TOKEN] = wrappedNativeTokenModel;
+        getInterestRateModel[WETH] = wrappedNativeTokenModel;
         riskyTokenInterestRateModel = riskytokenModel;
     }
 
@@ -341,7 +329,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
      * - Only the Int Governance can update this value.
      */
     function setReserveFactor(uint256 amount) external onlyOwner {
-        require(amount <= 0.25 ether, "MD: no zero amount");
+        require(amount <= 0.25 ether, "MD: too  high");
         reserveFactor = amount;
         emit SetReserveFactor(amount);
     }
@@ -433,22 +421,6 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     }
 
     /**
-     * @dev Allows the Int Governance to update the router.
-     *
-     * @param _router The new router address
-     *
-     * Requirements:
-     *
-     * - Only the Int Governance can update this value to protect the markets agaisnt a rogue Router contract
-     */
-    function setRouter(address _router) external onlyOwner {
-        require(router != address(0), "MD: no zero address");
-        router = _router;
-
-        emit SetRouter(_router);
-    }
-
-    /**
      * @dev Allows the Int Governance to update the liquidation fee.
      *
      * @param fee The new liquidation fee
@@ -467,16 +439,16 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     /**
      * @dev Allows the Int Governance to update the liquidator portion
      *
-     * @param fee The new liquidator portion
+     * @param portion The new liquidator portion
      *
      * Requirements:
      *
      * - Only Int Governance can update this value
      */
-    function setLiquidatorPortion(uint256 fee) external onlyOwner {
-        require(fee > 0.95e18, "MD: too low");
-        liquidatorPortion = fee;
+    function setLiquidatorPortion(uint256 portion) external onlyOwner {
+        require(portion > 0.95e18, "MD: too low");
+        liquidatorPortion = portion;
 
-        emit SetLiquidatorPortion(fee);
+        emit SetLiquidatorPortion(portion);
     }
 }

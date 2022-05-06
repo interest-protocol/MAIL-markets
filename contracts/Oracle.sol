@@ -6,6 +6,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/math/SafeCastUpgradeable.sol";
+
 import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol";
 
 import "./interfaces/AggregatorV3Interface.sol";
@@ -43,50 +44,35 @@ contract Oracle is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     //////////////////////////////////////////////////////////////*/
 
     //solhint-disable-next-line var-name-mixedcase
-    IUniswapV3Factory public UNISWAP_V3_FACTORY;
+    IUniswapV3Factory private constant UNISWAP_V3_FACTORY =
+        IUniswapV3Factory(0x1F98431c8aD98523631AE4a59f267346ea31F984);
+
+    //solhint-disable-next-line var-name-mixedcase
+    address private constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
 
     //solhint-disable-next-line var-name-mixedcase
     ILibraryWrapper public LIBRARY_WRAPPER;
 
     // solhint-disable-next-line var-name-mixedcase
-    AggregatorV3Interface public BRIDGE_TOKEN_USD;
-
-    // solhint-disable-next-line var-name-mixedcase
     IMAILDeployer public MAIL_DEPLOYER;
 
-    // solhint-disable-next-line var-name-mixedcase
-    address public WRAPPED_BRIDGE_TOKEN;
-
-    // Token Address -> Chainlink feed with USD base.
-    mapping(address => AggregatorV3Interface) public getUSDFeeds;
+    // Token Address -> Chainlink feed with ETH base.
+    mapping(address => AggregatorV3Interface) public getETHFeeds;
 
     /*///////////////////////////////////////////////////////////////
                             INITIALIZER
     //////////////////////////////////////////////////////////////*/
 
     /**
-     * @param uniswapFactory Address of UniswapV3 deployer.
-     * @param mailDeployer Address of the MAIL Deployer.
-     * @param wrappedNativeTokenUSD Chainlink price feed address for bridge token and USD
-     * @param wwrappedNativeToken The address of the wrapped bridge token
+     * @param libraryWrapper Uniswap library to interact with the oracle
      *
      * Requirements:
      *
      * - Can only be called at once and should be called during creation to prevent front running.
      */
-    function initialize(
-        IUniswapV3Factory uniswapFactory,
-        IMAILDeployer mailDeployer,
-        ILibraryWrapper libraryWrapper,
-        AggregatorV3Interface wrappedNativeTokenUSD,
-        address wwrappedNativeToken
-    ) external initializer {
+    function initialize(ILibraryWrapper libraryWrapper) external initializer {
         __Ownable_init();
 
-        UNISWAP_V3_FACTORY = uniswapFactory;
-        MAIL_DEPLOYER = mailDeployer;
-        BRIDGE_TOKEN_USD = wrappedNativeTokenUSD;
-        WRAPPED_BRIDGE_TOKEN = wwrappedNativeToken;
         LIBRARY_WRAPPER = libraryWrapper;
     }
 
@@ -103,7 +89,7 @@ contract Oracle is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         IUniswapV3Factory factory = UNISWAP_V3_FACTORY;
         IMAILDeployer mailDeployer = MAIL_DEPLOYER;
         ILibraryWrapper libraryWrapper = LIBRARY_WRAPPER;
-        address wrappedNativeToken = WRAPPED_BRIDGE_TOKEN;
+        address weth = WETH;
 
         // Get total amount of fees supported by UniswapV3
         uint256 length = mailDeployer.getFeesLength();
@@ -116,7 +102,7 @@ contract Oracle is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         // If the pool exists for the fee and has a higher liquidity we update the `liquidityMean` and `tickMean`.
         for (uint256 i; i < length; i++) {
             uint24 fee = mailDeployer.fees(i);
-            address pool = factory.getPool(wrappedNativeToken, riskytoken, fee);
+            address pool = factory.getPool(weth, riskytoken, fee);
             if (pool == address(0)) continue;
 
             (int24 poolTickMean, uint128 poolLiquidityMean) = libraryWrapper
@@ -133,63 +119,40 @@ contract Oracle is Initializable, OwnableUpgradeable, UUPSUpgradeable {
             tickMean,
             amount.toUint128(),
             riskytoken,
-            wrappedNativeToken
+            weth
         );
 
         // scale the price to 18 decimals. Usually wrapped bridge tokens do have 18 decimals.
-        return
-            getwrappedNativeTokenUSDPrice(
-                quoteAmount.toBase(wrappedNativeToken.safeDecimals())
-            );
+        return quoteAmount.toBase(weth.safeDecimals());
     }
 
     /**
-     * @dev It calls chainlink to get the USD price of a token and adjusts the decimals.
+     * @dev It calls chainlink to get the ETH price of a token and adjusts the decimals.
      *
      * @notice The amount will have 18 decimals
      *
      * @param token The address of the token for the feed.
-     * @param amount The number of tokens to calculate the value in USD.
-     * @return uint256 The price of the token in USD with 18 decimals.
+     * @param amount The number of tokens to calculate the value in ETH.
+     * @return uint256 The price of the token in ETH with 18 decimals.
      *
      * Requirements:
      *
      * - Token cannot be the zero address.
      */
-    function getUSDPrice(address token, uint256 amount)
+    function getETHPrice(address token, uint256 amount)
         public
         view
         returns (uint256)
     {
         require(token != address(0), "Oracle: no address zero");
 
-        if (token == WRAPPED_BRIDGE_TOKEN)
-            return getwrappedNativeTokenUSDPrice(amount);
+        if (token == WETH) return 1 ether;
 
-        AggregatorV3Interface feed = getUSDFeeds[token];
+        AggregatorV3Interface feed = getETHFeeds[token];
 
         (, int256 answer, , , ) = feed.latestRoundData();
 
         return answer.toUint256().toBase(feed.decimals()).bmul(amount);
-    }
-
-    /**
-     * @dev Get the current price of the Bridge Token.
-     *
-     * @param amount How many bridge tokens the caller wishes to get the price for.
-     * @return uint256 Price of the bridge token for `amount` scaled to 18 decimals.
-     */
-    function getwrappedNativeTokenUSDPrice(uint256 amount)
-        public
-        view
-        returns (uint256)
-    {
-        // solhint-disable-next-line var-name-mixedcase
-        AggregatorV3Interface priceFeed = BRIDGE_TOKEN_USD;
-
-        (, int256 answer, , , ) = priceFeed.latestRoundData();
-
-        return answer.toUint256().toBase(priceFeed.decimals()).bmul(amount);
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -214,8 +177,25 @@ contract Oracle is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         external
         onlyOwner
     {
-        getUSDFeeds[token] = feed;
+        getETHFeeds[token] = feed;
         emit NewFeed(token, feed);
+    }
+
+    /**
+     *@dev The `MAIL_DEPLOYER` require the oracle and the oracle requires the mail deployer. So this is a helper function to first deploy the Mail Deployer and then update the oracle
+     *
+     * @param mailDeployer the address of the mail deployer
+     *
+     * Requirements:
+     *
+     * - It can only be called once and by the owner
+     */
+    function setMailDeployer(IMAILDeployer mailDeployer) external onlyOwner {
+        require(
+            address(MAIL_DEPLOYER) == address(0),
+            "Oracle: can only be set once"
+        );
+        MAIL_DEPLOYER = mailDeployer;
     }
 
     /**
