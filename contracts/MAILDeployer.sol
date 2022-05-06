@@ -53,15 +53,9 @@ contract MAILDeployer is Ownable, IMAILDeployer {
 
     uint256 public riskyTokenLTV;
 
-    // Array containing all the current fees supported by Uniswap V3
-    uint24[] public fees;
-
     uint256 public liquidationFee;
 
     uint256 public liquidatorPortion;
-
-    // FEE -> BOOL A mapping to prevent duplicates to the `fees` array
-    mapping(uint256 => bool) private _hasFee;
 
     // Risky Token => Market Contract
     mapping(address => address) public getMarket;
@@ -72,13 +66,19 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     // Token => LTV
     mapping(address => uint256) public maxLTVOf;
 
+    // FEE -> BOOL A mapping to prevent duplicates to the `_fees` array
+    mapping(uint256 => bool) private _hasFee;
+
+    // Array containing all the current _fees supported by Uniswap V3
+    uint24[] private _fees;
+
     /*///////////////////////////////////////////////////////////////
                             CONSTRUCTOR
     //////////////////////////////////////////////////////////////*/
 
     /**
      * @param oracle The oracle used by MAIL lending markets
-     * @param _treasury The address that will collect all protocol fees
+     * @param _treasury The address that will collect all protocol _fees
      * @param _reserveFactor The % of the interest rate that will be sent to the treasury. It is a 18 mantissa number
      * @param modelData Data about the interest rate models for usdc, btc, wrappedNativeToken, usdt and risky token
      *
@@ -114,11 +114,11 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     //////////////////////////////////////////////////////////////*/
 
     /**
-     * @dev Total amount of fees supported by UniswapV3
-     * @return uint256 The number of fees
+     * @dev Total amount of _fees supported by UniswapV3
+     * @return uint256 The number of _fees
      */
     function getFeesLength() external view returns (uint256) {
-        return fees.length;
+        return _fees.length;
     }
 
     /**
@@ -219,14 +219,14 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         bool hasPool;
 
         // save gas
-        uint24[] memory _fees = fees;
+        uint24[] memory __fees = _fees;
 
-        // Loop through all the fees and check if there is a `_riskytoken` and `BRIDGE_TOKEN` pool for the fee
-        for (uint256 i; i < _fees.length; i++) {
+        // Loop through all the _fees and check if there is a `_riskytoken` and `BRIDGE_TOKEN` pool for the fee
+        for (uint256 i; i < __fees.length; i++) {
             address pool = uniswapV3Factory.getPool(
                 weth,
                 _riskytoken,
-                _fees[i]
+                __fees[i]
             );
             if (pool != address(0)) {
                 hasPool = true;
@@ -242,13 +242,13 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     //////////////////////////////////////////////////////////////*/
 
     /**
-     * @dev An initializer to set the current fees supported by Uniswap. Done to avoid stock local variable limit
+     * @dev An initializer to set the current _fees supported by Uniswap. Done to avoid stock local variable limit
      */
     function _initializeFees() private {
-        // Add current supported UniswapV3 fees
-        fees.push(500);
-        fees.push(3000);
-        fees.push(10000);
+        // Add current supported UniswapV3 _fees
+        _fees.push(500);
+        _fees.push(3000);
+        _fees.push(10000);
 
         // Update the guard map
         _hasFee[500] = true;
@@ -314,7 +314,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     function addUniswapV3Fee(uint24 fee) external onlyOwner {
         require(!_hasFee[fee], "MD: already added");
         _hasFee[fee] = true;
-        fees.push(fee);
+        _fees.push(fee);
         emit NewUniSwapFee(fee);
     }
 

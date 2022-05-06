@@ -8,7 +8,7 @@ import '@openzeppelin/hardhat-upgrades';
 import * as dotenv from 'dotenv';
 import { HardhatUserConfig, task } from 'hardhat/config';
 
-dotenv.config();
+dotenv.config({ path: './.env.example' });
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html

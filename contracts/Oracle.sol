@@ -8,9 +8,9 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20Metadat
 import "@openzeppelin/contracts-upgradeable/utils/math/SafeCastUpgradeable.sol";
 
 import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol";
+import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
 
 import "./interfaces/AggregatorV3Interface.sol";
-import "./interfaces/IMAILDeployer.sol";
 import "./interfaces/ILibraryWrapper.sol";
 
 import "./lib/IntMath.sol";
@@ -31,6 +31,8 @@ contract Oracle is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     //////////////////////////////////////////////////////////////*/
 
     event NewFeed(address indexed token, AggregatorV3Interface indexed feed);
+
+    event NewUniSwapFee(uint256 indexed fee);
 
     /*///////////////////////////////////////////////////////////////
                             LIBRARIES
@@ -53,11 +55,14 @@ contract Oracle is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     //solhint-disable-next-line var-name-mixedcase
     ILibraryWrapper public LIBRARY_WRAPPER;
 
-    // solhint-disable-next-line var-name-mixedcase
-    IMAILDeployer public MAIL_DEPLOYER;
-
     // Token Address -> Chainlink feed with ETH base.
     mapping(address => AggregatorV3Interface) public getETHFeeds;
+
+    // Array containing all the current fees supported by Uniswap V3
+    uint24[] private _fees;
+
+    // FEE -> BOOL A mapping to prevent duplicates to the `_fees` array
+    mapping(uint256 => bool) private _hasFee;
 
     /*///////////////////////////////////////////////////////////////
                             INITIALIZER
@@ -73,6 +78,16 @@ contract Oracle is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     function initialize(ILibraryWrapper libraryWrapper) external initializer {
         __Ownable_init();
 
+        // Add current supported UniswapV3 _fees
+        _fees.push(500);
+        _fees.push(3000);
+        _fees.push(10000);
+
+        // Update the guard map
+        _hasFee[500] = true;
+        _hasFee[3000] = true;
+        _hasFee[10000] = true;
+
         LIBRARY_WRAPPER = libraryWrapper;
     }
 
@@ -80,33 +95,35 @@ contract Oracle is Initializable, OwnableUpgradeable, UUPSUpgradeable {
                             VIEW FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
-    function getRiskytokenPrice(address riskytoken, uint256 amount)
+    function getUNIV3Price(address riskytoken, uint256 amount)
         external
         view
         returns (uint256)
     {
         // Save gas
         IUniswapV3Factory factory = UNISWAP_V3_FACTORY;
-        IMAILDeployer mailDeployer = MAIL_DEPLOYER;
         ILibraryWrapper libraryWrapper = LIBRARY_WRAPPER;
         address weth = WETH;
-
-        // Get total amount of fees supported by UniswapV3
-        uint256 length = mailDeployer.getFeesLength();
 
         // Will save the tickMean for the pool with highest liquidity in last 24 hours
         uint128 liquidityMean;
         int24 tickMean;
 
+        uint256 length = _fees.length;
+
         // Iterate to all UniswapV3 pools for `riskytoken` and the bridge token
         // If the pool exists for the fee and has a higher liquidity we update the `liquidityMean` and `tickMean`.
         for (uint256 i; i < length; i++) {
-            uint24 fee = mailDeployer.fees(i);
+            uint24 fee = _fees[i];
             address pool = factory.getPool(weth, riskytoken, fee);
             if (pool == address(0)) continue;
 
-            (int24 poolTickMean, uint128 poolLiquidityMean) = libraryWrapper
-                .consult(pool, 24 hours);
+            if (24 hours > _getOldestObservationSecondsAgo(pool)) continue;
+
+            (int24 poolTickMean, uint128 poolLiquidityMean) = _consult(
+                pool,
+                24 hours
+            );
 
             if (poolLiquidityMean > liquidityMean) {
                 liquidityMean = poolLiquidityMean;
@@ -159,6 +176,71 @@ contract Oracle is Initializable, OwnableUpgradeable, UUPSUpgradeable {
                             OWNER ONLY FUNCTION
     //////////////////////////////////////////////////////////////*/
 
+    function _consult(address pool, uint32 secondsAgo)
+        private
+        view
+        returns (int24 arithmeticMeanTick, uint128 harmonicMeanLiquidity)
+    {
+        require(secondsAgo != 0, "BP");
+
+        uint32[] memory secondsAgos = new uint32[](2);
+        secondsAgos[0] = secondsAgo;
+        secondsAgos[1] = 0;
+
+        (
+            int56[] memory tickCumulatives,
+            uint160[] memory secondsPerLiquidityCumulativeX128s
+        ) = IUniswapV3Pool(pool).observe(secondsAgos);
+
+        int56 tickCumulativesDelta = tickCumulatives[1] - tickCumulatives[0];
+        uint160 secondsPerLiquidityCumulativesDelta = secondsPerLiquidityCumulativeX128s[
+                1
+            ] - secondsPerLiquidityCumulativeX128s[0];
+
+        arithmeticMeanTick = int24(tickCumulativesDelta / int32(secondsAgo));
+        // Always round to negative infinity
+        if (
+            tickCumulativesDelta < 0 &&
+            (tickCumulativesDelta % int32(secondsAgo) != 0)
+        ) arithmeticMeanTick--;
+
+        // We are multiplying here instead of shifting to ensure that harmonicMeanLiquidity doesn't overflow uint128
+        uint192 secondsAgoX160 = uint192(secondsAgo) * type(uint160).max;
+        harmonicMeanLiquidity = uint128(
+            secondsAgoX160 /
+                (uint192(secondsPerLiquidityCumulativesDelta) << 32)
+        );
+    }
+
+    function _getOldestObservationSecondsAgo(address pool)
+        private
+        view
+        returns (uint32 secondsAgo)
+    {
+        (
+            ,
+            ,
+            uint16 observationIndex,
+            uint16 observationCardinality,
+            ,
+            ,
+
+        ) = IUniswapV3Pool(pool).slot0();
+        require(observationCardinality > 0, "NI");
+
+        (uint32 observationTimestamp, , , bool initialized) = IUniswapV3Pool(
+            pool
+        ).observations((observationIndex + 1) % observationCardinality);
+
+        // The next index might not be initialized if the cardinality is in the process of increasing
+        // In this case the oldest observation is always in index 0
+        if (!initialized) {
+            (observationTimestamp, , , ) = IUniswapV3Pool(pool).observations(0);
+        }
+
+        secondsAgo = uint32(block.timestamp) - observationTimestamp;
+    }
+
     /**
      * @dev Sets a chain link {AggregatorV3Interface} feed for an token.
      *
@@ -182,20 +264,19 @@ contract Oracle is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     }
 
     /**
-     *@dev The `MAIL_DEPLOYER` require the oracle and the oracle requires the mail deployer. So this is a helper function to first deploy the Mail Deployer and then update the oracle
+     * @dev Adds a new fee supported by UniswapV3
      *
-     * @param mailDeployer the address of the mail deployer
+     * @param fee The new fee to add
      *
      * Requirements:
      *
-     * - It can only be called once and by the owner
+     * - Fee must not be present in the array already
      */
-    function setMailDeployer(IMAILDeployer mailDeployer) external onlyOwner {
-        require(
-            address(MAIL_DEPLOYER) == address(0),
-            "Oracle: can only be set once"
-        );
-        MAIL_DEPLOYER = mailDeployer;
+    function addUniswapV3Fee(uint24 fee) external onlyOwner {
+        require(!_hasFee[fee], "MD: already added");
+        _hasFee[fee] = true;
+        _fees.push(fee);
+        emit NewUniSwapFee(fee);
     }
 
     /**

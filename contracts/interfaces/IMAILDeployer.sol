@@ -21,8 +21,6 @@ interface IMAILDeployer {
 
     function riskyTokenInterestRateModel() external view returns (address);
 
-    function fees(uint256 index) external view returns (uint24);
-
     function getFeesLength() external view returns (uint256);
 
     function riskyTokenLTV() external view returns (uint256);

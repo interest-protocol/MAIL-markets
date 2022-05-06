@@ -2,79 +2,77 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
-import {
-  MockChainLinkFeed,
-  MockERC20,
-  MockERC209Decimals,
-  MockERC2020Decimals,
-  MockLibraryWrapper,
-  MockMailDeployer,
-  MockUniswapFactoryV3,
-  Oracle,
-} from '../typechain';
-import { deployUUPS, multiDeploy } from './utils/test-utils';
-
+import { LibraryWrapper, Oracle, OracleV2 } from '../typechain';
+import { BTC_CHAIN_LINK_FEED, SHIBA_INU, WBTC } from './utils/constants';
+import { deploy, deployUUPS, upgrade } from './utils/test-utils';
 const { parseEther } = ethers.utils;
 
 describe('Oracle', () => {
   let oracle: Oracle;
-  let uniswapFactory: MockUniswapFactoryV3;
-  let libraryWrapper: MockLibraryWrapper;
-  let wethFeed: MockChainLinkFeed;
-  let btcFeed: MockChainLinkFeed;
-  let tokenAFeed: MockChainLinkFeed;
-  let mailDeployer: MockMailDeployer;
-
-  let WETH: MockERC20;
-  let BTC: MockERC20;
-  let tokenA9Decimals: MockERC209Decimals;
-  let riskyAsset: MockERC20;
-  let riskyAsset9Decimals: MockERC209Decimals;
-  let bigToken: MockERC2020Decimals;
+  let libraryWrapper: LibraryWrapper;
 
   let owner: SignerWithAddress;
   let alice: SignerWithAddress;
 
   beforeEach(async () => {
-    [
-      [owner, alice],
-      [
-        WETH,
-        BTC,
-        tokenA9Decimals,
-        riskyAsset,
-        riskyAsset9Decimals,
-        bigToken,
-        wethFeed,
-        btcFeed,
-        tokenAFeed,
-      ],
-    ] = await Promise.all([
+    [[owner, alice], libraryWrapper] = await Promise.all([
       ethers.getSigners(),
-      multiDeploy(
-        [
-          'MockERC20',
-          'MockERC20',
-          'MockERC209Decimals',
-          'MockERC20',
-          'MockERC209Decimals',
-          'MockERC2020Decimals',
-          'MockChainLinkFeed',
-          'MockChainLinkFeed',
-          'MockChainLinkFeed',
-        ],
-        [
-          ['Wrapped Ethereum', 'WETH', 0],
-          ['Bitcoin', 'BTC', 0],
-          ['Token A', 'TA', 0],
-          ['BunnyPark', 'BP', 0],
-          ['Safemoon', 'SFM', 0],
-          ['Big Token A', 'BTA', 0],
-          [8, 'WETH/USD', 1],
-          [8, 'BTC/USD', 1],
-          [18, 'TOKENA/USD', 1],
-        ]
-      ),
+      deploy('LibraryWrapper', []),
     ]);
+
+    oracle = await deployUUPS('Oracle', [libraryWrapper.address]);
+
+    await oracle.connect(owner).setFeed(WBTC, BTC_CHAIN_LINK_FEED);
+  });
+
+  it('fetches the ETH price of a token from UniswapV3 TWAP', async () => {
+    const shibaInuPrice = await oracle.getUNIV3Price(
+      SHIBA_INU,
+      parseEther('1')
+    );
+    // Check afterwards and is close to price on CMC for $0.00002008 ~ 7337530445 * 3000 / 1e18
+    expect(shibaInuPrice).to.be.equal('7337530445');
+  });
+
+  it('fetches the ETH price of a token from chainlink', async () => {
+    const btcPrice = await oracle.getETHPrice(WBTC, parseEther('2'));
+    // Taken after the fact but it is properly calculated. as it has 18 decimals and represents ~79k usd if we assume ETH is 3k
+    // 26594973420000000000 * 3000 /1e18
+    expect(btcPrice).to.be.equal('26594973420000000000');
+  });
+
+  it('allows to get the chainlink feed for a specific token', async () => {
+    expect(await oracle.getETHFeeds(WBTC)).to.be.equal(BTC_CHAIN_LINK_FEED);
+  });
+
+  it('allows the owner to update the feeds', async () => {
+    await expect(
+      oracle.connect(alice).setFeed(WBTC, alice.address)
+    ).to.revertedWith('Ownable: caller is not the owner');
+
+    await oracle.connect(owner).setFeed(WBTC, alice.address);
+
+    expect(await oracle.getETHFeeds(WBTC)).to.be.equal(alice.address);
+  });
+
+  describe('Update to new contract', () => {
+    it('reverts if a non owner tries to update it', async () => {
+      await oracle.connect(owner).renounceOwnership();
+
+      await expect(upgrade(oracle.address, 'OracleV2')).to.revertedWith(
+        'Ownable: caller is not the owner'
+      );
+    });
+    it('upgrades to version 2', async () => {
+      const oracleV2: OracleV2 = await upgrade(oracle.address, 'OracleV2');
+
+      const [version, feed] = await Promise.all([
+        oracleV2.version(),
+        oracleV2.getETHFeeds(WBTC),
+      ]);
+
+      expect(version).to.be.equal('V2');
+      expect(feed).to.be.equal(BTC_CHAIN_LINK_FEED);
+    });
   });
 });

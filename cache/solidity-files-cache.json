@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/jmvc/Desktop/MAIL-markets/contracts/interfaces/IMAILDeployer.sol": {
-      "lastModificationDate": 1648227605990,
-      "contentHash": "e16a151f7347a3213b14fc4a0d48aadc",
+      "lastModificationDate": 1651835389594,
+      "contentHash": "f9a6f56219d319c023cfe7bc9914f46c",
       "sourceName": "contracts/interfaces/IMAILDeployer.sol",
       "solcConfig": {
         "version": "0.8.13",
@@ -38,8 +38,8 @@
       ]
     },
     "/Users/jmvc/Desktop/MAIL-markets/contracts/MAILDeployer.sol": {
-      "lastModificationDate": 1648390349349,
-      "contentHash": "56d81638727a560721f1a2e8df95a5fd",
+      "lastModificationDate": 1651835518778,
+      "contentHash": "6fe96cd4258044742e8fa490087f7ae1",
       "sourceName": "contracts/MAILDeployer.sol",
       "solcConfig": {
         "version": "0.8.13",
@@ -153,8 +153,8 @@
       ]
     },
     "/Users/jmvc/Desktop/MAIL-markets/contracts/MAIL.sol": {
-      "lastModificationDate": 1648390195457,
-      "contentHash": "d1419cd291dd056dc5b278da45579653",
+      "lastModificationDate": 1651835684309,
+      "contentHash": "19f899f49b298ec053a65681c3ee9bfe",
       "sourceName": "contracts/MAIL.sol",
       "solcConfig": {
         "version": "0.8.13",
@@ -197,7 +197,7 @@
         "0.8.13"
       ],
       "artifacts": [
-        "MAIL"
+        "MAILMarket"
       ]
     },
     "/Users/jmvc/Desktop/MAIL-markets/node_modules/@openzeppelin/contracts/utils/Context.sol": {
@@ -384,8 +384,8 @@
       ]
     },
     "/Users/jmvc/Desktop/MAIL-markets/contracts/Oracle.sol": {
-      "lastModificationDate": 1648394906019,
-      "contentHash": "1463cd6a8331051adf0323c302360fb1",
+      "lastModificationDate": 1651836250157,
+      "contentHash": "8f6b0ca2381e12e4c54b9916b276924e",
       "sourceName": "contracts/Oracle.sol",
       "solcConfig": {
         "version": "0.8.13",
@@ -418,8 +418,8 @@
         "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol",
         "@openzeppelin/contracts-upgradeable/utils/math/SafeCastUpgradeable.sol",
         "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol",
+        "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol",
         "./interfaces/AggregatorV3Interface.sol",
-        "./interfaces/IMAILDeployer.sol",
         "./interfaces/ILibraryWrapper.sol",
         "./lib/IntMath.sol",
         "./lib/IntERC20.sol"
@@ -623,7 +623,7 @@
       ]
     },
     "/Users/jmvc/Desktop/MAIL-markets/contracts/interfaces/ILibraryWrapper.sol": {
-      "lastModificationDate": 1648047023553,
+      "lastModificationDate": 1651834847023,
       "contentHash": "2c2894a8ee858ca9c10018e0ad240076",
       "sourceName": "contracts/interfaces/ILibraryWrapper.sol",
       "solcConfig": {
@@ -991,8 +991,8 @@
       ]
     },
     "/Users/jmvc/Desktop/MAIL-markets/contracts/interfaces/IOracle.sol": {
-      "lastModificationDate": 1648059208192,
-      "contentHash": "6e3d2de1db2ce1ea1219b27410b9a30c",
+      "lastModificationDate": 1651835136208,
+      "contentHash": "3e093bc9b7a1e119cf5aef89b0309d89",
       "sourceName": "contracts/interfaces/IOracle.sol",
       "solcConfig": {
         "version": "0.8.13",
@@ -1361,8 +1361,8 @@
       ]
     },
     "/Users/jmvc/Desktop/MAIL-markets/contracts/LibraryWrapper.sol": {
-      "lastModificationDate": 1648048052871,
-      "contentHash": "5aae27da79eb837fe93d7a19c4fb0af1",
+      "lastModificationDate": 1651834893812,
+      "contentHash": "dc3adc98dbf4227de6dfc3881296948b",
       "sourceName": "contracts/LibraryWrapper.sol",
       "solcConfig": {
         "version": "0.7.6",
@@ -1621,152 +1621,6 @@
         "Address"
       ]
     },
-    "/Users/jmvc/Desktop/MAIL-markets/contracts/mock/MockChainLinkFeed.sol": {
-      "lastModificationDate": 1648391755555,
-      "contentHash": "199eb9ee8c719812e3568911febda9a3",
-      "sourceName": "contracts/mock/MockChainLinkFeed.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../interfaces/AggregatorV3Interface.sol"
-      ],
-      "versionPragmas": [
-        "0.8.13"
-      ],
-      "artifacts": [
-        "MockChainLinkFeed"
-      ]
-    },
-    "/Users/jmvc/Desktop/MAIL-markets/contracts/mock/MockLibraryWrapper.sol": {
-      "lastModificationDate": 1648392763825,
-      "contentHash": "e56f4c77468fddadd6bb9c92886b2734",
-      "sourceName": "contracts/mock/MockLibraryWrapper.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "0.8.13"
-      ],
-      "artifacts": [
-        "MockLibraryWrapper"
-      ]
-    },
-    "/Users/jmvc/Desktop/MAIL-markets/contracts/mock/MockMailDeployer.sol": {
-      "lastModificationDate": 1648391683212,
-      "contentHash": "5a3b98187a3dcbf2cd99297b7bfee23f",
-      "sourceName": "contracts/mock/MockMailDeployer.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "0.8.13"
-      ],
-      "artifacts": [
-        "MockMailDeployer"
-      ]
-    },
-    "/Users/jmvc/Desktop/MAIL-markets/contracts/mock/MockUniswapFactoryV3.sol": {
-      "lastModificationDate": 1648391030205,
-      "contentHash": "b343630fb99767c23432c592ba21324c",
-      "sourceName": "contracts/mock/MockUniswapFactoryV3.sol",
-      "solcConfig": {
-        "version": "0.8.13",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "0.8.13"
-      ],
-      "artifacts": [
-        "MockUniswapFactoryV3"
-      ]
-    },
     "/Users/jmvc/Desktop/MAIL-markets/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
       "lastModificationDate": 1647620466521,
       "contentHash": "bab063ddd80e9cc9e313361fef7ef07f",
@@ -1957,6 +1811,80 @@
       ],
       "artifacts": [
         "MockERC2020Decimals"
+      ]
+    },
+    "/Users/jmvc/Desktop/MAIL-markets/node_modules/hardhat/console.sol": {
+      "lastModificationDate": 1647620470929,
+      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
+      ]
+    },
+    "/Users/jmvc/Desktop/MAIL-markets/contracts/mock/OracleV2.sol": {
+      "lastModificationDate": 1651837539740,
+      "contentHash": "5da73dc1b58d42b3899ec85ac891feea",
+      "sourceName": "contracts/mock/OracleV2.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../Oracle.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "OracleV2"
       ]
     }
   }

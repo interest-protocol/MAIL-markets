@@ -946,7 +946,7 @@ contract MAILMarket {
 
         // Risky token uses a different Oracle function
         if (token == RISKY_TOKEN)
-            return IOracle(ORACLE).getRiskytokenPrice(token, amount);
+            return IOracle(ORACLE).getUNIV3Price(token, amount);
 
         return IOracle(ORACLE).getETHPrice(token, amount);
     }
@@ -984,7 +984,7 @@ contract MAILMarket {
                     uint256 ltvRatio = IMAILDeployer(mailDeployer)
                         .riskyTokenLTV();
                     totalCollateralInETH += oracle
-                        .getRiskytokenPrice(token, uint256(account.balance))
+                        .getUNIV3Price(token, uint256(account.balance))
                         .bmul(ltvRatio);
                 } else if (token == WETH) {
                     uint256 ltvRatio = IMAILDeployer(mailDeployer).maxLTVOf(
@@ -1028,10 +1028,7 @@ contract MAILMarket {
 
             // Update the collateral and debt depending if it is a risky token or not.
             if (token == riskyToken) {
-                totalDebtInETH += oracle.getRiskytokenPrice(
-                    riskyToken,
-                    amountOwed
-                );
+                totalDebtInETH += oracle.getUNIV3Price(riskyToken, amountOwed);
             } else if (token == WETH) {
                 totalDebtInETH += amountOwed;
             } else {

@@ -7,7 +7,7 @@ interface IOracle {
         view
         returns (uint256);
 
-    function getRiskytokenPrice(address riskytoken, uint256 amount)
+    function getUNIV3Price(address riskytoken, uint256 amount)
         external
         view
         returns (uint256);
