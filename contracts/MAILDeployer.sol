@@ -106,7 +106,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
 
         _initializeModels(modelData);
 
-        _initializeMAXLTV();
+        _initializeMaxLTV();
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -269,7 +269,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     /**
      * @dev An initializer to set the max ltv per asset. Done to avoid stack local variable limit
      */
-    function _initializeMAXLTV() private {
+    function _initializeMaxLTV() private {
         // Set Initial LTV
         maxLTVOf[BTC] = INITIAL_MAX_LTV;
         maxLTVOf[USDC] = INITIAL_MAX_LTV;
