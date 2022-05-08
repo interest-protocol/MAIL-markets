@@ -122,6 +122,16 @@ contract MAILDeployer is Ownable, IMAILDeployer {
     }
 
     /**
+     * @dev To find a fee at a specific index.
+     *
+     * @param index of the corresponding fee
+     * @return uint24 fee for the index
+     */
+    function getFee(uint256 index) external view returns (uint24) {
+        return _fees[index];
+    }
+
+    /**
      * @dev Computes the address of a market address for the a `riskyToken`.
      *
      * @param _riskytoken Market address for this token will be returned
@@ -133,7 +143,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         returns (address)
     {
         address deployer = address(this);
-        bytes32 salt = keccak256(abi.encode(_riskytoken));
+        bytes32 salt = keccak256(abi.encodePacked(_riskytoken));
         bytes32 initCodeHash = keccak256(
             abi.encodePacked(type(MAILMarket).creationCode)
         );
@@ -275,7 +285,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         (
             address btcModel,
             address usdcModel,
-            address wrappedNativeTokenModel,
+            address ethModel,
             address usdtModel,
             address riskytokenModel
         ) = abi.decode(
@@ -287,14 +297,14 @@ contract MAILDeployer is Ownable, IMAILDeployer {
         require(btcModel != address(0), "btc: no zero address");
         require(usdcModel != address(0), "usdc: no zero address");
         require(usdtModel != address(0), "usdt: no zero address");
-        require(wrappedNativeTokenModel != address(0), "bt: no zero address");
+        require(ethModel != address(0), "eth: no zero address");
         require(riskytokenModel != address(0), "ra: no zero address");
 
         // Map the token to the right interest rate model
         getInterestRateModel[BTC] = btcModel;
         getInterestRateModel[USDC] = usdcModel;
         getInterestRateModel[USDT] = usdtModel;
-        getInterestRateModel[WETH] = wrappedNativeTokenModel;
+        getInterestRateModel[WETH] = ethModel;
         riskyTokenInterestRateModel = riskytokenModel;
     }
 
@@ -312,7 +322,7 @@ contract MAILDeployer is Ownable, IMAILDeployer {
      * - Fee must not be present in the array already
      */
     function addUniswapV3Fee(uint24 fee) external onlyOwner {
-        require(!_hasFee[fee], "MD: already added");
+        require(!_hasFee[fee], "MD: uni fee already added");
         _hasFee[fee] = true;
         _fees.push(fee);
         emit NewUniSwapFee(fee);

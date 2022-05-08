@@ -95,6 +95,24 @@ contract Oracle is Initializable, OwnableUpgradeable, UUPSUpgradeable {
                             VIEW FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
+    /**
+     * @dev Total amount of _fees supported by UniswapV3
+     * @return uint256 The number of _fees
+     */
+    function getFeesLength() external view returns (uint256) {
+        return _fees.length;
+    }
+
+    /**
+     * @dev To find a fee at a specific index.
+     *
+     * @param index of the corresponding fee
+     * @return uint24 fee for the index
+     */
+    function getFee(uint256 index) external view returns (uint24) {
+        return _fees[index];
+    }
+
     function getUNIV3Price(address riskytoken, uint256 amount)
         external
         view
@@ -238,6 +256,7 @@ contract Oracle is Initializable, OwnableUpgradeable, UUPSUpgradeable {
             (observationTimestamp, , , ) = IUniswapV3Pool(pool).observations(0);
         }
 
+        //solhint-disable-next-line not-rely-on-time
         secondsAgo = uint32(block.timestamp) - observationTimestamp;
     }
 
@@ -273,7 +292,7 @@ contract Oracle is Initializable, OwnableUpgradeable, UUPSUpgradeable {
      * - Fee must not be present in the array already
      */
     function addUniswapV3Fee(uint24 fee) external onlyOwner {
-        require(!_hasFee[fee], "MD: already added");
+        require(!_hasFee[fee], "Oracle: fee already added");
         _hasFee[fee] = true;
         _fees.push(fee);
         emit NewUniSwapFee(fee);

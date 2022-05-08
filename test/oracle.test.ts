@@ -55,6 +55,20 @@ describe('Oracle', () => {
     expect(await oracle.getETHFeeds(WBTC)).to.be.equal(alice.address);
   });
 
+  it('allows the owner to add a new uniswap fee', async () => {
+    expect(await oracle.getFeesLength()).to.be.equal(3);
+
+    await expect(oracle.connect(owner).addUniswapV3Fee(500)).to.be.revertedWith(
+      'Oracle: fee already added'
+    );
+
+    await expect(oracle.connect(owner).addUniswapV3Fee(2000))
+      .to.emit(oracle, 'NewUniSwapFee')
+      .withArgs(2000);
+
+    expect(await oracle.getFee(3)).to.be.equal(2000);
+  });
+
   describe('Update to new contract', () => {
     it('reverts if a non owner tries to update it', async () => {
       await oracle.connect(owner).renounceOwnership();

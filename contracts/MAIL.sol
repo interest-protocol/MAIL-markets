@@ -902,9 +902,6 @@ contract MAILMarket {
         require(principal > 0, "MAIL: principal cannot be 0");
         require(to != address(0), "MAIL: no to zero address");
 
-        // Update the debt and rewards
-        _accrue(token);
-
         // Save storage in memory to save gas
         Market memory market = marketOf[token];
         Rebase memory loan = market.loan;
