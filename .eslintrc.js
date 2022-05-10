@@ -123,7 +123,7 @@ module.exports = {
     'unicorn/template-indent': 'warn',
     'unicorn/throw-new-error': 'error',
     // Override the double quote rule to single quote
-    'prettier/prettier': ['error', { singleQuote: true, parser: 'flow' }],
+    'prettier/prettier': ['error', { singleQuote: true }],
     'node/no-missing-import': [
       'error',
       {
