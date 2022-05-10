@@ -14,6 +14,7 @@ import "./interfaces/IOwnable.sol";
 import "./lib/Rebase.sol";
 import "./lib/IntMath.sol";
 import "./lib/IntERC20.sol";
+import "hardhat/console.sol";
 
 /**
  * @dev We scale all numbers to 18 decimals to easily work with IntMath library. The toBase functions reads the decimals and scales them. And the fromBase puts them back to their original decimal houses.
@@ -319,7 +320,7 @@ contract MAILMarket {
      * - The `msg.sender` must provide allowance beforehand.
      * - Only tokens supported by this pool can be donated to the reserves.
      */
-    function despositReserves(address token, uint256 amount)
+    function depositReserves(address token, uint256 amount)
         external
         isMarketListed(token)
     {
@@ -1136,7 +1137,8 @@ contract MAILMarket {
             loan.elastic,
             market.totalReserves
         );
-
+        console.log(BORROW_RATE_MAX_MANTISSA, "BORROW_RATE_MAX_MANTISSA");
+        console.log(borrowRatePerBlock, "borrowRatePerBlock");
         // Make sure it is not very high
         require(
             BORROW_RATE_MAX_MANTISSA > borrowRatePerBlock,

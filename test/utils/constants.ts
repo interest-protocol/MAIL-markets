@@ -23,3 +23,23 @@ export const USDC = ethers.utils.getAddress(
 export const USDT = ethers.utils.getAddress(
   '0xdAC17F958D2ee523a2206206994597C13D831ec7'
 );
+
+export const SHIB_WHALE = ethers.utils.getAddress(
+  '0x72a53cdbbcc1b9efa39c834a540550e23463aacb'
+);
+
+export const WETH_WHALE = ethers.utils.getAddress(
+  '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
+);
+
+export const WBTC_WHALE = ethers.utils.getAddress(
+  '0x1e3d6eab4bcf24bcd04721caa11c478a2e59852d'
+);
+
+export const USDC_WHALE = ethers.utils.getAddress(
+  '0xcffad3200574698b78f32232aa9d63eabd290703'
+);
+
+export const USDT_WHALE = ethers.utils.getAddress(
+  '0x7d812b62dc15e6f4073eba8a2ba8db19c4e40704'
+);

@@ -1,7 +1,9 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 // eslint-disable-next-line node/no-unpublished-import
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { ContractAddressOrInstance } from '@openzeppelin/hardhat-upgrades/dist/utils';
-import { ethers, upgrades } from 'hardhat';
+import { ethers, network, upgrades } from 'hardhat';
+
 export const multiDeploy = async (
   x: ReadonlyArray<string>,
   y: Array<Array<unknown> | undefined> = []
@@ -79,3 +81,23 @@ export const upgrade = async (
   const factory = await ethers.getContractFactory(name);
   return upgrades.upgradeProxy(proxy, factory);
 };
+
+export const impersonate = async (
+  address: string
+): Promise<SignerWithAddress> => {
+  await network.provider.request({
+    method: 'hardhat_impersonateAccount',
+    params: [address],
+  });
+
+  return ethers.getSigner(address);
+};
+
+export const parseUSDC = (x: string) =>
+  ethers.BigNumber.from(x).mul(ethers.BigNumber.from(10).pow(6));
+
+export const parseUSDT = (x: string) =>
+  ethers.BigNumber.from(x).mul(ethers.BigNumber.from(10).pow(6));
+
+export const parseWBTC = (x: string) =>
+  ethers.BigNumber.from(x).mul(ethers.BigNumber.from(10).pow(8));

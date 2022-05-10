@@ -57,6 +57,31 @@
       "kind": "uups"
     },
     {
+      "address": "0x8fC8CFB7f7362E44E472c690A6e025B80E406458",
+      "txHash": "0x78c2606273f6cfc04a04cc1bfbbddc6414e56fe7eda1164ddc28170b4eaf3ec5",
+      "kind": "uups"
+    },
+    {
+      "address": "0xcC4c41415fc68B2fBf70102742A83cDe435e0Ca7",
+      "txHash": "0x4ed97707978ca986b52a7784217cc56f73f17b15e29d4a704c9de57683f41bb2",
+      "kind": "uups"
+    },
+    {
+      "address": "0x3C1Cb427D20F15563aDa8C249E71db76d7183B6c",
+      "txHash": "0x99a97dc9152e63e687e5c222925a9753d1141926ffaaddc10e18ab09c368bb4d",
+      "kind": "uups"
+    },
+    {
+      "address": "0xE8F7d98bE6722d42F29b50500B0E318EF2be4fc8",
+      "txHash": "0x8312d2175aae6a246d6a18334bd79f1f5ca756125d3ad734231ece570840e6e5",
+      "kind": "uups"
+    },
+    {
+      "address": "0x071586BA1b380B00B793Cc336fe01106B0BFbE6D",
+      "txHash": "0xc7a5dea90a96d068fb7f991e999a490667fdc95de64e2122206900b2c3f368d0",
+      "kind": "uups"
+    },
+    {
       "address": "0x71089Ba41e478702e1904692385Be3972B2cBf9e",
       "txHash": "0x51b94c4fd55fb7f7478c989cc17997118df00af3cd625be9844f99b252e950e7",
       "kind": "uups"
@@ -412,7 +437,7 @@
             "label": "LIBRARY_WRAPPER",
             "offset": 0,
             "slot": "201",
-            "type": "t_contract(ILibraryWrapper)7894",
+            "type": "t_contract(ILibraryWrapper)7909",
             "contract": "Oracle",
             "src": "contracts/Oracle.sol:56"
           },
@@ -420,7 +445,7 @@
             "label": "getETHFeeds",
             "offset": 0,
             "slot": "202",
-            "type": "t_mapping(t_address,t_contract(AggregatorV3Interface)7867)",
+            "type": "t_mapping(t_address,t_contract(AggregatorV3Interface)7882)",
             "contract": "Oracle",
             "src": "contracts/Oracle.sol:59"
           },
@@ -462,15 +487,15 @@
             "label": "bool",
             "numberOfBytes": "1"
           },
-          "t_contract(AggregatorV3Interface)7867": {
+          "t_contract(AggregatorV3Interface)7882": {
             "label": "contract AggregatorV3Interface",
             "numberOfBytes": "20"
           },
-          "t_contract(ILibraryWrapper)7894": {
+          "t_contract(ILibraryWrapper)7909": {
             "label": "contract ILibraryWrapper",
             "numberOfBytes": "20"
           },
-          "t_mapping(t_address,t_contract(AggregatorV3Interface)7867)": {
+          "t_mapping(t_address,t_contract(AggregatorV3Interface)7882)": {
             "label": "mapping(address => contract AggregatorV3Interface)",
             "numberOfBytes": "32"
           },
