@@ -83,32 +83,32 @@
     },
     {
       "address": "0x071586BA1b380B00B793Cc336fe01106B0BFbE6D",
-      "txHash": "0x51590561e6afda77ede357648fd6a7a3b12428dc793b8e72fbd75d11e857e899",
+      "txHash": "0x6d562997b585ba56cd05192b15c34c69eab8f5d183e92232b389dce8440e17af",
       "kind": "uups"
     },
     {
       "address": "0x8fC8CFB7f7362E44E472c690A6e025B80E406458",
-      "txHash": "0x78c2606273f6cfc04a04cc1bfbbddc6414e56fe7eda1164ddc28170b4eaf3ec5",
+      "txHash": "0x34d893ff86c076ed9d65098a1057fdb03714c0f9442ab616221c326f7cb461bd",
       "kind": "uups"
     },
     {
       "address": "0xcC4c41415fc68B2fBf70102742A83cDe435e0Ca7",
-      "txHash": "0x4ed97707978ca986b52a7784217cc56f73f17b15e29d4a704c9de57683f41bb2",
+      "txHash": "0xe6da18fd026a511848a4f823e0ed692eba7736939a2cc165975dcdb07233f67c",
       "kind": "uups"
     },
     {
       "address": "0x3C1Cb427D20F15563aDa8C249E71db76d7183B6c",
-      "txHash": "0x99a97dc9152e63e687e5c222925a9753d1141926ffaaddc10e18ab09c368bb4d",
+      "txHash": "0x41ce4562ee8a23c80ec7e602e18cc87f4cd635acd61dc6e26333bc35f9476a5c",
       "kind": "uups"
     },
     {
       "address": "0xE8F7d98bE6722d42F29b50500B0E318EF2be4fc8",
-      "txHash": "0x8312d2175aae6a246d6a18334bd79f1f5ca756125d3ad734231ece570840e6e5",
+      "txHash": "0xc8a4f189666931313aa716d10dab19e27b97d625cfaab969a09d11760aaa3ebf",
       "kind": "uups"
     },
     {
       "address": "0x1D8D70AD07C8E7E442AD78E4AC0A16f958Eba7F0",
-      "txHash": "0x5528e7e385091c344670da92cf4a213f8ff3c6d9884a86264345f1c5dc9a1708",
+      "txHash": "0x014146478a1465df748f08ad7511ab16a110b2865af8739d006ac9db24726680",
       "kind": "uups"
     },
     {
@@ -189,6 +189,31 @@
     {
       "address": "0x7c02b58029beeA7c1FcC872803dC9818f57A0E61",
       "txHash": "0xd314ebd8c59241bc43063d6ec0048bd1cc730f9f4da308a0305badca0e4e1345",
+      "kind": "uups"
+    },
+    {
+      "address": "0xf274De14171Ab928A5Ec19928cE35FaD91a42B64",
+      "txHash": "0x17c2ba038012333cdc7b927c251cca4481c8b2a716eca5a62212dc00b0204b36",
+      "kind": "uups"
+    },
+    {
+      "address": "0x9DBb24B10502aD166c198Dbeb5AB54d2d13AfcFd",
+      "txHash": "0xb33e1a4863be57c0efe9a2f65be38417ff1a154568ae2a1b7f454773c8a1b8f5",
+      "kind": "uups"
+    },
+    {
+      "address": "0x24EcC5E6EaA700368B8FAC259d3fBD045f695A08",
+      "txHash": "0x70670e1e2710693832e802b378e4bcd261484de26654a4653b8c7ea21130c6fb",
+      "kind": "uups"
+    },
+    {
+      "address": "0x4c04377f90Eb1E42D845AB21De874803B8773669",
+      "txHash": "0x4091a4b9e82cd8e90b371114ee352e42444d96d3ec9f807cd631647d6e5f86ca",
+      "kind": "uups"
+    },
+    {
+      "address": "0x8Aed6FE10dF3d6d981B101496C9c7245AE65cAEc",
+      "txHash": "0xfbc51f5d15c3a1c40b3bbe8427bbefe1b1308eff155ea1a1e012c2165e6dd2fb",
       "kind": "uups"
     }
   ],
@@ -542,7 +567,7 @@
             "label": "LIBRARY_WRAPPER",
             "offset": 0,
             "slot": "201",
-            "type": "t_contract(ILibraryWrapper)7895",
+            "type": "t_contract(ILibraryWrapper)7858",
             "contract": "Oracle",
             "src": "contracts/Oracle.sol:56"
           },
@@ -550,7 +575,7 @@
             "label": "getETHFeeds",
             "offset": 0,
             "slot": "202",
-            "type": "t_mapping(t_address,t_contract(AggregatorV3Interface)7868)",
+            "type": "t_mapping(t_address,t_contract(AggregatorV3Interface)7831)",
             "contract": "Oracle",
             "src": "contracts/Oracle.sol:59"
           },
@@ -592,15 +617,15 @@
             "label": "bool",
             "numberOfBytes": "1"
           },
-          "t_contract(AggregatorV3Interface)7868": {
+          "t_contract(AggregatorV3Interface)7831": {
             "label": "contract AggregatorV3Interface",
             "numberOfBytes": "20"
           },
-          "t_contract(ILibraryWrapper)7895": {
+          "t_contract(ILibraryWrapper)7858": {
             "label": "contract ILibraryWrapper",
             "numberOfBytes": "20"
           },
-          "t_mapping(t_address,t_contract(AggregatorV3Interface)7868)": {
+          "t_mapping(t_address,t_contract(AggregatorV3Interface)7831)": {
             "label": "mapping(address => contract AggregatorV3Interface)",
             "numberOfBytes": "32"
           },

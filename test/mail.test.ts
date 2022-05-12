@@ -25,7 +25,6 @@ import {
   WETH_WHALE,
 } from './utils/constants';
 import {
-  addElastic,
   advanceBlock,
   advanceBlockAndTime,
   deploy,
@@ -518,7 +517,10 @@ describe('Mail', () => {
         .mul(market.loan.elastic)
         .div(parseEther('1'));
 
-      const [newLoan] = addElastic(market.loan, newDebt, true);
+      const newLoan = {
+        base: market.loan.base,
+        elastic: market.loan.elastic.add(newDebt),
+      };
 
       expect(market2.lastAccruedBlock.gt(market.lastAccruedBlock)).to.be.equal(
         true
@@ -995,6 +997,156 @@ describe('Mail', () => {
           ),
         10_000
       );
+    });
+  });
+
+  describe('function: borrow', () => {
+    it('reverts if the token is not listed', async () => {
+      await expect(
+        mailMarket
+          .connect(btcHolder)
+          .borrow(recipient.address, 1, recipient.address)
+      ).to.be.revertedWith('MAIL: token not listed');
+    });
+
+    it('does not allow to borrow if you are not solvent', async () => {
+      await Promise.all([
+        mailMarket
+          .connect(btcHolder)
+          .deposit(WBTC, parseWBTC('1'), btcHolder.address),
+        mailMarket
+          .connect(usdcHolder)
+          .deposit(USDC, parseUSDC('50000'), btcHolder.address),
+        mailMarket
+          .connect(wethHolder)
+          .deposit(WETH, parseEther('100'), wethHolder.address),
+      ]);
+
+      await expect(
+        mailMarket
+          .connect(btcHolder)
+          .borrow(WETH, parseEther('16'), btcHolder.address)
+      ).to.be.revertedWith('MAIL: account is insolvent');
+    });
+
+    it('calls accrue if there is an open loan', async () => {
+      await Promise.all([
+        mailMarket
+          .connect(btcHolder)
+          .deposit(WBTC, parseWBTC('1'), btcHolder.address),
+        mailMarket
+          .connect(usdcHolder)
+          .deposit(USDC, parseUSDC('50000'), btcHolder.address),
+      ]);
+
+      await expect(
+        mailMarket
+          .connect(btcHolder)
+          .borrow(USDC, parseUSDC('5000'), btcHolder.address)
+      ).to.not.emit(mailMarket, 'Accrue');
+
+      await expect(
+        mailMarket
+          .connect(btcHolder)
+          .borrow(USDC, parseUSDC('5000'), btcHolder.address)
+      ).to.emit(mailMarket, 'Accrue');
+    });
+
+    it('reverts if the amount is 0 or there is not enough cash', async () => {
+      await Promise.all([
+        mailMarket
+          .connect(btcHolder)
+          .deposit(WBTC, parseWBTC('10'), btcHolder.address),
+        mailMarket
+          .connect(usdcHolder)
+          .deposit(USDC, parseUSDC('5000'), btcHolder.address),
+      ]);
+
+      await Promise.all([
+        expect(
+          mailMarket.connect(btcHolder).borrow(USDC, 0, btcHolder.address)
+        ).to.be.revertedWith('MAIL: no zero withdraws'),
+        expect(
+          mailMarket
+            .connect(btcHolder)
+            .borrow(USDC, parseUSDC('5500'), btcHolder.address)
+        ).to.be.revertedWith('MAIL: not enough cash'),
+      ]);
+    });
+
+    it('allows borrows', async () => {
+      await Promise.all([
+        mailMarket
+          .connect(btcHolder)
+          .deposit(WBTC, parseWBTC('10'), btcHolder.address),
+        mailMarket
+          .connect(usdcHolder)
+          .deposit(USDC, parseUSDC('50000'), usdcHolder.address),
+      ]);
+
+      const [btcHolderUSDCAccount, usdcMarket] = await Promise.all([
+        mailMarket.accountOf(USDC, btcHolder.address),
+        mailMarket.marketOf(USDC),
+      ]);
+
+      expect(btcHolderUSDCAccount.principal).to.be.equal(0);
+      expect(btcHolderUSDCAccount.balance).to.be.equal(0);
+      expect(btcHolderUSDCAccount.rewardDebt).to.be.equal(0);
+      expect(usdcMarket.loan.elastic).to.be.equal(0);
+      expect(usdcMarket.loan.base).to.be.equal(0);
+
+      await expect(
+        mailMarket
+          .connect(btcHolder)
+          .borrow(USDC, parseUSDC('10000'), btcHolder.address)
+      )
+        .to.emit(mailMarket, 'Borrow')
+        .withArgs(
+          btcHolder.address,
+          btcHolder.address,
+          USDC,
+          parseUSDC('10000'),
+          parseUSDC('10000')
+        )
+        .to.emit(usdc, 'Transfer')
+        .withArgs(mailMarket.address, btcHolder.address, parseUSDC('10000'));
+
+      const [btcHolderUSDCAccount2, usdcMarket2] = await Promise.all([
+        mailMarket.accountOf(USDC, btcHolder.address),
+        mailMarket.marketOf(USDC),
+      ]);
+
+      expect(btcHolderUSDCAccount2.principal).to.be.equal(parseEther('10000'));
+      expect(btcHolderUSDCAccount2.balance).to.be.equal(0);
+      expect(btcHolderUSDCAccount2.rewardDebt).to.be.equal(0);
+      expect(usdcMarket2.loan.elastic).to.be.equal(parseEther('10000'));
+      expect(usdcMarket2.loan.base).to.be.equal(parseEther('10000'));
+
+      await mailMarket
+        .connect(btcHolder)
+        .borrow(USDC, parseUSDC('20000'), btcHolder.address);
+
+      const [btcHolderUSDCAccount3, usdcMarket3] = await Promise.all([
+        mailMarket.accountOf(USDC, btcHolder.address),
+        mailMarket.marketOf(USDC),
+      ]);
+
+      expect(btcHolderUSDCAccount3.principal).to.be.equal(
+        usdcMarket3.loan.base
+      );
+      expect(btcHolderUSDCAccount3.balance).to.be.equal(0);
+      expect(btcHolderUSDCAccount3.rewardDebt).to.be.equal(0);
+      // accrued some interest
+      expect(
+        usdcMarket3.loan.elastic.gt(
+          usdcMarket2.loan.elastic.add(parseEther('20000'))
+        )
+      ).to.be.equal(true);
+      // We calculated the proper fees on the accrue function
+      expect(
+        usdcMarket3.loan.base.gt(usdcMarket2.loan.base) &&
+          usdcMarket3.loan.base.lt(parseEther('30000'))
+      ).to.be.equal(true);
     });
   });
 });

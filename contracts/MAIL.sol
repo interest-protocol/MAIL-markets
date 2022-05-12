@@ -167,9 +167,6 @@ contract MAILMarket {
     // Token => Total Supply
     mapping(address => uint256) public totalSupplyOf;
 
-    // Token => Total Borrow
-    mapping(address => uint256) public totalBorrowOf;
-
     /*///////////////////////////////////////////////////////////////
                             CONSTRUCTOR
     //////////////////////////////////////////////////////////////*/
@@ -861,7 +858,6 @@ contract MAILMarket {
         Account memory account = accountOf[token][from];
         Market memory market = marketOf[token];
         Rebase memory loan = market.loan;
-        uint256 totalBorrow = totalBorrowOf[token];
 
         uint256 principal;
 
@@ -870,12 +866,10 @@ contract MAILMarket {
 
         // Update memory
         account.principal += principal.toUint128();
-        totalBorrow += principal;
 
         //  Update storage
         accountOf[token][from] = account;
         marketOf[token] = market;
-        totalBorrowOf[token] = totalBorrow;
 
         // Transfer the loan `token` to the `msg.sender`.
         IERC20(token).safeTransfer(to, amount);
@@ -914,7 +908,6 @@ contract MAILMarket {
         Rebase memory loan = market.loan;
         Account memory account = accountOf[token][to];
         (Rebase memory _loan, uint256 debt) = loan.sub(principal, true);
-        uint256 totalBorrow = totalBorrowOf[token];
 
         // Get the tokens from `msg.sender`
         IERC20(token).safeTransferFrom(
@@ -926,12 +919,10 @@ contract MAILMarket {
         // Update the state in memory
         market.loan = _loan;
         account.principal -= principal.toUint128();
-        totalBorrow -= principal;
 
         // Update the state in storage
         marketOf[token] = market;
         accountOf[token][to] = account;
-        totalBorrowOf[token] = totalBorrow;
 
         // Emit event
         emit Repay(from, to, token, principal, debt);
@@ -1170,7 +1161,7 @@ contract MAILMarket {
             assert(newDebt > newRewards);
 
             // Update the loanin memory.
-            (loan, ) = loan.add(newDebt, true);
+            loan.elastic += newDebt.toUint128();
 
             // Save storage in memory
             uint256 totalSupply = totalSupplyOf[token];
