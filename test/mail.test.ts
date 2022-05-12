@@ -20,10 +20,12 @@ import {
   USDT_WHALE,
   WBTC,
   WBTC_WHALE,
+  WBTC_WHALE_2,
   WETH,
   WETH_WHALE,
 } from './utils/constants';
 import {
+  addElastic,
   advanceBlock,
   advanceBlockAndTime,
   deploy,
@@ -106,13 +108,15 @@ describe('Mail', () => {
   let treasury: SignerWithAddress;
   let router: SignerWithAddress;
 
+  // Interest rate models
+  let btcModel: JumpInterestRateModel;
+  let ethModel: JumpInterestRateModel;
+  let usdcModel: JumpInterestRateModel;
+  let usdtModel: JumpInterestRateModel;
+  let shibModel: JumpInterestRateModel;
+
   beforeEach(async () => {
     let libraryWrapper: LibraryWrapper;
-    let btcModel: JumpInterestRateModel;
-    let ethModel: JumpInterestRateModel;
-    let usdcModel: JumpInterestRateModel;
-    let usdtModel: JumpInterestRateModel;
-    let shibModel: JumpInterestRateModel;
 
     [
       [recipient, treasury, router],
@@ -468,23 +472,529 @@ describe('Mail', () => {
         .connect(btcHolder)
         .borrow(USDC, parseUSDC('5000'), btcHolder.address);
 
+      await network.provider.send('evm_setAutomine', [false]);
+
       await advanceBlock(ethers);
 
       const market = await mailMarket.marketOf(USDC);
 
-      await expect(mailMarket.accrue(USDC)).to.emit(mailMarket, 'Accrue');
+      await advanceBlock(ethers);
+      await advanceBlock(ethers);
+      await advanceBlock(ethers);
+      await advanceBlock(ethers);
+
+      await mailMarket.accrue(USDC);
+
+      await advanceBlock(ethers);
 
       const market2 = await mailMarket.marketOf(USDC);
+
+      await advanceBlock(ethers);
+
+      const blockDelta = market2.lastAccruedBlock.sub(market.lastAccruedBlock);
+      const cash = await mailMarket.getCash(USDC);
+
+      const [borrowRatePerBlock, supplyRatePerBlock] = await Promise.all([
+        usdcModel.getBorrowRatePerBlock(
+          cash,
+          market.loan.elastic,
+          market.totalReserves
+        ),
+        usdcModel.getSupplyRatePerBlock(
+          cash,
+          market.loan.elastic,
+          market.totalReserves,
+          RESERVE_FACTOR
+        ),
+      ]);
+
+      const newDebt = blockDelta
+        .mul(borrowRatePerBlock)
+        .mul(market.loan.elastic)
+        .div(parseEther('1'));
+
+      const newRewards = blockDelta
+        .mul(supplyRatePerBlock)
+        .mul(market.loan.elastic)
+        .div(parseEther('1'));
+
+      const [newLoan] = addElastic(market.loan, newDebt, true);
 
       expect(market2.lastAccruedBlock.gt(market.lastAccruedBlock)).to.be.equal(
         true
       );
-      expect(market2.loan.base.gt(market.loan.base)).to.be.equal(true);
-      expect(market2.loan.elastic.gt(market.loan.elastic)).to.be.equal(true);
-      expect(market2.totalReserves.gt(market.totalReserves)).to.be.equal(true);
+      expect(market2.loan.base).to.be.equal(newLoan.base);
+      expect(market2.loan.elastic).to.be.equal(newLoan.elastic);
+      expect(market2.totalReserves).to.be.equal(
+        market.totalReserves.add(newDebt.sub(newRewards))
+      );
+      expect(market2.totalRewardsPerToken).to.be.equal(
+        market.totalRewardsPerToken.add(
+          newRewards.mul(parseEther('1')).div(parseEther('10000'))
+        )
+      );
+
+      await network.provider.send('evm_setAutomine', [true]);
+    });
+  });
+
+  describe('function: deposit', () => {
+    it('reverts if the token is not supported', async () => {
+      await expect(mailMarket.deposit(recipient.address, 1, recipient.address));
+    });
+    it('calls accrue properly', async () => {
+      // first deposit there is nothing to accrue
+      await expect(
+        mailMarket
+          .connect(btcHolder)
+          .deposit(WBTC, parseWBTC('10'), btcHolder.address)
+      ).to.not.emit(mailMarket, 'Accrue');
+
+      await advanceBlock(ethers);
+      await advanceBlock(ethers);
+
+      const market = await mailMarket.marketOf(WBTC);
+
+      // Since there are no open loans, there is nothing to accrue but the data should be updated
+      await expect(
+        mailMarket
+          .connect(btcHolder)
+          .deposit(WBTC, parseWBTC('10'), btcHolder.address)
+      ).to.not.emit(mailMarket, 'Accrue');
+
       expect(
-        market2.totalRewardsPerToken.gt(market.totalRewardsPerToken)
+        (await mailMarket.marketOf(WBTC)).lastAccruedBlock.gt(
+          market.lastAccruedBlock
+        )
       ).to.be.equal(true);
+
+      await mailMarket
+        .connect(btcHolder)
+        .borrow(WBTC, parseWBTC('2'), btcHolder.address);
+
+      await advanceBlock(ethers);
+      await advanceBlock(ethers);
+
+      // Should emit accrue has there is an open loan in the market
+      await expect(
+        mailMarket
+          .connect(btcHolder)
+          .deposit(WBTC, parseWBTC('10'), btcHolder.address)
+      ).to.emit(mailMarket, 'Accrue');
+    });
+    it('reverts if the arguments are invalid', async () => {
+      await Promise.all([
+        expect(
+          mailMarket.connect(btcHolder).deposit(WBTC, 0, btcHolder.address)
+        ).to.be.revertedWith('MAIL: no zero deposits'),
+        expect(
+          mailMarket.connect(btcHolder).deposit(WBTC, 0, btcHolder.address)
+        ).to.be.revertedWith('MAIL: no zero deposits'),
+      ]);
+    });
+    it('does not give rewards if there are none', async () => {
+      const [wbtcTotalSupply, btcHolderAccount, wbtcMarket] = await Promise.all(
+        [
+          mailMarket.totalSupplyOf(WBTC),
+          mailMarket.accountOf(WBTC, btcHolder.address),
+          mailMarket.marketOf(WBTC),
+        ]
+      );
+
+      await expect(
+        mailMarket
+          .connect(btcHolder)
+          .deposit(WBTC, parseWBTC('10'), btcHolder.address)
+      )
+        .to.emit(mailMarket, 'Deposit')
+        .withArgs(
+          btcHolder.address,
+          btcHolder.address,
+          WBTC,
+          parseWBTC('10'),
+          0
+        );
+
+      const [wbtcTotalSupply2, btcHolderAccount2, wbtcMarket2] =
+        await Promise.all([
+          mailMarket.totalSupplyOf(WBTC),
+          mailMarket.accountOf(WBTC, btcHolder.address),
+          mailMarket.marketOf(WBTC),
+        ]);
+
+      // Pre-deposit
+      expect(wbtcTotalSupply).to.be.equal(0);
+      expect(btcHolderAccount.rewardDebt).to.be.equal(0);
+      expect(btcHolderAccount.balance).to.be.equal(0);
+      expect(btcHolderAccount.principal).to.be.equal(0);
+      expect(wbtcMarket.totalReserves).to.be.equal(0);
+      expect(wbtcMarket.totalRewardsPerToken).to.be.equal(0);
+      expect(wbtcMarket.loan.base).to.be.equal(0);
+      expect(wbtcMarket.loan.elastic).to.be.equal(0);
+
+      // Post 10 WBTC deposit
+      expect(wbtcTotalSupply2).to.be.equal(parseEther('10'));
+      expect(btcHolderAccount2.rewardDebt).to.be.equal(0);
+      expect(btcHolderAccount2.balance).to.be.equal(parseEther('10'));
+      expect(btcHolderAccount2.principal).to.be.equal(0);
+      expect(wbtcMarket2.totalReserves).to.be.equal(0);
+      expect(wbtcMarket2.totalRewardsPerToken).to.be.equal(0);
+      expect(wbtcMarket2.loan.base).to.be.equal(0);
+      expect(wbtcMarket2.loan.elastic).to.be.equal(0);
+    });
+    it('properly calculates rewards', async () => {
+      const btcHolder2 = await impersonate(WBTC_WHALE_2);
+
+      await wbtc
+        .connect(btcHolder2)
+        .approve(mailMarket.address, ethers.constants.MaxUint256);
+
+      await expect(
+        mailMarket
+          .connect(btcHolder)
+          .deposit(WBTC, parseWBTC('10'), btcHolder.address)
+      )
+        .to.emit(mailMarket, 'Deposit')
+        .withArgs(
+          btcHolder.address,
+          btcHolder.address,
+          WBTC,
+          parseWBTC('10'),
+          0
+        )
+        .to.not.emit(mailMarket, 'Accrue');
+
+      await expect(
+        mailMarket
+          .connect(btcHolder2)
+          .deposit(WBTC, parseWBTC('5'), btcHolder2.address)
+      )
+        .to.emit(mailMarket, 'Deposit')
+        .withArgs(btcHolder.address, btcHolder.address, WBTC, parseWBTC('5'), 0)
+        .to.not.emit(mailMarket, 'Accrue');
+
+      await expect(
+        mailMarket
+          .connect(usdcHolder)
+          .deposit(USDC, parseUSDC('1000000'), usdcHolder.address)
+      );
+
+      await mailMarket
+        .connect(usdcHolder)
+        .borrow(WBTC, parseWBTC('5'), usdcHolder.address);
+
+      await network.provider.send('hardhat_mine', [
+        `0x${Number(10).toString(16)}`,
+      ]);
+
+      await network.provider.send('hardhat_setNextBlockBaseFeePerGas', ['0x0']);
+
+      await mailMarket
+        .connect(btcHolder)
+        .deposit(WBTC, parseWBTC('1'), btcHolder.address);
+
+      const [wbtcTotalSupply, btcHolderAccount, btcHolder2Account, wbtcMarket] =
+        await Promise.all([
+          mailMarket.totalSupplyOf(WBTC),
+          mailMarket.accountOf(WBTC, btcHolder.address),
+          mailMarket.accountOf(WBTC, btcHolder2.address),
+          mailMarket.marketOf(WBTC),
+        ]);
+
+      // 16 deposited plus the supply
+      expect(wbtcTotalSupply).to.be.closeTo(
+        parseEther('16').add(
+          btcHolderAccount.balance
+            .sub(parseEther('1'))
+            .mul(wbtcMarket.totalRewardsPerToken)
+            .div(parseEther('1'))
+        ),
+        parseEther('0.0000000001')
+      );
+      expect(btcHolderAccount.principal).to.be.equal(0);
+      expect(btcHolderAccount.balance).to.closeTo(
+        parseEther('11').add(
+          btcHolderAccount.balance
+            .sub(parseEther('1'))
+            .mul(wbtcMarket.totalRewardsPerToken)
+            .div(parseEther('1'))
+        ),
+        parseEther('0.0000000001')
+      );
+      expect(btcHolderAccount.rewardDebt).to.be.equal(
+        btcHolderAccount.balance
+          .mul(wbtcMarket.totalRewardsPerToken)
+          .div(parseEther('1'))
+      );
+      expect(btcHolder2Account.principal).to.be.equal(0);
+      expect(btcHolder2Account.balance).to.be.equal(parseEther('5'));
+      expect(btcHolder2Account.rewardDebt).to.be.equal(0);
+
+      await mailMarket
+        .connect(btcHolder2)
+        .deposit(WBTC, parseWBTC('1'), btcHolder2.address);
+
+      const [
+        wbtcTotalSupply2,
+        btcHolderAccount2,
+        btcHolder2Account2,
+        wbtcMarket2,
+      ] = await Promise.all([
+        mailMarket.totalSupplyOf(WBTC),
+        mailMarket.accountOf(WBTC, btcHolder.address),
+        mailMarket.accountOf(WBTC, btcHolder2.address),
+        mailMarket.marketOf(WBTC),
+      ]);
+
+      // 16 deposited plus the supply
+      expect(wbtcTotalSupply2).to.be.closeTo(
+        wbtcTotalSupply
+          .add(
+            wbtcMarket2.totalRewardsPerToken
+              .mul(btcHolder2Account2.balance.sub(parseEther('1')))
+              .div(parseEther('1'))
+          )
+          .add(parseEther('1')),
+        parseEther('0.0000000001')
+      );
+      expect(btcHolderAccount2.principal).to.be.equal(0);
+      expect(btcHolderAccount2.balance).to.equal(btcHolderAccount.balance);
+      expect(btcHolderAccount2.rewardDebt).to.be.equal(
+        btcHolderAccount.rewardDebt
+      );
+      expect(btcHolder2Account2.principal).to.be.equal(0);
+      expect(btcHolder2Account2.balance).to.be.closeTo(
+        btcHolder2Account.balance
+          .add(parseEther('1'))
+          .add(
+            wbtcMarket2.totalRewardsPerToken
+              .mul(btcHolder2Account2.balance.sub(parseEther('1')))
+              .div(parseEther('1'))
+          ),
+        parseEther('0.0000000001')
+      );
+      expect(btcHolder2Account2.rewardDebt).to.be.equal(
+        wbtcMarket2.totalRewardsPerToken
+          .mul(btcHolder2Account2.balance)
+          .div(parseEther('1'))
+      );
+    });
+  });
+
+  describe('function: withdraw', () => {
+    it('reverts if the token is not listed', async () => {
+      await expect(
+        mailMarket.withdraw(recipient.address, 0, recipient.address)
+      ).to.be.revertedWith('MAIL: token not listed');
+    });
+    it('reverts if the arguments are invalid', async () => {
+      await expect(
+        mailMarket.connect(btcHolder).withdraw(WBTC, 0, btcHolder.address)
+      ).to.be.revertedWith('MAIL: no zero withdraws');
+    });
+    it('calls accrue on withdrawals if there is a loan', async () => {
+      await Promise.all([
+        mailMarket
+          .connect(btcHolder)
+          .deposit(WBTC, parseWBTC('10'), btcHolder.address),
+        mailMarket
+          .connect(usdcHolder)
+          .deposit(USDC, parseUSDC('100000'), usdcHolder.address),
+      ]);
+
+      await advanceBlock(ethers);
+
+      // no borrows so it does not accrue
+      await expect(
+        mailMarket
+          .connect(btcHolder)
+          .withdraw(WBTC, parseWBTC('1'), btcHolder.address)
+      ).to.not.emit(mailMarket, 'Accrue');
+
+      await mailMarket
+        .connect(usdcHolder)
+        .borrow(WBTC, parseWBTC('1'), usdcHolder.address);
+
+      await advanceBlock(ethers);
+
+      await expect(
+        mailMarket
+          .connect(btcHolder)
+          .withdraw(WBTC, parseWBTC('1'), btcHolder.address)
+      ).to.emit(mailMarket, 'Accrue');
+    });
+    it('reverts if there is not enough cash', async () => {
+      await Promise.all([
+        mailMarket
+          .connect(btcHolder)
+          .deposit(WBTC, parseWBTC('10'), btcHolder.address),
+        mailMarket
+          .connect(usdcHolder)
+          .deposit(USDC, parseUSDC('1000000'), usdcHolder.address),
+      ]);
+
+      await mailMarket
+        .connect(usdcHolder)
+        .borrow(WBTC, parseWBTC('2'), usdcHolder.address);
+
+      await expect(
+        mailMarket
+          .connect(btcHolder)
+          .withdraw(WBTC, parseWBTC('9'), btcHolder.address)
+      ).to.be.revertedWith('MAIL: not enough cash');
+    });
+
+    it('allows withdraws', async () => {
+      const btcHolder2 = await impersonate(WBTC_WHALE_2);
+
+      await wbtc
+        .connect(btcHolder2)
+        .approve(mailMarket.address, ethers.constants.MaxUint256);
+
+      await Promise.all([
+        mailMarket
+          .connect(btcHolder)
+          .deposit(WBTC, parseWBTC('10'), btcHolder.address),
+        mailMarket
+          .connect(btcHolder2)
+          .deposit(WBTC, parseWBTC('5'), btcHolder2.address),
+        mailMarket
+          .connect(usdcHolder)
+          .deposit(USDC, parseUSDC('2000000'), usdcHolder.address),
+      ]);
+
+      await mailMarket
+        .connect(usdcHolder)
+        .borrow(WBTC, parseWBTC('3'), usdcHolder.address);
+
+      await network.provider.send('hardhat_mine', [
+        `0x${Number(10).toString(16)}`,
+      ]);
+
+      await network.provider.send('hardhat_setNextBlockBaseFeePerGas', ['0x0']);
+
+      const [
+        wbtcTotalSupply,
+        wbtcMarket,
+        btcHolderAccount,
+        btcHolder2Account,
+        btcHolderWBTCBalance,
+      ] = await Promise.all([
+        mailMarket.totalSupplyOf(WBTC),
+        mailMarket.marketOf(WBTC),
+        mailMarket.accountOf(WBTC, btcHolder.address),
+        mailMarket.accountOf(WBTC, btcHolder2.address),
+        wbtc.balanceOf(btcHolder.address),
+      ]);
+
+      expect(wbtcTotalSupply).to.be.equal(parseEther('15'));
+      expect(wbtcMarket.totalRewardsPerToken).to.be.equal(0);
+      expect(wbtcMarket.totalReserves).to.be.equal(0);
+      expect(wbtcMarket.loan.base).to.be.equal(parseEther('3'));
+      expect(wbtcMarket.loan.elastic).to.be.equal(parseEther('3'));
+
+      expect(btcHolderAccount.rewardDebt).to.be.equal(0);
+      expect(btcHolderAccount.balance).to.be.equal(parseEther('10'));
+      expect(btcHolderAccount.principal).to.be.equal(0);
+
+      expect(btcHolder2Account.rewardDebt).to.be.equal(0);
+      expect(btcHolder2Account.balance).to.be.equal(parseEther('5'));
+      expect(btcHolder2Account.principal).to.be.equal(0);
+
+      await expect(
+        mailMarket
+          .connect(btcHolder)
+          .withdraw(WBTC, parseWBTC('5'), btcHolder.address)
+      )
+        .to.emit(mailMarket, 'Accrue')
+        .to.emit(mailMarket, 'Withdraw')
+        .to.emit(wbtc, 'Transfer');
+
+      const [
+        wbtcTotalSupply2,
+        wbtcMarket2,
+        btcHolderAccount2,
+        btcHolder2Account2,
+        btcHolderWBTCBalance2,
+        btcHolder2WBTCBalance2,
+      ] = await Promise.all([
+        mailMarket.totalSupplyOf(WBTC),
+        mailMarket.marketOf(WBTC),
+        mailMarket.accountOf(WBTC, btcHolder.address),
+        mailMarket.accountOf(WBTC, btcHolder2.address),
+        wbtc.balanceOf(btcHolder.address),
+        wbtc.balanceOf(btcHolder2.address),
+      ]);
+
+      expect(wbtcTotalSupply2).to.be.equal(parseEther('10'));
+
+      expect(btcHolderAccount2.rewardDebt).to.be.equal(
+        wbtcMarket2.totalRewardsPerToken
+          .mul(btcHolderAccount2.balance)
+          .div(parseEther('1'))
+      );
+      // Rewards re sent
+      expect(btcHolderWBTCBalance2).to.be.closeTo(
+        btcHolderWBTCBalance
+          .add(
+            wbtcMarket2.totalRewardsPerToken
+              .mul(parseEther('15'))
+              .div(parseEther('1'))
+              .div(parseWBTC('1'))
+          )
+          .add(parseWBTC('5')),
+        10_000
+      );
+
+      expect(btcHolderAccount2.balance).to.be.equal(parseEther('5'));
+      expect(btcHolderAccount2.principal).to.be.equal(0);
+      expect(btcHolder2Account2.rewardDebt).to.be.equal(0);
+      expect(btcHolder2Account2.balance).to.be.equal(parseEther('5'));
+      expect(btcHolder2Account2.principal).to.be.equal(0);
+
+      mailMarket
+        .connect(btcHolder2)
+        .withdraw(WBTC, parseWBTC('5'), btcHolder2.address);
+
+      const [
+        wbtcTotalSupply3,
+        wbtcMarket3,
+        btcHolderAccount3,
+        btcHolder2Account3,
+        btcHolder2WBTCBalance3,
+      ] = await Promise.all([
+        mailMarket.totalSupplyOf(WBTC),
+        mailMarket.marketOf(WBTC),
+        mailMarket.accountOf(WBTC, btcHolder.address),
+        mailMarket.accountOf(WBTC, btcHolder2.address),
+        wbtc.balanceOf(btcHolder2.address),
+      ]);
+
+      expect(wbtcTotalSupply3).to.be.equal(
+        wbtcTotalSupply2.sub(parseEther('5'))
+      );
+      expect(btcHolderAccount3.balance).to.be.equal(btcHolderAccount2.balance);
+      expect(btcHolderAccount3.rewardDebt).to.be.equal(
+        btcHolderAccount2.rewardDebt
+      );
+      expect(btcHolderAccount3.principal).to.be.equal(
+        btcHolderAccount2.principal
+      );
+
+      expect(btcHolder2Account3.balance).to.be.equal(0);
+      expect(btcHolder2Account3.rewardDebt).to.be.equal(0);
+      expect(btcHolder2Account3.principal).to.be.equal(0);
+      expect(btcHolder2WBTCBalance3).to.be.closeTo(
+        btcHolder2WBTCBalance2
+          .add(parseWBTC('5'))
+          .add(
+            wbtcMarket3.totalRewardsPerToken
+              .mul(parseEther('5'))
+              .div(parseEther('1'))
+              .div(parseWBTC('1'))
+          ),
+        10_000
+      );
     });
   });
 });

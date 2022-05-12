@@ -1137,8 +1137,7 @@ contract MAILMarket {
             loan.elastic,
             market.totalReserves
         );
-        console.log(BORROW_RATE_MAX_MANTISSA, "BORROW_RATE_MAX_MANTISSA");
-        console.log(borrowRatePerBlock, "borrowRatePerBlock");
+
         // Make sure it is not very high
         require(
             BORROW_RATE_MAX_MANTISSA > borrowRatePerBlock,

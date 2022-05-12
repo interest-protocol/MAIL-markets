@@ -43,3 +43,7 @@ export const USDC_WHALE = ethers.utils.getAddress(
 export const USDT_WHALE = ethers.utils.getAddress(
   '0x7d812b62dc15e6f4073eba8a2ba8db19c4e40704'
 );
+
+export const WBTC_WHALE_2 = ethers.utils.getAddress(
+  '0x5a52e96bacdabb82fd05763e25335261b270efcb'
+);
