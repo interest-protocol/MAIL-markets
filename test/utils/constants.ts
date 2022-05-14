@@ -47,3 +47,11 @@ export const USDT_WHALE = ethers.utils.getAddress(
 export const WBTC_WHALE_2 = ethers.utils.getAddress(
   '0x5a52e96bacdabb82fd05763e25335261b270efcb'
 );
+
+export const ADD_COLLATERAL_REQUEST = 0;
+
+export const WITHDRAW_COLLATERAL_REQUEST = 1;
+
+export const BORROW_REQUEST = 2;
+
+export const REPAY_REQUEST = 3;

@@ -14,7 +14,6 @@ import "./interfaces/IOwnable.sol";
 import "./lib/Rebase.sol";
 import "./lib/IntMath.sol";
 import "./lib/IntERC20.sol";
-import "hardhat/console.sol";
 
 /**
  * @dev We scale all numbers to 18 decimals to easily work with IntMath library. The toBase functions reads the decimals and scales them. And the fromBase puts them back to their original decimal houses.
@@ -374,9 +373,6 @@ contract MAILMarket {
         uint256 amount,
         address to
     ) external isMarketListed(token) {
-        // Update the debt and rewards of this market
-        _accrue(token);
-
         _deposit(token, amount, msg.sender, to);
     }
 
@@ -469,7 +465,8 @@ contract MAILMarket {
         for (uint256 i; i < requests.length; i++) {
             uint8 requestAction = requests[i];
 
-            if (_checkForSolvency(requestAction)) checkForSolvency = true;
+            if (_checkForSolvency(requestAction) && !checkForSolvency)
+                checkForSolvency = true;
 
             _request(from, requestAction, requestArgs[i]);
         }
@@ -549,6 +546,13 @@ contract MAILMarket {
 
             // Uniswap style block scope
             {
+                // `msg.sender` must provide enough tokens to keep the balance sheet
+                IERC20(borrowToken).safeTransferFrom(
+                    msg.sender,
+                    address(this),
+                    debt.fromBase(borrowToken.safeDecimals())
+                );
+
                 // update the loan information and treats rounding issues.
                 if (principalToRepay == loan.base) {
                     loan.sub(loan.base, loan.elastic);
@@ -559,13 +563,6 @@ contract MAILMarket {
                 // Update the state
                 borrowMarket.loan = loan;
                 marketOf[borrowToken] = borrowMarket;
-
-                // `msg.sender` must provide enough tokens to keep the balance sheet
-                IERC20(borrowToken).safeTransferFrom(
-                    msg.sender,
-                    address(this),
-                    debt.fromBase(borrowToken.safeDecimals())
-                );
             }
         }
 
@@ -789,6 +786,7 @@ contract MAILMarket {
     ) private {
         // Security checks
         require(amount > 0, "MAIL: no zero withdraws");
+        require(to != address(0), "MAIL: no zero address");
 
         // Save storage in memory to save gas
         uint256 totalSupply = totalSupplyOf[token];
