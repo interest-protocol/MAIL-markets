@@ -2413,7 +2413,7 @@ describe('Mail', () => {
       );
     });
 
-    it.only('liquidates a portion of a user position', async () => {
+    it('liquidates a portion of a user position', async () => {
       const fakeFeed = (await deploy(
         'MockChainLinkFeed',
         []
