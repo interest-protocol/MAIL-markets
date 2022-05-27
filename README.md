@@ -6,8 +6,12 @@
 [![reddit](./assets/reddit.svg)](https://www.reddit.com/user/InterestProtocol)
 
 MAIL Markets are lending markets based on Uniswap V3 Pairs. 
-A MAIL (Multi-Asset-Isolated-Lending) market can be launched by any token that has a token/ETH pair on UniswapV3.
-However, it requires the pair to have trading activity because it sets the UniswapV3 oracle to a 24 hour TWAP.
+
+A MAIL (Multi-Asset-Isolated-Lending) market can be launched by anyone by selecting a token with a token/ETH pair on UniswapV3 without a MAIL market.
+
+However, it requires the pair to have trading activity because the UniswapV3 oracle is set to use a 24 hour TWAP.
+
+*Note* The price of the risky asset is based on a TWAP to be resistant to manipulations.
 
 ## How to use
 
@@ -15,10 +19,10 @@ If a token does not have a market and has a ETH pair in UniswapV3, you can launc
 
 ## :money_with_wings: Features :money_with_wings:
 
-- Borrow or lend any token with a UniswapV3 ETH pair
-- Each market supports ETH, BTC, USDT, USDC and the selected token from the pair
-- Each market is separated from each other protecting the users from harmful tokens
-- (WIP) Markets can lend from each other via the bridge assets they have in common and TVL 
+- Token agnostic: borrow and/or lend any token with a UniswapV3 ETH pair
+- Bridge assets: each market supports ETH, BTC, USDT, USDC and the selected token from the pair
+- Isolated Architecture: each market is separated from each other, protecting the users from harmful tokens
+- (WIP) Router: Markets can lend from each other via the bridge assets they have in common
 
 ## :fire: Technology :fire:
 
