@@ -26,7 +26,7 @@ describe('Oracle', () => {
     await oracle.connect(owner).setFeed(WBTC, BTC_CHAIN_LINK_FEED);
   });
 
-  it.only('fetches the ETH price of a token from UniswapV3 TWAP', async () => {
+  it('fetches the ETH price of a token from UniswapV3 TWAP', async () => {
     const shibaInuPrice = await oracle.getUNIV3Price(
       SHIBA_INU,
       parseEther('1')
