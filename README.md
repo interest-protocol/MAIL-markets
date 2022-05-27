@@ -1,5 +1,6 @@
 # :seedling: Welcome to Interest Protocol! :seedling:
 
+[![codecov](https://codecov.io/gh/interest-protocol/MAIL-markets/branch/main/graph/badge.svg?token=QG60PJCVVJ)](https://codecov.io/gh/interest-protocol/MAIL-markets)
 [![docs](./assets/gitbook_2.svg)](https://docs.interestprotocol.com/)
 [![twitter](./assets/twitter.svg)](https://twitter.com/interest_dinero)
 [![discord](./assets/discord.svg)](https://discord.gg/PJEkqM4Crk)
