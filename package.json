@@ -4,9 +4,11 @@
   "description": "Isolated lending markets that support multiple assets",
   "main": "index.js",
   "scripts": {
-    "test": "",
     "prepare": "husky install",
-    "compile": "npx hardhat compile"
+    "test": "npx hardhat test",
+    "clean": "npx hardhat clean && rimraf cache && rimraf artifacts",
+    "compile": "npx hardhat compile",
+    "coverage": "npx hardhat coverage --testfiles './test/**.ts'"
   },
   "repository": {
     "type": "git",

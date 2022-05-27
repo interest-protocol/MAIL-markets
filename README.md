@@ -1,46 +1,56 @@
-# Advanced Sample Hardhat Project
+# :seedling: Welcome to Interest Protocol! :seedling:
 
-This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
+[![docs](./assets/gitbook_2.svg)](https://docs.interestprotocol.com/)
+[![twitter](./assets/twitter.svg)](https://twitter.com/interest_dinero)
+[![discord](./assets/discord.svg)](https://discord.gg/PJEkqM4Crk)
+[![reddit](./assets/reddit.svg)](https://www.reddit.com/user/InterestProtocol)
 
-The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
+MAIL Markets are lending markets based on Uniswap V3 Pairs. 
 
-Try running some of the following tasks:
+A MAIL (Multi-Asset-Isolated-Lending) market can be launched by anyone by selecting a token with a token/ETH pair on UniswapV3 without a MAIL market.
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-npx hardhat help
-REPORT_GAS=true npx hardhat test
-npx hardhat coverage
-npx hardhat run scripts/deploy.ts
-TS_NODE_FILES=true npx ts-node scripts/deploy.ts
-npx eslint '**/*.{js,ts}'
-npx eslint '**/*.{js,ts}' --fix
-npx prettier '**/*.{json,sol,md}' --check
-npx prettier '**/*.{json,sol,md}' --write
-npx solhint 'contracts/**/*.sol'
-npx solhint 'contracts/**/*.sol' --fix
-```
+However, it requires the pair to have trading activity because the UniswapV3 oracle is set to use a 24 hour TWAP.
 
-# Etherscan verification
+*Note* The price of the risky asset is based on a TWAP to be resistant to manipulations.
 
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
+## How to use
 
-In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
+If a token does not have a market and has a ETH pair in UniswapV3, you can launch the market using the MAILDeployer. 
 
-```shell
-hardhat run --network ropsten scripts/deploy.ts
-```
+## :money_with_wings: Features :money_with_wings:
 
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
+- Token agnostic: borrow and/or lend any token with a UniswapV3 ETH pair
+- Bridge assets: each market supports ETH, BTC, USDT, USDC and the selected token from the pair
+- Isolated Architecture: each market is separated from each other, protecting the users from harmful tokens
+- (WIP) Router: Markets can lend from each other via the bridge assets they have in common
 
-```shell
-npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
-```
+## :fire: Technology :fire:
 
-# Performance optimizations
+Core technologies:
 
-For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
+- [Typescript](https://www.typescriptlang.org/)
+- [Hardhat](https://hardhat.org/)
+- [Solidity](https://docs.soliditylang.org/)
+
+> :warning: **If your node runs out of memory write in your terminal `export NODE_OPTIONS="--max-old-space-size=8192" `**
+
+## Bridge Assets
+
+They are the common tokens between all MAIL markets:
+Their price comes directly from Chainlink and not UniswapV3.
+
+- BTC
+- ETH
+- USDC 
+- USDT
+
+## Social Media
+
+**Get in touch!**
+
+- info@interestprotocol.com
+- [Twitter](https://twitter.com/interest_dinero)
+- [Medium](https://medium.com/@interestprotocol)
+- [Reddit](https://www.reddit.com/user/InterestProtocol)
+- [Telegram](https://t.me/interestprotocol)
+- [Discord](https://discord.gg/PJEkqM4Crk)
